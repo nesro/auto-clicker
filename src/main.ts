@@ -1,15 +1,30 @@
+/**
+ * TODO I need to have a list of previous finds/click so I can make chains
+ */
+
 // src/main.ts
 import cvReady from '@techstark/opencv-js';
 import screenshot from 'screenshot-desktop';
 import fs from 'node:fs';
-import robot from 'robotjs';
 import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
 import { execFileSync } from 'node:child_process';
 
-const cv: any = await cvReady; // ✅ 4.11+ usage
+const cv: any = await cvReady;
 
-export function clickAt(x: number, y: number) {
-  // move then click
+// ---------------- config ----------------
+const NEEDLE_PATHS = [
+  './needles/dmg.png',
+  // './needles/confirm.png',
+  // './needles/play.png',
+  // add more…
+];
+const MATCH_THRESHOLD = 0.4;
+const scaleFactor = 0.5; // adjust if retina / HiDPI
+const clicksPerNeedle = 2;
+const SCREENSHOT_INTERVAL = 500; // ms
+// ---------------------------------------
+
+function clickAt(x: number, y: number) {
   execFileSync('cliclick', [`m:${x},${y}`, 'c:.']);
 }
 
@@ -31,46 +46,56 @@ async function matFromBuffer(buf: Buffer) {
   return { mat, canvas, ctx, w: img.width, h: img.height };
 }
 
-(async () => {
-  const screenBuf = await screenshot({ format: 'png' });
-  fs.writeFileSync('screen.png', screenBuf);
+async function loadNeedle(path: string) {
+  const buf = fs.readFileSync(path);
+  const { mat } = await matFromBuffer(buf);
+  const gray = new cv.Mat();
+  cv.cvtColor(mat, gray, cv.COLOR_RGBA2GRAY);
+  mat.delete();
+  return { path, gray, w: gray.cols, h: gray.rows };
+}
 
-  const { mat: screenMat, canvas: screenCanvas, ctx: screenCtx } = await matFromBuffer(screenBuf);
-  const needleBuf = fs.readFileSync('./needles/dmg.png');
-  const { mat: needleMat } = await matFromBuffer(needleBuf);
+const needles = await Promise.all(NEEDLE_PATHS.map(loadNeedle));
+const result = new cv.Mat();
+const emptyMask = new cv.Mat();
 
-  const grayScreen = new cv.Mat();
-  const grayNeedle = new cv.Mat();
-  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
-  cv.cvtColor(needleMat, grayNeedle, cv.COLOR_RGBA2GRAY);
+async function processScreen() {
+  try {
+    // take screenshot
+    const screenBuf = await screenshot({ format: 'png' });
+    const { mat: screenMat, canvas: screenCanvas, ctx: screenCtx } = await matFromBuffer(screenBuf);
+    const grayScreen = new cv.Mat();
+    cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
 
-  const result = new cv.Mat();
-  cv.matchTemplate(grayScreen, grayNeedle, result, cv.TM_CCOEFF_NORMED);
+    // screenCtx.lineWidth = 4;
+    // screenCtx.strokeStyle = 'red';
 
-  const emptyMask = new cv.Mat(); // safe to pass
-  const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
-  emptyMask.delete();
+    for (const n of needles) {
+      cv.matchTemplate(grayScreen, n.gray, result, cv.TM_CCOEFF_NORMED);
+      const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
 
-  screenCtx.lineWidth = 4;
-  screenCtx.strokeStyle = 'red';
-  screenCtx.strokeRect(maxLoc.x, maxLoc.y, grayNeedle.cols, grayNeedle.rows);
+      if (maxVal >= MATCH_THRESHOLD) {
+        // screenCtx.strokeRect(maxLoc.x, maxLoc.y, n.w, n.h);
 
-  // const cx = Math.floor(maxLoc.x + grayNeedle.cols / 2);
-  // const cy = Math.floor(maxLoc.y + grayNeedle.rows / 2);
+        const cx = Math.round((maxLoc.x + n.w / 2) * scaleFactor);
+        const cy = Math.round((maxLoc.y + n.h / 2) * scaleFactor);
 
-  const cx = Math.floor((maxLoc.x + grayNeedle.cols / 2) / 2);
-  const cy = Math.floor((maxLoc.y + grayNeedle.rows / 2) / 2);
+        for (let i = 0; i < clicksPerNeedle; i++) clickAt(cx, cy);
 
-  clickAt(cx, cy);
-  clickAt(cx, cy);
-  clickAt(cx, cy);
-  clickAt(cx, cy);
+        console.log(`[FOUND] ${n.path} score=${maxVal.toFixed(3)} clicked at (${cx},${cy})`);
+      } else {
+        console.log({ n, maxVal });
+      }
+    }
 
-  fs.writeFileSync('match.png', screenCanvas.toBuffer('image/png'));
+    // fs.writeFileSync('match.png', screenCanvas.toBuffer('image/png'));
 
-  console.log(
-    `cx=${cx},cy=${cy},Best score: ${Number(maxVal).toFixed(3)} at (${maxLoc.x}, ${maxLoc.y})`,
-  );
+    screenMat.delete();
+    grayScreen.delete();
+    screenCanvas.width = screenCanvas.width; // clear
+  } catch (e) {
+    console.error('Error in processScreen:', e);
+  }
+}
 
-  [screenMat, needleMat, grayScreen, grayNeedle, result].forEach((m: any) => m.delete());
-})().catch((e) => console.error('Fatal error:', e));
+void processScreen();
