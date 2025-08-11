@@ -1,0 +1,38 @@
+{
+  "type": "module",
+  "name": "auto-clicker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "dev": "tsx watch src/index.ts",
+    "start2": "node dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint .",
+    "format": "prettier . --write",
+    "check:format": "prettier . --check"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.1",
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "@types/screenshot-desktop": "^1.15.0",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.0"
+  },
+  "dependencies": {
+    "@nut-tree-fork/nut-js": "^4.2.6",
+    "@techstark/opencv-js": "4.11.0-release.1",
+    "canvas": "^3.1.2",
+    "opencv4nodejs": "^5.6.0",
+    "robotjs": "^0.6.0",
+    "screenshot-desktop": "^1.15.1"
+  }
+}
