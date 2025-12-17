@@ -1,11 +1,14 @@
 // npx tsx ./src/main.ts
 
-import { Button, Point, mouse } from '@nut-tree-fork/nut-js';
+import { Button, Point, mouse, sleep } from '@nut-tree-fork/nut-js';
 import cvReady from '@techstark/opencv-js';
 import screenshot from 'screenshot-desktop';
 import fs from 'node:fs';
 import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
 import assert from 'node:assert';
+import { execFileSync } from 'node:child_process';
+
+const slowClick = false;
 
 /******************** */
 
@@ -28,6 +31,11 @@ const SCREENSHOT_INTERVAL = 500; // ms
 mouse.config.autoDelayMs = 0;
 
 async function clickAt(x: number, y: number) {
+  if (slowClick) {
+    execFileSync('cliclick', [`m:${Math.round(x)},${Math.round(y)}`, 'c:.']);
+    return;
+  }
+
   const target = new Point(Math.round(x), Math.round(y));
   await mouse.setPosition(target);
   await mouse.click(Button.LEFT);
@@ -121,9 +129,16 @@ const findAndClick = async (n: (typeof needles)[number]) => {
 
 let map: FindRes;
 let nextFrameButton: FindRes;
+let singleTile: FindRes;
 
 const clickFound = async (found: FindRes): Promise<void> => {
   await clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
+};
+
+const clickMapTile = async (x: number, y: number): Promise<void> => {
+  const clickX = map.x + singleTile.w * (x + 0.5);
+  const clickY = map.y + singleTile.h * (y + 0.5);
+  await clickAt(clickX * scaleFactor, clickY * scaleFactor);
 };
 
 (async () => {
@@ -131,9 +146,34 @@ const clickFound = async (found: FindRes): Promise<void> => {
   assert(nextFrameHopefully);
   nextFrameButton = nextFrameHopefully;
 
-  //   const mapHopefully = await find(level11Needle);
-  //   assert(mapHopefully);
-  //   map = mapHopefully;
+  const mapHopefully = await find(level11Needle);
+  assert(mapHopefully);
+  map = mapHopefully;
+
+  const singleTileHopefully = await find(singleTileNeedle);
+  assert(singleTileHopefully);
+  singleTile = singleTileHopefully;
+
+  await clickMapTile(0, 0);
+  await sleep(2000);
+  await clickMapTile(1, 1);
+  await sleep(2000);
+  await clickMapTile(2, 2);
+  await sleep(2000);
+  await clickMapTile(3, 3);
+  await sleep(2000);
+  await clickMapTile(4, 4);
+  await sleep(2000);
+  await clickMapTile(5, 5);
+  await sleep(2000);
+  await clickMapTile(6, 6);
+  //   await clickMapTile(9, 5);
+  //   await sleep(2000);
+  //   await clickMapTile(8, 4);
+
+  if (Math.random() >= 0) {
+    return;
+  }
 
   const ts0 = performance.now();
   for (let i = 0; i < 10000; i++) {
