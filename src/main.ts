@@ -1,10 +1,10 @@
 // npx tsx ./src/main.ts
 
+import { Button, Point, mouse } from '@nut-tree-fork/nut-js';
 import cvReady from '@techstark/opencv-js';
 import screenshot from 'screenshot-desktop';
 import fs from 'node:fs';
 import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
-import { execFileSync } from 'node:child_process';
 import assert from 'node:assert';
 
 /******************** */
@@ -25,10 +25,12 @@ const clicksPerNeedle = 2;
 const SCREENSHOT_INTERVAL = 500; // ms
 // ---------------------------------------
 
-function clickAt(x: number, y: number) {
-  x = Math.round(x);
-  y = Math.round(y);
-  execFileSync('cliclick', [`m:${x},${y}`, 'c:.']);
+mouse.config.autoDelayMs = 0;
+
+async function clickAt(x: number, y: number) {
+  const target = new Point(Math.round(x), Math.round(y));
+  await mouse.setPosition(target);
+  await mouse.click(Button.LEFT);
 }
 
 function matFromCanvasImageData(imageData: CanvasImageData): any {
@@ -112,7 +114,7 @@ const findAndClick = async (n: (typeof needles)[number]) => {
 
   const cx = Math.round((found.x + n.w / 2) * scaleFactor);
   const cy = Math.round((found.y + n.h / 2) * scaleFactor);
-  clickAt(cx, cy);
+  await clickAt(cx, cy);
 };
 
 /* global vars */
@@ -121,7 +123,7 @@ let map: FindRes;
 let nextFrameButton: FindRes;
 
 const clickFound = async (found: FindRes): Promise<void> => {
-  clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
+  await clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
 };
 
 (async () => {
@@ -129,13 +131,13 @@ const clickFound = async (found: FindRes): Promise<void> => {
   assert(nextFrameHopefully);
   nextFrameButton = nextFrameHopefully;
 
-  const mapHopefully = await find(level11Needle);
-  assert(mapHopefully);
-  map = mapHopefully;
+  //   const mapHopefully = await find(level11Needle);
+  //   assert(mapHopefully);
+  //   map = mapHopefully;
 
   const ts0 = performance.now();
-  for (let i = 0; i < 100; i++) {
-    clickFound(nextFrameButton);
+  for (let i = 0; i < 10000; i++) {
+    await clickFound(nextFrameButton);
   }
   const tookMs = performance.now() - ts0;
 
@@ -151,12 +153,12 @@ const clickFound = async (found: FindRes): Promise<void> => {
 
   assert(mapRes && singleTileRes);
 
-  const clickTile = (x: number, y: number) => {
+  const clickTile = async (x: number, y: number) => {
     const clickX = mapRes.x + singleTileRes.w * (x + 0.5);
     const clickY = mapRes.y + singleTileRes.h * (y + 0.5);
-    clickAt(clickX * scaleFactor, clickY * scaleFactor);
-    clickAt(clickX * scaleFactor, clickY * scaleFactor);
-    clickAt(clickX * scaleFactor, clickY * scaleFactor);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
   };
 
   //   console.log({ mapRes, singleTileRes });
@@ -166,7 +168,7 @@ const clickFound = async (found: FindRes): Promise<void> => {
   //     console.log('click');
   //   }
 
-  clickTile(0, 0);
+  await clickTile(0, 0);
 
   //   await findAndClick(openTowerMenuNeedle);
   //   await findAndClick(basic1);
