@@ -1,8 +1,5 @@
-/**
- * TODO I need to have a list of previous finds/click so I can make chains
- */
+// npx tsx ./src/main.ts
 
-// src/main.ts
 import cvReady from '@techstark/opencv-js';
 import screenshot from 'screenshot-desktop';
 import fs from 'node:fs';
@@ -10,22 +7,14 @@ import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canv
 import { execFileSync } from 'node:child_process';
 import assert from 'node:assert';
 
-/*
-
-
-main:
-  - take screenshot
-  - OCR data from the screenshot
-  - prepare map of elements we might click
-  - decide what to do (with screenshot + OCR)
-*/
+/******************** */
 
 const cv: any = await cvReady;
 
 // ---------------- config ----------------
 const NEEDLE_PATHS = [
   './needles/tile.png',
-  // './needles/dmg.png',
+  './needles/next-frame.png',
   // './needles/confirm.png',
   // './needles/play.png',
   // add more…
@@ -73,14 +62,24 @@ const needles = await Promise.all(NEEDLE_PATHS.map(loadNeedle));
 const result = new cv.Mat();
 const emptyMask = new cv.Mat();
 
+const nextFrameNeedle = await loadNeedle('./needles/next-frame.png');
+
 const level14 = await loadNeedle('./needles/level_14.png');
+const level11Needle = await loadNeedle('./needles/level_11.png');
 const singleTileNeedle = await loadNeedle('./needles/tile.png');
 // const openTowerMenuNeedle = await loadNeedle('./needles/open_tower_menu.png');
 // const basic1 = await loadNeedle('./needles/buy_basic_first.png');
 // const basic2 = await loadNeedle('./needles/buy_basic_second.png');
 // const unpause = await loadNeedle('./needles/unpause.png');
 
-const find = async (n: (typeof needles)[number]) => {
+interface FindRes {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+const find = async (n: (typeof needles)[number]): Promise<FindRes | undefined> => {
   const screenBuf = await screenshot({ format: 'png' });
   const { mat: screenMat, canvas: screenCanvas, ctx: screenCtx } = await matFromBuffer(screenBuf);
   const grayScreen = new cv.Mat();
@@ -116,7 +115,36 @@ const findAndClick = async (n: (typeof needles)[number]) => {
   clickAt(cx, cy);
 };
 
+/* global vars */
+
+let map: FindRes;
+let nextFrameButton: FindRes;
+
+const clickFound = async (found: FindRes): Promise<void> => {
+  clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
+};
+
 (async () => {
+  const nextFrameHopefully = await find(nextFrameNeedle);
+  assert(nextFrameHopefully);
+  nextFrameButton = nextFrameHopefully;
+
+  const mapHopefully = await find(level11Needle);
+  assert(mapHopefully);
+  map = mapHopefully;
+
+  const ts0 = performance.now();
+  for (let i = 0; i < 100; i++) {
+    clickFound(nextFrameButton);
+  }
+  const tookMs = performance.now() - ts0;
+
+  console.log(`tookMs=${tookMs}`);
+
+  if (Math.random() >= 0) {
+    return;
+  }
+
   const mapRes = await find(level14);
   const singleTileRes = await find(singleTileNeedle);
   console.log({ mapRes });
@@ -132,6 +160,11 @@ const findAndClick = async (n: (typeof needles)[number]) => {
   };
 
   //   console.log({ mapRes, singleTileRes });
+
+  //   for (;;) {
+  //     await findAndClick(nextFrameNeedle);
+  //     console.log('click');
+  //   }
 
   clickTile(0, 0);
 
