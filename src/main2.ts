@@ -24,7 +24,7 @@ const cv: any = await cvReady;
 
 // ---------------- config ----------------
 const NEEDLE_PATHS = [
-  './needles/tile.png',
+  './needles/map.png',
   // './needles/dmg.png',
   // './needles/confirm.png',
   // './needles/play.png',
@@ -37,8 +37,6 @@ const SCREENSHOT_INTERVAL = 500; // ms
 // ---------------------------------------
 
 function clickAt(x: number, y: number) {
-  x = Math.round(x);
-  y = Math.round(y);
   execFileSync('cliclick', [`m:${x},${y}`, 'c:.']);
 }
 
@@ -73,12 +71,12 @@ const needles = await Promise.all(NEEDLE_PATHS.map(loadNeedle));
 const result = new cv.Mat();
 const emptyMask = new cv.Mat();
 
-const level14 = await loadNeedle('./needles/level_14.png');
-const singleTileNeedle = await loadNeedle('./needles/tile.png');
-// const openTowerMenuNeedle = await loadNeedle('./needles/open_tower_menu.png');
-// const basic1 = await loadNeedle('./needles/buy_basic_first.png');
-// const basic2 = await loadNeedle('./needles/buy_basic_second.png');
-// const unpause = await loadNeedle('./needles/unpause.png');
+const mapNeedle = await loadNeedle('./needles/map.png');
+const singleTileNeedle = await loadNeedle('./needles/single_tile.png');
+const openTowerMenuNeedle = await loadNeedle('./needles/open_tower_menu.png');
+const basic1 = await loadNeedle('./needles/buy_basic_first.png');
+const basic2 = await loadNeedle('./needles/buy_basic_second.png');
+const unpause = await loadNeedle('./needles/unpause.png');
 
 const find = async (n: (typeof needles)[number]) => {
   const screenBuf = await screenshot({ format: 'png' });
@@ -117,10 +115,8 @@ const findAndClick = async (n: (typeof needles)[number]) => {
 };
 
 (async () => {
-  const mapRes = await find(level14);
+  const mapRes = await find(mapNeedle);
   const singleTileRes = await find(singleTileNeedle);
-  console.log({ mapRes });
-
   assert(mapRes && singleTileRes);
 
   const clickTile = (x: number, y: number) => {
@@ -131,14 +127,14 @@ const findAndClick = async (n: (typeof needles)[number]) => {
     clickAt(clickX * scaleFactor, clickY * scaleFactor);
   };
 
-  //   console.log({ mapRes, singleTileRes });
+  console.log({ mapRes, singleTileRes });
 
-  clickTile(0, 0);
+  clickTile(4, 2);
 
-  //   await findAndClick(openTowerMenuNeedle);
-  //   await findAndClick(basic1);
-  //   await findAndClick(basic2);
-  //   await findAndClick(unpause);
+  await findAndClick(openTowerMenuNeedle);
+  await findAndClick(basic1);
+  await findAndClick(basic2);
+  await findAndClick(unpause);
 })();
 
 // async function processScreen() {
