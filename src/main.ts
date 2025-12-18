@@ -154,32 +154,26 @@ const clickMapTile = async (x: number, y: number): Promise<void> => {
   assert(singleTileHopefully);
   singleTile = singleTileHopefully;
 
-  await clickMapTile(0, 0);
-  await sleep(2000);
-  await clickMapTile(1, 1);
-  await sleep(2000);
-  await clickMapTile(2, 2);
-  await sleep(2000);
-  await clickMapTile(3, 3);
-  await sleep(2000);
-  await clickMapTile(4, 4);
-  await sleep(2000);
-  await clickMapTile(5, 5);
-  await sleep(2000);
-  await clickMapTile(6, 6);
-  //   await clickMapTile(9, 5);
-  //   await sleep(2000);
-  //   await clickMapTile(8, 4);
+  const ts0 = performance.now();
+  for (let i = 0; i < 100; i++) {
+    await clickMapTile(0, 0);
+    await sleep(100);
+
+    await clickMapTile(1, 1);
+    await sleep(100);
+    await clickMapTile(2, 2);
+    await sleep(100);
+    // await clickMapTile(3, 3);
+    // await clickMapTile(4, 4);
+    // await clickMapTile(5, 5);
+    // await clickMapTile(6, 6);
+    await clickFound(nextFrameButton);
+  }
+  const tookMs = performance.now() - ts0;
 
   if (Math.random() >= 0) {
     return;
   }
-
-  const ts0 = performance.now();
-  for (let i = 0; i < 10000; i++) {
-    await clickFound(nextFrameButton);
-  }
-  const tookMs = performance.now() - ts0;
 
   console.log(`tookMs=${tookMs}`);
 
