@@ -1,4 +1,8 @@
-// npx tsx ./src/main.ts
+/*
+
+npx tsx ./src/main.ts
+
+*/
 
 import { Button, Point, mouse, sleep } from '@nut-tree-fork/nut-js';
 import cvReady from '@techstark/opencv-js';
@@ -7,6 +11,7 @@ import fs from 'node:fs';
 import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
 import assert from 'node:assert';
 import { execFileSync } from 'node:child_process';
+import { createWorker, PSM } from 'tesseract.js';
 
 const slowClick = false;
 
@@ -29,6 +34,19 @@ const SCREENSHOT_INTERVAL = 500; // ms
 // ---------------------------------------
 
 mouse.config.autoDelayMs = 0;
+
+type OCRWorker = Awaited<ReturnType<typeof createWorker>>;
+
+const ocrWorkerPromise: Promise<OCRWorker> = (async () => {
+  const worker = await createWorker();
+  await (worker as any).loadLanguage('eng');
+  await (worker as any).initialize('eng');
+  await worker.setParameters({
+    tessedit_char_whitelist: '0123456789',
+    tessedit_pageseg_mode: PSM.SINGLE_LINE,
+  });
+  return worker;
+})();
 
 async function clickAt(x: number, y: number) {
   if (slowClick) {
@@ -59,6 +77,45 @@ async function matFromBuffer(buf: Buffer) {
   return { mat, canvas, ctx, w: img.width, h: img.height };
 }
 
+async function readNumberInRect(rect: FindRes): Promise<string> {
+  const screenBuf = await screenshot({ format: 'png' });
+  const { canvas: screenCanvas } = await matFromBuffer(screenBuf);
+
+  const scale = 2;
+  const cropCanvas = createCanvas(rect.w * scale, rect.h * scale);
+  const cropCtx = cropCanvas.getContext('2d');
+  if (!cropCtx) {
+    throw new Error('Could not acquire 2d context for OCR crop');
+  }
+  cropCtx.imageSmoothingEnabled = false;
+  cropCtx.drawImage(
+    screenCanvas,
+    rect.x,
+    rect.y,
+    rect.w,
+    rect.h,
+    0,
+    0,
+    rect.w * scale,
+    rect.h * scale,
+  );
+
+  const imageData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const v = (data[i]! + data[i + 1]! + data[i + 2]!) / 3;
+    const bw = v > 180 ? 255 : 0;
+    data[i] = bw;
+    data[i + 1] = bw;
+    data[i + 2] = bw;
+  }
+  cropCtx.putImageData(imageData, 0, 0);
+
+  const worker = await ocrWorkerPromise;
+  const result = await worker.recognize(cropCanvas.toBuffer('image/png'));
+  return result.data?.text?.replace(/\D/g, '') ?? '';
+}
+
 async function loadNeedle(path: string) {
   const buf = fs.readFileSync(path);
   const { mat } = await matFromBuffer(buf);
@@ -77,6 +134,7 @@ const nextFrameNeedle = await loadNeedle('./needles/next-frame.png');
 const level14 = await loadNeedle('./needles/level_14.png');
 const level11Needle = await loadNeedle('./needles/level_11.png');
 const singleTileNeedle = await loadNeedle('./needles/tile.png');
+const coinsAreaNeedle = await loadNeedle('./needles/coins-area.png');
 // const openTowerMenuNeedle = await loadNeedle('./needles/open_tower_menu.png');
 // const basic1 = await loadNeedle('./needles/buy_basic_first.png');
 // const basic2 = await loadNeedle('./needles/buy_basic_second.png');
@@ -130,6 +188,7 @@ const findAndClick = async (n: (typeof needles)[number]) => {
 let map: FindRes;
 let nextFrameButton: FindRes;
 let singleTile: FindRes;
+let coinsArea: FindRes;
 
 const clickFound = async (found: FindRes): Promise<void> => {
   await clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
@@ -154,8 +213,19 @@ const clickMapTile = async (x: number, y: number): Promise<void> => {
   assert(singleTileHopefully);
   singleTile = singleTileHopefully;
 
+  const coinsAreaHopefully = await find(coinsAreaNeedle);
+  assert(coinsAreaHopefully);
+  coinsArea = coinsAreaHopefully;
+
+  const res = await readNumberInRect(coinsArea);
+  console.log({ res });
+
+  if (Math.random() >= 0) {
+    return;
+  }
+
   const ts0 = performance.now();
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 1; i++) {
     await clickMapTile(0, 0);
     await sleep(100);
 
