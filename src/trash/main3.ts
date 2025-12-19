@@ -1,0 +1,345 @@
+/*
+
+npx tsx ./src/main.ts
+
+*/
+
+import { Button, Point, mouse, sleep } from '@nut-tree-fork/nut-js';
+import cvReady from '@techstark/opencv-js';
+import screenshot from 'screenshot-desktop';
+import fs from 'node:fs';
+import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
+import assert from 'node:assert';
+import { execFileSync } from 'node:child_process';
+import { createWorker, PSM } from 'tesseract.js';
+
+const slowClick = false;
+
+/******************** */
+
+const cv: any = await cvReady;
+
+// ---------------- config ----------------
+const NEEDLE_PATHS = [
+  './needles/tile.png',
+  './needles/next-frame.png',
+  // './needles/confirm.png',
+  // './needles/play.png',
+  // add more…
+];
+const MATCH_THRESHOLD = 0.4;
+const scaleFactor = 0.5; // adjust if retina / HiDPI
+const clicksPerNeedle = 2;
+const SCREENSHOT_INTERVAL = 500; // ms
+// ---------------------------------------
+
+mouse.config.autoDelayMs = 0;
+
+type OCRWorker = Awaited<ReturnType<typeof createWorker>>;
+
+const ocrWorkerPromise: Promise<OCRWorker> = (async () => {
+  const worker = await createWorker();
+  await (worker as any).loadLanguage('eng');
+  await (worker as any).initialize('eng');
+  await worker.setParameters({
+    tessedit_char_whitelist: '0123456789',
+    tessedit_pageseg_mode: PSM.SINGLE_LINE,
+  });
+  return worker;
+})();
+
+async function clickAt(x: number, y: number) {
+  if (slowClick) {
+    execFileSync('cliclick', [`m:${Math.round(x)},${Math.round(y)}`, 'c:.']);
+    return;
+  }
+
+  const target = new Point(Math.round(x), Math.round(y));
+  await mouse.setPosition(target);
+  await mouse.click(Button.LEFT);
+}
+
+function matFromCanvasImageData(imageData: CanvasImageData): any {
+  const mat = new cv.Mat(imageData.height, imageData.width, cv.CV_8UC4);
+  const src = imageData.data as unknown as Uint8ClampedArray;
+  const view = new Uint8Array(src.buffer, src.byteOffset, src.byteLength);
+  (mat.data as Uint8Array).set(view);
+  return mat;
+}
+
+async function matFromBuffer(buf: Buffer) {
+  const img = await loadImage(buf);
+  const canvas = createCanvas(img.width, img.height);
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+  const imageData = ctx.getImageData(0, 0, img.width, img.height) as unknown as CanvasImageData;
+  const mat = matFromCanvasImageData(imageData);
+  return { mat, canvas, ctx, w: img.width, h: img.height };
+}
+
+async function readNumberInRect(rect: FindRes): Promise<string> {
+  const screenBuf = await screenshot({ format: 'png' });
+  const { canvas: screenCanvas } = await matFromBuffer(screenBuf);
+
+  const scale = 2;
+  const cropCanvas = createCanvas(rect.w * scale, rect.h * scale);
+  const cropCtx = cropCanvas.getContext('2d');
+  if (!cropCtx) {
+    throw new Error('Could not acquire 2d context for OCR crop');
+  }
+  cropCtx.imageSmoothingEnabled = false;
+  cropCtx.drawImage(
+    screenCanvas,
+    rect.x,
+    rect.y,
+    rect.w,
+    rect.h,
+    0,
+    0,
+    rect.w * scale,
+    rect.h * scale,
+  );
+
+  const imageData = cropCtx.getImageData(0, 0, cropCanvas.width, cropCanvas.height);
+  const data = imageData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const v = (data[i]! + data[i + 1]! + data[i + 2]!) / 3;
+    const bw = v > 180 ? 255 : 0;
+    data[i] = bw;
+    data[i + 1] = bw;
+    data[i + 2] = bw;
+  }
+  cropCtx.putImageData(imageData, 0, 0);
+
+  const worker = await ocrWorkerPromise;
+  const result = await worker.recognize(cropCanvas.toBuffer('image/png'));
+  return result.data?.text?.replace(/\D/g, '') ?? '';
+}
+
+async function loadNeedle(path: string) {
+  const buf = fs.readFileSync(path);
+  const { mat } = await matFromBuffer(buf);
+  const gray = new cv.Mat();
+  cv.cvtColor(mat, gray, cv.COLOR_RGBA2GRAY);
+  mat.delete();
+  return { path, gray, w: gray.cols, h: gray.rows };
+}
+
+const needles = await Promise.all(NEEDLE_PATHS.map(loadNeedle));
+const result = new cv.Mat();
+const emptyMask = new cv.Mat();
+
+const nextFrameNeedle = await loadNeedle('./needles/next-frame.png');
+
+const level14 = await loadNeedle('./needles/level_14.png');
+const level11Needle = await loadNeedle('./needles/level_11.png');
+const singleTileNeedle = await loadNeedle('./needles/tile.png');
+const coinsAreaNeedle = await loadNeedle('./needles/coins-area.png');
+// const openTowerMenuNeedle = await loadNeedle('./needles/open_tower_menu.png');
+// const basic1 = await loadNeedle('./needles/buy_basic_first.png');
+// const basic2 = await loadNeedle('./needles/buy_basic_second.png');
+// const unpause = await loadNeedle('./needles/unpause.png');
+
+interface FindRes {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+const find = async (n: (typeof needles)[number]): Promise<FindRes | undefined> => {
+  const screenBuf = await screenshot({ format: 'png' });
+  const { mat: screenMat, canvas: screenCanvas, ctx: screenCtx } = await matFromBuffer(screenBuf);
+  const grayScreen = new cv.Mat();
+  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+  cv.matchTemplate(grayScreen, n.gray, result, cv.TM_CCOEFF_NORMED);
+  const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
+
+  screenMat.delete();
+  grayScreen.delete();
+  screenCanvas.width = screenCanvas.width; // clear
+
+  if (maxVal < MATCH_THRESHOLD) {
+    return;
+  }
+
+  return {
+    x: Number(maxLoc.x),
+    y: Number(maxLoc.y),
+    w: Number(n.w),
+    h: Number(n.h),
+  };
+};
+
+const findAndClick = async (n: (typeof needles)[number]) => {
+  const found = await find(n);
+  if (!found) {
+    return;
+  }
+
+  const cx = Math.round((found.x + n.w / 2) * scaleFactor);
+  const cy = Math.round((found.y + n.h / 2) * scaleFactor);
+  await clickAt(cx, cy);
+};
+
+/* global vars */
+
+let map: FindRes;
+let nextFrameButton: FindRes;
+let singleTile: FindRes;
+let coinsArea: FindRes;
+
+coinsArea = { x: 588, y: 136, w: 336, h: 104 };
+
+const clickFound = async (found: FindRes): Promise<void> => {
+  await clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
+};
+
+const clickMapTile = async (x: number, y: number): Promise<void> => {
+  const clickX = map.x + singleTile.w * (x + 0.5);
+  const clickY = map.y + singleTile.h * (y + 0.5);
+  await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+};
+
+(async () => {
+  const nextFrameHopefully = await find(nextFrameNeedle);
+  assert(nextFrameHopefully);
+  nextFrameButton = nextFrameHopefully;
+
+  const mapHopefully = await find(level11Needle);
+  assert(mapHopefully);
+  map = mapHopefully;
+
+  const singleTileHopefully = await find(singleTileNeedle);
+  assert(singleTileHopefully);
+  singleTile = singleTileHopefully;
+
+  if (!coinsArea) {
+    const coinsAreaHopefully = await find(coinsAreaNeedle);
+    assert(coinsAreaHopefully);
+    coinsArea = coinsAreaHopefully;
+  }
+
+  const res = await readNumberInRect(coinsArea);
+  console.log({ res });
+
+  //   if (Math.random() >= 0) {
+  //     return;
+  //   }
+
+  const ts0 = performance.now();
+
+  let frame = 0;
+
+  for (let i = 0; i < 50; i++) {
+    for (let j = 0; j < 30; j++) {
+      frame++;
+      await clickFound(nextFrameButton);
+    }
+
+    const readCoins = await readNumberInRect(coinsArea);
+    console.log(`frame: ${frame}, coins: ${readCoins}`);
+
+    // await clickMapTile(0, 0);
+    // await sleep(100);
+
+    // await clickMapTile(1, 1);
+    // await sleep(100);
+    // await clickMapTile(2, 2);
+    // await sleep(100);
+    // await clickMapTile(3, 3);
+    // await clickMapTile(4, 4);
+    // await clickMapTile(5, 5);
+    // await clickMapTile(6, 6);
+  }
+  const tookMs = performance.now() - ts0;
+
+  if (Math.random() >= 0) {
+    return;
+  }
+
+  console.log(`tookMs=${tookMs}`);
+
+  if (Math.random() >= 0) {
+    return;
+  }
+
+  const mapRes = await find(level14);
+  const singleTileRes = await find(singleTileNeedle);
+  console.log({ mapRes });
+
+  assert(mapRes && singleTileRes);
+
+  const clickTile = async (x: number, y: number) => {
+    const clickX = mapRes.x + singleTileRes.w * (x + 0.5);
+    const clickY = mapRes.y + singleTileRes.h * (y + 0.5);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+    await clickAt(clickX * scaleFactor, clickY * scaleFactor);
+  };
+
+  //   console.log({ mapRes, singleTileRes });
+
+  //   for (;;) {
+  //     await findAndClick(nextFrameNeedle);
+  //     console.log('click');
+  //   }
+
+  await clickTile(0, 0);
+
+  //   await findAndClick(openTowerMenuNeedle);
+  //   await findAndClick(basic1);
+  //   await findAndClick(basic2);
+  //   await findAndClick(unpause);
+})();
+
+// async function processScreen() {
+//   try {
+//     // take screenshot
+//     const screenBuf = await screenshot({ format: 'png' });
+//     const { mat: screenMat, canvas: screenCanvas, ctx: screenCtx } = await matFromBuffer(screenBuf);
+//     const grayScreen = new cv.Mat();
+//     cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+
+//     // get the width of a single tile
+
+//     // screenCtx.lineWidth = 4;
+//     // screenCtx.strokeStyle = 'red';
+
+//     for (const n of needles) {
+//       cv.matchTemplate(grayScreen, n.gray, result, cv.TM_CCOEFF_NORMED);
+//       const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
+
+//       if (maxVal >= MATCH_THRESHOLD) {
+//         console.log({ maxLoc, maxVal });
+
+//         const squaresWidth = maxLoc.x / n.w;
+//         const squaresHeight = maxLoc.y / n.h;
+
+//         console.log({ squaresWidth, squaresHeight });
+
+//         // screenCtx.strokeRect(maxLoc.x, maxLoc.y, n.w, n.h);
+
+//         const cx = Math.round((maxLoc.x + n.w / 2) * scaleFactor);
+//         const cy = Math.round((maxLoc.y + n.h / 2) * scaleFactor);
+
+//         for (let i = 0; i < clicksPerNeedle; i++) clickAt(cx, cy);
+
+//         console.log(`[FOUND] ${n.path} score=${maxVal.toFixed(3)} clicked at (${cx},${cy})`);
+//       } else {
+//         console.log({ n, maxVal });
+//       }
+//     }
+
+//     // fs.writeFileSync('match.png', screenCanvas.toBuffer('image/png'));
+
+//     screenMat.delete();
+//     grayScreen.delete();
+//     screenCanvas.width = screenCanvas.width; // clear
+//   } catch (e) {
+//     console.error('Error in processScreen:', e);
+//   }
+// }
+
+// void processScreen();
