@@ -190,6 +190,8 @@ let nextFrameButton: FindRes;
 let singleTile: FindRes;
 let coinsArea: FindRes;
 
+coinsArea = { x: 588, y: 136, w: 336, h: 104 };
+
 const clickFound = async (found: FindRes): Promise<void> => {
   await clickAt((found.x + found.w / 2) * scaleFactor, (found.y + found.h / 2) * scaleFactor);
 };
@@ -213,31 +215,43 @@ const clickMapTile = async (x: number, y: number): Promise<void> => {
   assert(singleTileHopefully);
   singleTile = singleTileHopefully;
 
-  const coinsAreaHopefully = await find(coinsAreaNeedle);
-  assert(coinsAreaHopefully);
-  coinsArea = coinsAreaHopefully;
+  if (!coinsArea) {
+    const coinsAreaHopefully = await find(coinsAreaNeedle);
+    assert(coinsAreaHopefully);
+    coinsArea = coinsAreaHopefully;
+  }
 
   const res = await readNumberInRect(coinsArea);
   console.log({ res });
 
-  if (Math.random() >= 0) {
-    return;
-  }
+  //   if (Math.random() >= 0) {
+  //     return;
+  //   }
 
   const ts0 = performance.now();
-  for (let i = 0; i < 1; i++) {
-    await clickMapTile(0, 0);
-    await sleep(100);
 
-    await clickMapTile(1, 1);
-    await sleep(100);
-    await clickMapTile(2, 2);
-    await sleep(100);
+  let frame = 0;
+
+  for (let i = 0; i < 50; i++) {
+    for (let j = 0; j < 30; j++) {
+      frame++;
+      await clickFound(nextFrameButton);
+    }
+
+    const readCoins = await readNumberInRect(coinsArea);
+    console.log(`frame: ${frame}, coins: ${readCoins}`);
+
+    // await clickMapTile(0, 0);
+    // await sleep(100);
+
+    // await clickMapTile(1, 1);
+    // await sleep(100);
+    // await clickMapTile(2, 2);
+    // await sleep(100);
     // await clickMapTile(3, 3);
     // await clickMapTile(4, 4);
     // await clickMapTile(5, 5);
     // await clickMapTile(6, 6);
-    await clickFound(nextFrameButton);
   }
   const tookMs = performance.now() - ts0;
 
