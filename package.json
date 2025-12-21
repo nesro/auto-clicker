@@ -5,6 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "s": "tsx src/main.ts",
     "start": "tsx src/main.ts",
     "dev": "tsx watch src/index.ts",
     "start2": "node dist/index.js",
