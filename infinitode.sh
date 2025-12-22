@@ -4,7 +4,7 @@
 #
 # Usage:
 #   ./infinitode2.sh start
-#   ./infinitode2.sh backup
+#   ./infinitode2.sh backup [NAME]
 #   ./infinitode2.sh restore [PATH_TO_BACKUP_DIR]
 #   ./infinitode2.sh list
 #   ./infinitode2.sh status
@@ -84,7 +84,14 @@ backup() {
   validate_paths
 
   mkdir -p "$BACKUP_ROOT"
-  local dest="$BACKUP_ROOT/local-$TIMESTAMP"
+  local name="${1:-}"
+  local safe_name=""
+  if [[ -n "$name" ]]; then
+    safe_name="$(echo "$name" | tr -cs '[:alnum:]_-.' '-' | sed 's/^-\\+//;s/-\\+$//')"
+    safe_name="${safe_name:+-$safe_name}"
+  fi
+
+  local dest="$BACKUP_ROOT/local-$TIMESTAMP$safe_name"
 
   echo "Creating backup:"
   echo "  From: $LOCAL_ROOT"
@@ -145,7 +152,7 @@ usage() {
   cat <<EOF
 Usage:
   $(basename "$0") start
-  $(basename "$0") backup
+  $(basename "$0") backup [NAME]
   $(basename "$0") restore [PATH_TO_BACKUP_DIR]
   $(basename "$0") list
   $(basename "$0") status
@@ -157,6 +164,7 @@ Defaults:
 Examples:
   $(basename "$0") status
   $(basename "$0") backup
+  $(basename "$0") backup pre-boss
   $(basename "$0") list
   $(basename "$0") restore
   $(basename "$0") restore "$BACKUP_ROOT/local-20251219-173000"
@@ -166,7 +174,7 @@ EOF
 cmd="${1:-}"
 case "$cmd" in
   start)   start_game ;;
-  backup)  backup ;;
+  backup)  backup "${2:-}" ;;
   restore) restore "${2:-}" ;;
   list)    list_backups ;;
   status)  status ;;
