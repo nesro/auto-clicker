@@ -5,7 +5,8 @@
 # Usage:
 #   ./infinitode2.sh start
 #   ./infinitode2.sh backup [NAME]
-#   ./infinitode2.sh restore [PATH_TO_BACKUP_DIR]
+#   ./infinitode2.sh restore [PATH_TO_BACKUP_DIR|NAME]
+#   ./infinitode2.sh delete
 #   ./infinitode2.sh list
 #   ./infinitode2.sh status
 #
@@ -27,6 +28,12 @@ BACKUP_ROOT="${BACKUP_ROOT:-$HOME/Desktop/Infinitode2-saves}"
 TIMESTAMP="$(date +"%Y%m%d-%H%M%S")"
 
 die() { echo "ERROR: $*" >&2; exit 1; }
+sanitize_name() {
+  local raw="${1:-}"
+  local safe
+  safe="$(echo "$raw" | tr -cs '[:alnum:]_.-' '-' | sed 's/^-\\+//;s/-\\+$//' || true)"
+  echo "$safe"
+}
 
 is_running() {
   pgrep -f "$APP_NAME" >/dev/null 2>&1
@@ -85,13 +92,14 @@ backup() {
 
   mkdir -p "$BACKUP_ROOT"
   local name="${1:-}"
-  local safe_name=""
-  if [[ -n "$name" ]]; then
-    safe_name="$(echo "$name" | tr -cs '[:alnum:]_-.' '-' | sed 's/^-\\+//;s/-\\+$//')"
-    safe_name="${safe_name:+-$safe_name}"
+  local safe_name
+  safe_name="$(sanitize_name "$name")"
+  local suffix=""
+  if [[ -n "$safe_name" ]]; then
+    suffix="-$safe_name"
   fi
 
-  local dest="$BACKUP_ROOT/local-$TIMESTAMP$safe_name"
+  local dest="$BACKUP_ROOT/local-$TIMESTAMP$suffix"
 
   echo "Creating backup:"
   echo "  From: $LOCAL_ROOT"
@@ -116,11 +124,34 @@ latest_backup_dir() {
   echo "$latest"
 }
 
+oldest_backup_dir() {
+  [[ -d "$BACKUP_ROOT" ]] || die "No backup root found: $BACKUP_ROOT"
+  local oldest
+  oldest="$(ls -1dtr "$BACKUP_ROOT"/local-* 2>/dev/null | head -n 1 || true)"
+  [[ -n "${oldest:-}" ]] || die "No backups found in: $BACKUP_ROOT"
+  echo "$oldest"
+}
+
+find_backup_by_name() {
+  local name="$1"
+  local safe
+  safe="$(sanitize_name "$name")"
+  [[ -n "$safe" ]] || die "Provided name '$name' is empty after sanitizing."
+  local match
+  match="$(ls -1dt "$BACKUP_ROOT"/local-*-"$safe" 2>/dev/null | head -n 1 || true)"
+  [[ -n "${match:-}" ]] || die "No backup found matching name: $name"
+  echo "$match"
+}
+
 restore() {
   require_not_running
   local src="${1:-}"
   if [[ -z "$src" ]]; then
-    src="$(latest_backup_dir)"
+    src="$(oldest_backup_dir)"
+  elif [[ -d "$src" ]]; then
+    : # path exists, keep as-is
+  else
+    src="$(find_backup_by_name "$src")"
   fi
 
   [[ -d "$src" ]] || die "Backup dir not found: $src"
@@ -148,12 +179,25 @@ restore() {
   start_game
 }
 
+delete_saves() {
+  require_not_running
+  validate_paths
+
+  local tomb="$SAVES_DIR.deleted-$TIMESTAMP"
+  echo "Purging saves by moving current saves to:"
+  echo "  $tomb"
+  mv "$SAVES_DIR" "$tomb"
+  mkdir -p "$SAVES_DIR"
+  echo "Done. Old saves preserved at: $tomb"
+}
+
 usage() {
   cat <<EOF
 Usage:
   $(basename "$0") start
   $(basename "$0") backup [NAME]
-  $(basename "$0") restore [PATH_TO_BACKUP_DIR]
+  $(basename "$0") restore [PATH_TO_BACKUP_DIR|NAME]
+  $(basename "$0") delete
   $(basename "$0") list
   $(basename "$0") status
 
@@ -166,8 +210,11 @@ Examples:
   $(basename "$0") backup
   $(basename "$0") backup pre-boss
   $(basename "$0") list
-  $(basename "$0") restore
-  $(basename "$0") restore "$BACKUP_ROOT/local-20251219-173000"
+  $(basename "$0") restore            # restores oldest backup
+  $(basename "$0") restore latest     # restores most recent backup (path allowed)
+  $(basename "$0") restore pre-boss   # restores most recent backup with that name
+  $(basename "$0") restore "$BACKUP_ROOT/local-20251219-173000-pre-boss"
+  $(basename "$0") delete             # purge saves (moves old saves aside)
 EOF
 }
 
@@ -176,6 +223,7 @@ case "$cmd" in
   start)   start_game ;;
   backup)  backup "${2:-}" ;;
   restore) restore "${2:-}" ;;
+  delete)  delete_saves ;;
   list)    list_backups ;;
   status)  status ;;
   ""|-h|--help|help) usage ;;
