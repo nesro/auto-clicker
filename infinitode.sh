@@ -3,9 +3,8 @@
 # ✅ Fixed for your setup: REAL saves are in Data/Library/local/saves (progress.sav etc.)
 #
 # Usage:
+#   ./infinitode2.sh <SAVE_NAME>   # toggle backup/restore by that name
 #   ./infinitode2.sh start
-#   ./infinitode2.sh backup [NAME]
-#   ./infinitode2.sh restore [PATH_TO_BACKUP_DIR|NAME]
 #   ./infinitode2.sh delete
 #   ./infinitode2.sh list
 #   ./infinitode2.sh status
@@ -33,6 +32,15 @@ sanitize_name() {
   local safe
   safe="$(echo "$raw" | tr -cs '[:alnum:]_.-' '-' | sed 's/^-\\+//;s/-\\+$//' || true)"
   echo "$safe"
+}
+
+named_backup_path() {
+  local raw_name="${1:-}"
+  local safe
+  safe="$(sanitize_name "$raw_name")"
+  [[ -n "$safe" ]] || die "Provided name '$raw_name' is empty after sanitizing."
+  mkdir -p "$BACKUP_ROOT"
+  echo "$BACKUP_ROOT/$safe"
 }
 
 is_running() {
@@ -82,101 +90,81 @@ status() {
 }
 
 list_backups() {
-  [[ -d "$BACKUP_ROOT" ]] || die "No backup root found: $BACKUP_ROOT"
-  ls -1dt "$BACKUP_ROOT"/local-* 2>/dev/null | sed "s|$HOME|~|" || true
+  if [[ ! -d "$BACKUP_ROOT" ]]; then
+    echo "No backups yet ($BACKUP_ROOT)."
+    return 0
+  fi
+
+  local found=0
+  for dir in "$BACKUP_ROOT"/*; do
+    [[ -d "$dir" ]] || continue
+    found=1
+    echo "$(basename "$dir")"
+  done
+
+  if [[ $found -eq 0 ]]; then
+    echo "No backups yet ($BACKUP_ROOT)."
+  fi
 }
 
-backup() {
+create_named_backup() {
+  local label="$1"
+  local dest="$2"
+
   require_not_running
   validate_paths
 
-  mkdir -p "$BACKUP_ROOT"
-  local name="${1:-}"
-  local safe_name
-  safe_name="$(sanitize_name "$name")"
-  local suffix=""
-  if [[ -n "$safe_name" ]]; then
-    suffix="-$safe_name"
-  fi
+  [[ ! -e "$dest" ]] || die "Backup '$label' already exists (refusing to overwrite)."
 
-  local dest="$BACKUP_ROOT/local-$TIMESTAMP$suffix"
-
-  echo "Creating backup:"
+  echo "Creating backup '$label':"
   echo "  From: $LOCAL_ROOT"
   echo "  To:   $dest"
 
-  # Copy the whole LOCAL_ROOT (contains saves/, cache/, levels/, i18n/, logs)
   cp -a "$LOCAL_ROOT" "$dest"
 
   echo "OK. Backup created."
-  echo "  Key file:"
   [[ -f "$dest/saves/progress.sav" ]] && ls -lh "$dest/saves/progress.sav" | sed "s|$HOME|~|"
-  echo
-  echo "Tip: list backups with:"
-  echo "  $0 list"
 }
 
-latest_backup_dir() {
-  [[ -d "$BACKUP_ROOT" ]] || die "No backup root found: $BACKUP_ROOT"
-  local latest
-  latest="$(ls -1dt "$BACKUP_ROOT"/local-* 2>/dev/null | head -n 1 || true)"
-  [[ -n "${latest:-}" ]] || die "No backups found in: $BACKUP_ROOT"
-  echo "$latest"
-}
+restore_named_backup() {
+  local label="$1"
+  local src="$2"
 
-oldest_backup_dir() {
-  [[ -d "$BACKUP_ROOT" ]] || die "No backup root found: $BACKUP_ROOT"
-  local oldest
-  oldest="$(ls -1dtr "$BACKUP_ROOT"/local-* 2>/dev/null | head -n 1 || true)"
-  [[ -n "${oldest:-}" ]] || die "No backups found in: $BACKUP_ROOT"
-  echo "$oldest"
-}
-
-find_backup_by_name() {
-  local name="$1"
-  local safe
-  safe="$(sanitize_name "$name")"
-  [[ -n "$safe" ]] || die "Provided name '$name' is empty after sanitizing."
-  local match
-  match="$(ls -1dt "$BACKUP_ROOT"/local-*-"$safe" 2>/dev/null | head -n 1 || true)"
-  [[ -n "${match:-}" ]] || die "No backup found matching name: $name"
-  echo "$match"
-}
-
-restore() {
   require_not_running
-  local src="${1:-}"
-  if [[ -z "$src" ]]; then
-    src="$(oldest_backup_dir)"
-  elif [[ -d "$src" ]]; then
-    : # path exists, keep as-is
-  else
-    src="$(find_backup_by_name "$src")"
-  fi
 
-  [[ -d "$src" ]] || die "Backup dir not found: $src"
-  [[ -d "$src/saves" ]] || die "Backup does not look valid (missing $src/saves)."
-  [[ -f "$src/saves/progress.sav" ]] || echo "WARN: $src/saves/progress.sav not found (restore may still work, but it's unusual)."
+  [[ -d "$src" ]] || die "Backup '$label' not found at: $src"
+  [[ -d "$src/saves" ]] || die "Backup '$label' is missing a saves directory."
+  [[ -f "$src/saves/progress.sav" ]] || echo "WARN: $src/saves/progress.sav not found (restore may still work)."
 
   validate_paths
 
-  echo "Restoring backup:"
+  echo "Restoring backup '$label':"
   echo "  From: $src"
   echo "  To:   $LOCAL_ROOT"
 
-  # Safety: move current local aside
   local prev="${LOCAL_ROOT}.before-restore-$TIMESTAMP"
   echo "Moving current local aside to:"
   echo "  $prev"
   mv "$LOCAL_ROOT" "$prev"
 
-  # Restore
   mkdir -p "$(dirname "$LOCAL_ROOT")"
   cp -a "$src" "$LOCAL_ROOT"
 
   echo "OK. Restore complete."
   echo "Launching the game..."
   start_game
+}
+
+toggle_backup_for_name() {
+  local raw_name="$1"
+  local path
+  path="$(named_backup_path "$raw_name")"
+
+  if [[ -d "$path" ]]; then
+    restore_named_backup "$raw_name" "$path"
+  else
+    create_named_backup "$raw_name" "$path"
+  fi
 }
 
 delete_saves() {
@@ -194,26 +182,24 @@ delete_saves() {
 usage() {
   cat <<EOF
 Usage:
+  $(basename "$0") <SAVE_NAME>
   $(basename "$0") start
-  $(basename "$0") backup [NAME]
-  $(basename "$0") restore [PATH_TO_BACKUP_DIR|NAME]
   $(basename "$0") delete
   $(basename "$0") list
   $(basename "$0") status
+
+<SAVE_NAME> behavior:
+  - If no backup exists for that name, capture the current saves.
+  - If it already exists, restore it (after moving current saves aside).
 
 Defaults:
   CONTAINER_ID=$CONTAINER_ID
   BACKUP_ROOT=$BACKUP_ROOT
 
 Examples:
+  $(basename "$0") boss-prep          # creates named backup if missing, otherwise restores it
   $(basename "$0") status
-  $(basename "$0") backup
-  $(basename "$0") backup pre-boss
   $(basename "$0") list
-  $(basename "$0") restore            # restores oldest backup
-  $(basename "$0") restore latest     # restores most recent backup (path allowed)
-  $(basename "$0") restore pre-boss   # restores most recent backup with that name
-  $(basename "$0") restore "$BACKUP_ROOT/local-20251219-173000-pre-boss"
   $(basename "$0") delete             # purge saves (moves old saves aside)
 EOF
 }
@@ -221,11 +207,9 @@ EOF
 cmd="${1:-}"
 case "$cmd" in
   start)   start_game ;;
-  backup)  backup "${2:-}" ;;
-  restore) restore "${2:-}" ;;
   delete)  delete_saves ;;
   list)    list_backups ;;
   status)  status ;;
   ""|-h|--help|help) usage ;;
-  *) die "Unknown command: $cmd (use --help)" ;;
+  *) toggle_backup_for_name "$cmd" ;;
 esac
