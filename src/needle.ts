@@ -1,8 +1,15 @@
 import cvReady from '@techstark/opencv-js';
 import fs from 'node:fs';
 import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
+import { clickAt } from './click.js';
+import screenshot from 'screenshot-desktop';
+
+const MATCH_THRESHOLD = 0.9;
+const scaleFactor = 0.5; // adjust if retina / HiDPI
 
 const cv: any = await cvReady;
+const result = new cv.Mat();
+const emptyMask = new cv.Mat();
 
 export interface Needle {
   path: string;
@@ -48,3 +55,40 @@ export async function loadNeedle(path: string): Promise<Needle> {
 export async function functionLoadNeedles(): Promise<void> {
   console.log('a');
 }
+
+const find = async (n: Needle): Promise<FindRes | undefined> => {
+  const screenBuf = await screenshot({ format: 'png' });
+  const { mat: screenMat, canvas: screenCanvas } = await matFromBuffer(screenBuf);
+  const grayScreen = new cv.Mat();
+  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+  cv.matchTemplate(grayScreen, n.gray, result, cv.TM_CCOEFF_NORMED);
+  const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
+
+  screenMat.delete();
+  grayScreen.delete();
+  screenCanvas.width = screenCanvas.width; // clear
+
+  if (maxVal < MATCH_THRESHOLD) {
+    return;
+  }
+
+  return {
+    x: Number(maxLoc.x),
+    y: Number(maxLoc.y),
+    w: Number(n.w),
+    h: Number(n.h),
+  };
+};
+
+export const findAndClick = async (n: Needle) => {
+  const found = await find(n);
+  if (!found) {
+    return;
+  }
+
+  const cx = Math.round((found.x + n.w / 2) * scaleFactor);
+  const cy = Math.round((found.y + n.h / 2) * scaleFactor);
+  await clickAt(cx, cy);
+  console.log(`clicked: ${n.path}`);
+};
