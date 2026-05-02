@@ -5,7 +5,9 @@ npx tsx ./src/main.ts
 import { setTimeout } from 'node:timers/promises';
 import fs from 'node:fs/promises';
 
-import { findAndClick, functionLoadNeedles, loadNeedle, Needle } from './needle.js';
+import { captureScreen, findAndClickInScreen, loadNeedle, Needle } from './needle.js';
+
+const SCREENSHOT_INTERVAL_MS = 1000;
 
 async function main(): Promise<void> {
   try {
@@ -21,10 +23,19 @@ async function main(): Promise<void> {
     }
 
     for (;;) {
-      for (const needle of needles) {
-        await findAndClick(needle);
+      const startedAt = Date.now();
+      const screen = await captureScreen();
+
+      try {
+        for (const needle of needles) {
+          await findAndClickInScreen(screen, needle);
+        }
+      } finally {
+        screen.release();
       }
-      await setTimeout(500);
+
+      const elapsedMs = Date.now() - startedAt;
+      await setTimeout(Math.max(0, SCREENSHOT_INTERVAL_MS - elapsedMs));
     }
   } catch (e) {
     console.error(e);

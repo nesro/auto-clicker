@@ -25,6 +25,11 @@ export interface FindRes {
   h: number;
 }
 
+export interface ScreenCapture {
+  gray: any;
+  release(): void;
+}
+
 function matFromCanvasImageData(imageData: CanvasImageData): any {
   const mat = new cv.Mat(imageData.height, imageData.width, cv.CV_8UC4);
   const src = imageData.data as unknown as Uint8ClampedArray;
@@ -56,18 +61,26 @@ export async function functionLoadNeedles(): Promise<void> {
   console.log('a');
 }
 
-const find = async (n: Needle): Promise<FindRes | undefined> => {
+export async function captureScreen(): Promise<ScreenCapture> {
   const screenBuf = await screenshot({ format: 'png' });
   const { mat: screenMat, canvas: screenCanvas } = await matFromBuffer(screenBuf);
   const grayScreen = new cv.Mat();
   cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
-  cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
-  cv.matchTemplate(grayScreen, n.gray, result, cv.TM_CCOEFF_NORMED);
-  const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
 
   screenMat.delete();
-  grayScreen.delete();
   screenCanvas.width = screenCanvas.width; // clear
+
+  return {
+    gray: grayScreen,
+    release() {
+      grayScreen.delete();
+    },
+  };
+}
+
+export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefined {
+  cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
+  const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
 
   if (maxVal < MATCH_THRESHOLD) {
     return;
@@ -79,16 +92,30 @@ const find = async (n: Needle): Promise<FindRes | undefined> => {
     w: Number(n.w),
     h: Number(n.h),
   };
-};
+}
 
-export const findAndClick = async (n: Needle) => {
-  const found = await find(n);
+export async function clickFound(found: FindRes): Promise<void> {
+  const cx = Math.round((found.x + found.w / 2) * scaleFactor);
+  const cy = Math.round((found.y + found.h / 2) * scaleFactor);
+  await clickAt(cx, cy);
+}
+
+export async function findAndClickInScreen(screen: ScreenCapture, n: Needle): Promise<boolean> {
+  const found = findInScreen(screen, n);
   if (!found) {
-    return;
+    return false;
   }
 
-  const cx = Math.round((found.x + n.w / 2) * scaleFactor);
-  const cy = Math.round((found.y + n.h / 2) * scaleFactor);
-  await clickAt(cx, cy);
+  await clickFound(found);
   console.log(`clicked: ${n.path}`);
+  return true;
+}
+
+export const findAndClick = async (n: Needle) => {
+  const screen = await captureScreen();
+  try {
+    await findAndClickInScreen(screen, n);
+  } finally {
+    screen.release();
+  }
 };
