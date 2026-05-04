@@ -6,6 +6,7 @@ import screenshot from 'screenshot-desktop';
 
 const MATCH_THRESHOLD = 0.9;
 const scaleFactor = 0.5; // adjust if retina / HiDPI
+const DEBUG_CROP_PATH = 'debug-crop.png';
 
 const cv: any = await cvReady;
 const result = new cv.Mat();
@@ -25,8 +26,17 @@ export interface FindRes {
   h: number;
 }
 
+export interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 export interface ScreenCapture {
   gray: any;
+  x: number;
+  y: number;
   release(): void;
 }
 
@@ -61,17 +71,41 @@ export async function functionLoadNeedles(): Promise<void> {
   console.log('a');
 }
 
-export async function captureScreen(): Promise<ScreenCapture> {
+export async function captureScreen(region?: Rect): Promise<ScreenCapture> {
   const screenBuf = await screenshot({ format: 'png' });
   const { mat: screenMat, canvas: screenCanvas } = await matFromBuffer(screenBuf);
-  const grayScreen = new cv.Mat();
+  let grayScreen = new cv.Mat();
   cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
+
+  if (region) {
+    const cropCanvas = createCanvas(region.w, region.h);
+    const cropCtx = cropCanvas.getContext('2d');
+    cropCtx.drawImage(
+      screenCanvas,
+      region.x,
+      region.y,
+      region.w,
+      region.h,
+      0,
+      0,
+      region.w,
+      region.h,
+    );
+    fs.writeFileSync(DEBUG_CROP_PATH, cropCanvas.toBuffer('image/png'));
+
+    const crop = grayScreen.roi(new cv.Rect(region.x, region.y, region.w, region.h));
+    grayScreen.delete();
+    grayScreen = crop.clone();
+    crop.delete();
+  }
 
   screenMat.delete();
   screenCanvas.width = screenCanvas.width; // clear
 
   return {
     gray: grayScreen,
+    x: region?.x ?? 0,
+    y: region?.y ?? 0,
     release() {
       grayScreen.delete();
     },
@@ -87,8 +121,8 @@ export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefi
   }
 
   return {
-    x: Number(maxLoc.x),
-    y: Number(maxLoc.y),
+    x: Number(maxLoc.x) + screen.x,
+    y: Number(maxLoc.y) + screen.y,
     w: Number(n.w),
     h: Number(n.h),
   };

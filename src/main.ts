@@ -11,6 +11,11 @@ const SCREENSHOT_INTERVAL_MS = 1000;
 
 async function main(): Promise<void> {
   try {
+    await captureScreen({ x: 552, y: 210, w: 2400, h: 1092 });
+    if (Math.random()) {
+      process.exit(0);
+    }
+
     const needles: Needle[] = [];
     const files = await fs.readdir(
       '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles/',
