@@ -1,5 +1,6 @@
 import cvReady from '@techstark/opencv-js';
 import fs from 'node:fs';
+import path from 'node:path';
 import { createCanvas, loadImage, type Canvas, type ImageData as CanvasImageData } from 'canvas';
 import { clickAt } from './click.js';
 import screenshot from 'screenshot-desktop';
@@ -7,6 +8,8 @@ import screenshot from 'screenshot-desktop';
 const MATCH_THRESHOLD = 0.9;
 const scaleFactor = 0.5; // adjust if retina / HiDPI
 const DEBUG_CROP_PATH = 'debug-crop.png';
+const NEEDLE_MANIFEST_FILE = 'needles.json';
+const NEEDLE_IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg']);
 
 const cv: any = await cvReady;
 const result = new cv.Mat();
@@ -17,6 +20,9 @@ export interface Needle {
   gray: any;
   w: number;
   h: number;
+  matchThreshold?: number;
+  maxResults?: number;
+  overlapThreshold?: number;
 }
 
 export interface FindRes {
@@ -48,6 +54,17 @@ export interface FindAllOptions {
   overlapThreshold?: number;
 }
 
+export interface NeedleSettings {
+  matchThreshold?: number;
+  maxResults?: number;
+  overlapThreshold?: number;
+}
+
+export interface NeedleManifest {
+  defaults?: NeedleSettings;
+  needles?: Record<string, NeedleSettings>;
+}
+
 function matFromCanvasImageData(imageData: CanvasImageData): any {
   const mat = new cv.Mat(imageData.height, imageData.width, cv.CV_8UC4);
   const src = imageData.data as unknown as Uint8ClampedArray;
@@ -66,13 +83,155 @@ export async function matFromBuffer(buf: Buffer) {
   return { mat, canvas, ctx, w: img.width, h: img.height };
 }
 
-export async function loadNeedle(path: string): Promise<Needle> {
-  const buf = fs.readFileSync(path);
+function parseMatchThresholdFromPath(needlePath: string): number | undefined {
+  const ext = path.extname(needlePath);
+  const stem = path.basename(needlePath, ext);
+  const match = stem.match(/(?:^|_)(0(?:[_.]\d+)?|1(?:[_.]0+)?|1)$/);
+  if (!match) {
+    return;
+  }
+
+  const threshold = Number(match[1]!.replace('_', '.'));
+  if (!Number.isFinite(threshold) || threshold < 0 || threshold > 1) {
+    return;
+  }
+
+  return threshold;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function optionalNumberInRange(
+  value: unknown,
+  source: string,
+  field: string,
+  min: number,
+  max: number,
+): number | undefined {
+  if (value === undefined) {
+    return;
+  }
+
+  if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) {
+    throw new Error(`${source}.${field} must be a number between ${min} and ${max}`);
+  }
+
+  return value;
+}
+
+function optionalPositiveInteger(
+  value: unknown,
+  source: string,
+  field: string,
+): number | undefined {
+  if (value === undefined) {
+    return;
+  }
+
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) {
+    throw new Error(`${source}.${field} must be a positive integer`);
+  }
+
+  return value;
+}
+
+function parseNeedleSettings(value: unknown, source: string): NeedleSettings {
+  if (value === undefined) {
+    return {};
+  }
+
+  if (!isRecord(value)) {
+    throw new Error(`${source} must be an object`);
+  }
+
+  return {
+    matchThreshold: optionalNumberInRange(value.matchThreshold, source, 'matchThreshold', 0, 1),
+    maxResults: optionalPositiveInteger(value.maxResults, source, 'maxResults'),
+    overlapThreshold: optionalNumberInRange(
+      value.overlapThreshold,
+      source,
+      'overlapThreshold',
+      0,
+      1,
+    ),
+  };
+}
+
+function readNeedleManifest(needleDir: string): NeedleManifest {
+  const manifestPath = path.join(needleDir, NEEDLE_MANIFEST_FILE);
+  if (!fs.existsSync(manifestPath)) {
+    return {};
+  }
+
+  const raw = JSON.parse(fs.readFileSync(manifestPath, 'utf8')) as unknown;
+  if (!isRecord(raw)) {
+    throw new Error(`${manifestPath} must contain a JSON object`);
+  }
+
+  const needles: Record<string, NeedleSettings> = {};
+  if (raw.needles !== undefined) {
+    if (!isRecord(raw.needles)) {
+      throw new Error(`${manifestPath}.needles must be an object`);
+    }
+
+    for (const [file, settings] of Object.entries(raw.needles)) {
+      needles[file] = parseNeedleSettings(settings, `${manifestPath}.needles.${file}`);
+    }
+  }
+
+  return {
+    defaults: parseNeedleSettings(raw.defaults, `${manifestPath}.defaults`),
+    needles,
+  };
+}
+
+function isNeedleImage(file: string): boolean {
+  return NEEDLE_IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase());
+}
+
+function mergeNeedleSettings(
+  defaults: NeedleSettings | undefined,
+  override: NeedleSettings | undefined,
+): NeedleSettings {
+  return {
+    ...defaults,
+    ...override,
+  };
+}
+
+export async function loadNeedle(
+  needlePath: string,
+  settings: NeedleSettings = {},
+): Promise<Needle> {
+  const buf = fs.readFileSync(needlePath);
   const { mat } = await matFromBuffer(buf);
   const gray = new cv.Mat();
   cv.cvtColor(mat, gray, cv.COLOR_RGBA2GRAY);
   mat.delete();
-  return { path, gray, w: gray.cols, h: gray.rows };
+  return {
+    path: needlePath,
+    gray,
+    w: gray.cols,
+    h: gray.rows,
+    matchThreshold: settings.matchThreshold ?? parseMatchThresholdFromPath(needlePath),
+    maxResults: settings.maxResults,
+    overlapThreshold: settings.overlapThreshold,
+  };
+}
+
+export async function loadNeedlesFromDir(needleDir: string): Promise<Needle[]> {
+  const manifest = readNeedleManifest(needleDir);
+  const files = fs.readdirSync(needleDir).filter(isNeedleImage).sort();
+  const needles: Needle[] = [];
+
+  for (const file of files) {
+    const settings = mergeNeedleSettings(manifest.defaults, manifest.needles?.[file]);
+    needles.push(await loadNeedle(path.join(needleDir, file), settings));
+  }
+
+  return needles;
 }
 
 export async function functionLoadNeedles(): Promise<void> {
@@ -131,8 +290,9 @@ export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefi
 
   cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
   const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
+  const threshold = n.matchThreshold ?? MATCH_THRESHOLD;
 
-  if (maxVal < MATCH_THRESHOLD) {
+  if (maxVal < threshold) {
     return;
   }
 
@@ -168,9 +328,9 @@ export function findAllInScreen(
     return [];
   }
 
-  const threshold = options.threshold ?? MATCH_THRESHOLD;
-  const maxResults = options.maxResults ?? 50;
-  const overlapThreshold = options.overlapThreshold ?? 0.3;
+  const threshold = options.threshold ?? n.matchThreshold ?? MATCH_THRESHOLD;
+  const maxResults = options.maxResults ?? n.maxResults ?? 50;
+  const overlapThreshold = options.overlapThreshold ?? n.overlapThreshold ?? 0.3;
   const candidates: FindRes[] = [];
 
   cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);

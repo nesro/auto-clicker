@@ -1,0 +1,33 @@
+{
+  "defaults": {
+    "matchThreshold": 0.9,
+    "maxResults": 50,
+    "overlapThreshold": 0.3
+  },
+  "needles": {
+    "camp_gold.png": {
+      "matchThreshold": 0.9
+    },
+    "common.png": {
+      "matchThreshold": 0.9
+    },
+    "continue.png": {
+      "matchThreshold": 0.9
+    },
+    "descend_arrow.png": {
+      "matchThreshold": 0.9
+    },
+    "epic.png": {
+      "matchThreshold": 0.9
+    },
+    "rare.png": {
+      "matchThreshold": 0.9
+    },
+    "start_descent.png": {
+      "matchThreshold": 0.9
+    },
+    "to_depth.png": {
+      "matchThreshold": 0.9
+    }
+  }
+}

@@ -3,15 +3,13 @@ npx tsx ./src/main.ts
 */
 
 import { setTimeout } from 'node:timers/promises';
-import fs from 'node:fs/promises';
 
 import { readTextInFound } from './ocr.js';
 import {
   captureScreen,
   clickFound,
   findAllInScreen,
-  loadNeedle,
-  Needle,
+  loadNeedlesFromDir,
   type Rect,
 } from './needle.js';
 
@@ -24,11 +22,11 @@ const READ_TEXT = false;
 
 async function main(): Promise<void> {
   try {
-    const needles: Needle[] = [];
-    const files = await fs.readdir(NEEDLE_DIR);
-    for (const file of files) {
-      const needle = await loadNeedle(`${NEEDLE_DIR}/${file}`);
-      needles.push(needle);
+    const needles = await loadNeedlesFromDir(NEEDLE_DIR);
+    for (const needle of needles) {
+      if (needle.matchThreshold !== undefined) {
+        console.log(`loaded: ${needle.path}, threshold: ${needle.matchThreshold}`);
+      }
     }
 
     for (;;) {
