@@ -6,7 +6,7 @@ import { setTimeout } from 'node:timers/promises';
 
 import { NEEDLE_NAME_BY_KEY } from './generated/needle-names.js';
 import { NEEDLE_GROUPS } from './needle-groups.js';
-import { readTextInFound } from './ocr.js';
+import { readNumberInFound, readTextInFound } from './ocr.js';
 import {
   captureScreen,
   clickFound,
@@ -30,6 +30,16 @@ async function main(): Promise<void> {
     for (const needle of needles) {
       if (needle.matchThreshold !== undefined) {
         console.log(`loaded: ${needle.path}, threshold: ${needle.matchThreshold}`);
+      }
+    }
+
+    // TODO debug code to check if finding skill number works
+    if (Math.random()) {
+      const screen = await captureScreen(SCREEN_REGION);
+      const founds = findAllInScreen(screen, needlesByName.skillNumberCommon);
+      for (const found of founds) {
+        const number = readNumberInFound(screen, found);
+        console.log({ number });
       }
     }
 
