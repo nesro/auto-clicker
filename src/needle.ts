@@ -1,6 +1,6 @@
 import cvReady from '@techstark/opencv-js';
 import fs from 'node:fs';
-import { createCanvas, loadImage, type ImageData as CanvasImageData } from 'canvas';
+import { createCanvas, loadImage, type Canvas, type ImageData as CanvasImageData } from 'canvas';
 import { clickAt } from './click.js';
 import screenshot from 'screenshot-desktop';
 
@@ -24,6 +24,7 @@ export interface FindRes {
   y: number;
   w: number;
   h: number;
+  score?: number;
 }
 
 export interface Rect {
@@ -34,10 +35,17 @@ export interface Rect {
 }
 
 export interface ScreenCapture {
+  canvas: Canvas;
   gray: any;
   x: number;
   y: number;
   release(): void;
+}
+
+export interface FindAllOptions {
+  threshold?: number;
+  maxResults?: number;
+  overlapThreshold?: number;
 }
 
 function matFromCanvasImageData(imageData: CanvasImageData): any {
@@ -74,6 +82,7 @@ export async function functionLoadNeedles(): Promise<void> {
 export async function captureScreen(region?: Rect): Promise<ScreenCapture> {
   const screenBuf = await screenshot({ format: 'png' });
   const { mat: screenMat, canvas: screenCanvas } = await matFromBuffer(screenBuf);
+  let canvas = screenCanvas;
   let grayScreen = new cv.Mat();
   cv.cvtColor(screenMat, grayScreen, cv.COLOR_RGBA2GRAY);
 
@@ -92,27 +101,34 @@ export async function captureScreen(region?: Rect): Promise<ScreenCapture> {
       region.h,
     );
     fs.writeFileSync(DEBUG_CROP_PATH, cropCanvas.toBuffer('image/png'));
+    canvas = cropCanvas;
 
     const crop = grayScreen.roi(new cv.Rect(region.x, region.y, region.w, region.h));
     grayScreen.delete();
     grayScreen = crop.clone();
     crop.delete();
+    screenCanvas.width = screenCanvas.width; // clear full-size source canvas
   }
 
   screenMat.delete();
-  screenCanvas.width = screenCanvas.width; // clear
 
   return {
+    canvas,
     gray: grayScreen,
     x: region?.x ?? 0,
     y: region?.y ?? 0,
     release() {
       grayScreen.delete();
+      canvas.width = canvas.width; // clear
     },
   };
 }
 
 export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefined {
+  if (screen.gray.cols < n.w || screen.gray.rows < n.h) {
+    return;
+  }
+
   cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
   const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
 
@@ -125,7 +141,76 @@ export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefi
     y: Number(maxLoc.y) + screen.y,
     w: Number(n.w),
     h: Number(n.h),
+    score: Number(maxVal),
   };
+}
+
+function overlapRatio(a: Rect, b: Rect): number {
+  const left = Math.max(a.x, b.x);
+  const top = Math.max(a.y, b.y);
+  const right = Math.min(a.x + a.w, b.x + b.w);
+  const bottom = Math.min(a.y + a.h, b.y + b.h);
+  const intersection = Math.max(0, right - left) * Math.max(0, bottom - top);
+
+  if (intersection === 0) {
+    return 0;
+  }
+
+  return intersection / Math.min(a.w * a.h, b.w * b.h);
+}
+
+export function findAllInScreen(
+  screen: ScreenCapture,
+  n: Needle,
+  options: FindAllOptions = {},
+): FindRes[] {
+  if (screen.gray.cols < n.w || screen.gray.rows < n.h) {
+    return [];
+  }
+
+  const threshold = options.threshold ?? MATCH_THRESHOLD;
+  const maxResults = options.maxResults ?? 50;
+  const overlapThreshold = options.overlapThreshold ?? 0.3;
+  const candidates: FindRes[] = [];
+
+  cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
+
+  const scores = result.data32F as Float32Array;
+  for (let y = 0; y < result.rows; y += 1) {
+    const rowOffset = y * result.cols;
+    for (let x = 0; x < result.cols; x += 1) {
+      const score = scores[rowOffset + x]!;
+      if (score < threshold) {
+        continue;
+      }
+
+      candidates.push({
+        x: x + screen.x,
+        y: y + screen.y,
+        w: Number(n.w),
+        h: Number(n.h),
+        score,
+      });
+    }
+  }
+
+  candidates.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+
+  const matches: FindRes[] = [];
+  for (const candidate of candidates) {
+    if (matches.length >= maxResults) {
+      break;
+    }
+
+    const alreadyCovered = matches.some(
+      (match) => overlapRatio(candidate, match) > overlapThreshold,
+    );
+    if (!alreadyCovered) {
+      matches.push(candidate);
+    }
+  }
+
+  return matches;
 }
 
 export async function clickFound(found: FindRes): Promise<void> {
