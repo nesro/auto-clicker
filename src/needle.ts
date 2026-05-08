@@ -16,6 +16,7 @@ const result = new cv.Mat();
 const emptyMask = new cv.Mat();
 
 export interface Needle {
+  name: string;
   path: string;
   gray: any;
   w: number;
@@ -64,6 +65,16 @@ export interface NeedleManifest {
   defaults?: NeedleSettings;
   needles?: Record<string, NeedleSettings>;
 }
+
+export interface LoadNeedlesOptions {
+  names?: readonly string[];
+}
+
+export type NeedleNameByKey = Record<string, string>;
+
+export type NeedlesByName<T extends NeedleNameByKey> = {
+  [K in keyof T]: Needle;
+};
 
 function matFromCanvasImageData(imageData: CanvasImageData): any {
   const mat = new cv.Mat(imageData.height, imageData.width, cv.CV_8UC4);
@@ -135,6 +146,21 @@ function optionalPositiveInteger(
   }
 
   return value;
+}
+
+function uniqueSortedValues(values: readonly string[]): string[] {
+  return [...new Set(values)].sort();
+}
+
+function assertRequestedNeedlesExist(
+  requested: readonly string[],
+  available: readonly string[],
+): void {
+  const availableSet = new Set(available);
+  const missing = requested.filter((name) => !availableSet.has(name));
+  if (missing.length > 0) {
+    throw new Error(`Needle files not found: ${missing.join(', ')}`);
+  }
 }
 
 function parseNeedleSettings(value: unknown, source: string): NeedleSettings {
@@ -211,6 +237,7 @@ export async function loadNeedle(
   cv.cvtColor(mat, gray, cv.COLOR_RGBA2GRAY);
   mat.delete();
   return {
+    name: path.basename(needlePath),
     path: needlePath,
     gray,
     w: gray.cols,
@@ -221,9 +248,19 @@ export async function loadNeedle(
   };
 }
 
-export async function loadNeedlesFromDir(needleDir: string): Promise<Needle[]> {
+export async function loadNeedlesFromDir(
+  needleDir: string,
+  options: LoadNeedlesOptions = {},
+): Promise<Needle[]> {
   const manifest = readNeedleManifest(needleDir);
-  const files = fs.readdirSync(needleDir).filter(isNeedleImage).sort();
+  let files = fs.readdirSync(needleDir).filter(isNeedleImage).sort();
+  if (options.names) {
+    const requested = uniqueSortedValues(options.names);
+    assertRequestedNeedlesExist(requested, files);
+    const requestedSet = new Set(requested);
+    files = files.filter((file) => requestedSet.has(file));
+  }
+
   const needles: Needle[] = [];
 
   for (const file of files) {
@@ -232,6 +269,24 @@ export async function loadNeedlesFromDir(needleDir: string): Promise<Needle[]> {
   }
 
   return needles;
+}
+
+export async function loadNeedlesByNameFromDir<T extends NeedleNameByKey>(
+  needleDir: string,
+  needleNameByKey: T,
+): Promise<NeedlesByName<T>> {
+  const manifest = readNeedleManifest(needleDir);
+  const availableFiles = fs.readdirSync(needleDir).filter(isNeedleImage).sort();
+  const requestedFiles = uniqueSortedValues(Object.values(needleNameByKey));
+  assertRequestedNeedlesExist(requestedFiles, availableFiles);
+
+  const needlesByName: Partial<NeedlesByName<T>> = {};
+  for (const [key, file] of Object.entries(needleNameByKey) as Array<[keyof T, T[keyof T]]>) {
+    const settings = mergeNeedleSettings(manifest.defaults, manifest.needles?.[file]);
+    needlesByName[key] = await loadNeedle(path.join(needleDir, file), settings);
+  }
+
+  return needlesByName as NeedlesByName<T>;
 }
 
 export async function functionLoadNeedles(): Promise<void> {

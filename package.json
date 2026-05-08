@@ -8,6 +8,7 @@
     "s": "tsx src/main.ts",
     "start": "tsx src/main.ts",
     "dev": "tsx watch src/index.ts",
+    "generate:needles": "node scripts/generate-needle-names.mjs obsidian-knight/needles_dung src/generated/needle-names.ts",
     "start2": "node dist/index.js",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint .",

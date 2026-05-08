@@ -4,12 +4,14 @@ npx tsx ./src/main.ts
 
 import { setTimeout } from 'node:timers/promises';
 
+import { NEEDLE_NAME_BY_KEY } from './generated/needle-names.js';
+import { NEEDLE_GROUPS } from './needle-groups.js';
 import { readTextInFound } from './ocr.js';
 import {
   captureScreen,
   clickFound,
   findAllInScreen,
-  loadNeedlesFromDir,
+  loadNeedlesByNameFromDir,
   type Rect,
 } from './needle.js';
 
@@ -19,10 +21,12 @@ const SCREENSHOT_INTERVAL_MS = 1000;
 const SCREEN_REGION: Rect = { x: 552, y: 210, w: 2400, h: 1092 };
 
 const READ_TEXT = false;
+const ACTIVE_NEEDLES = NEEDLE_GROUPS.all;
 
 async function main(): Promise<void> {
   try {
-    const needles = await loadNeedlesFromDir(NEEDLE_DIR);
+    const needlesByName = await loadNeedlesByNameFromDir(NEEDLE_DIR, NEEDLE_NAME_BY_KEY);
+    const needles = ACTIVE_NEEDLES.map((name) => needlesByName[name]);
     for (const needle of needles) {
       if (needle.matchThreshold !== undefined) {
         console.log(`loaded: ${needle.path}, threshold: ${needle.matchThreshold}`);
