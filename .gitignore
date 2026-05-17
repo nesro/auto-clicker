@@ -7,3 +7,4 @@ needle.png
 match.png
 *.traineddata
 debug-crop.png
+debug/

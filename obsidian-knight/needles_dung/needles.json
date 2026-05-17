@@ -24,18 +24,16 @@
       "matchThreshold": 0.9
     },
     "skill_number_common.png": {
-      "matchThreshold": 0.9
-    },
-    "skill_number_epic.png": {
-      "matchThreshold": 0.9
-    },
-    "skill_number_rare.png": {
-      "matchThreshold": 0.9
+      "matchThreshold": 0.7,
+      "maxResults": 3
     },
     "start_descent.png": {
       "matchThreshold": 0.9
     },
     "to_depth.png": {
+      "matchThreshold": 0.9
+    },
+    "yes.png": {
       "matchThreshold": 0.9
     }
   }

@@ -19,6 +19,7 @@ export interface Needle {
   name: string;
   path: string;
   gray: any;
+  mask?: any;
   w: number;
   h: number;
   matchThreshold?: number;
@@ -41,6 +42,11 @@ export interface Rect {
   h: number;
 }
 
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface ScreenCapture {
   canvas: Canvas;
   gray: any;
@@ -59,6 +65,7 @@ export interface NeedleSettings {
   matchThreshold?: number;
   maxResults?: number;
   overlapThreshold?: number;
+  maskIgnoreRects?: Rect[];
 }
 
 export interface NeedleManifest {
@@ -148,6 +155,31 @@ function optionalPositiveInteger(
   return value;
 }
 
+function parseRect(value: unknown, source: string): Rect {
+  if (!isRecord(value)) {
+    throw new Error(`${source} must be an object`);
+  }
+
+  return {
+    x: optionalNumberInRange(value.x, source, 'x', 0, Number.MAX_SAFE_INTEGER) ?? 0,
+    y: optionalNumberInRange(value.y, source, 'y', 0, Number.MAX_SAFE_INTEGER) ?? 0,
+    w: optionalNumberInRange(value.w, source, 'w', 1, Number.MAX_SAFE_INTEGER) ?? 1,
+    h: optionalNumberInRange(value.h, source, 'h', 1, Number.MAX_SAFE_INTEGER) ?? 1,
+  };
+}
+
+function optionalRectArray(value: unknown, source: string, field: string): Rect[] | undefined {
+  if (value === undefined) {
+    return;
+  }
+
+  if (!Array.isArray(value)) {
+    throw new Error(`${source}.${field} must be an array`);
+  }
+
+  return value.map((rect, index) => parseRect(rect, `${source}.${field}[${index}]`));
+}
+
 function uniqueSortedValues(values: readonly string[]): string[] {
   return [...new Set(values)].sort();
 }
@@ -182,6 +214,7 @@ function parseNeedleSettings(value: unknown, source: string): NeedleSettings {
       0,
       1,
     ),
+    maskIgnoreRects: optionalRectArray(value.maskIgnoreRects, source, 'maskIgnoreRects'),
   };
 }
 
@@ -227,6 +260,38 @@ function mergeNeedleSettings(
   };
 }
 
+function buildTemplateMask(width: number, height: number, ignoreRects: readonly Rect[]): any {
+  const maskCanvas = createCanvas(width, height);
+  const maskCtx = maskCanvas.getContext('2d');
+  maskCtx.fillStyle = 'white';
+  maskCtx.fillRect(0, 0, width, height);
+  maskCtx.fillStyle = 'black';
+
+  for (const rect of ignoreRects) {
+    maskCtx.fillRect(rect.x, rect.y, rect.w, rect.h);
+  }
+
+  const imageData = maskCtx.getImageData(0, 0, width, height) as unknown as CanvasImageData;
+  const rgba = matFromCanvasImageData(imageData);
+  const gray = new cv.Mat();
+  cv.cvtColor(rgba, gray, cv.COLOR_RGBA2GRAY);
+  rgba.delete();
+  return gray;
+}
+
+function templateMatchMethod(n: Needle): number {
+  return n.mask ? cv.TM_CCORR_NORMED : cv.TM_CCOEFF_NORMED;
+}
+
+function matchTemplate(screen: ScreenCapture, n: Needle): void {
+  if (n.mask) {
+    cv.matchTemplate(screen.gray, n.gray, result, templateMatchMethod(n), n.mask);
+    return;
+  }
+
+  cv.matchTemplate(screen.gray, n.gray, result, templateMatchMethod(n));
+}
+
 export async function loadNeedle(
   needlePath: string,
   settings: NeedleSettings = {},
@@ -236,10 +301,15 @@ export async function loadNeedle(
   const gray = new cv.Mat();
   cv.cvtColor(mat, gray, cv.COLOR_RGBA2GRAY);
   mat.delete();
+  const mask = settings.maskIgnoreRects?.length
+    ? buildTemplateMask(gray.cols, gray.rows, settings.maskIgnoreRects)
+    : undefined;
+
   return {
     name: path.basename(needlePath),
     path: needlePath,
     gray,
+    mask,
     w: gray.cols,
     h: gray.rows,
     matchThreshold: settings.matchThreshold ?? parseMatchThresholdFromPath(needlePath),
@@ -343,7 +413,7 @@ export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefi
     return;
   }
 
-  cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
+  matchTemplate(screen, n);
   const { maxLoc, maxVal } = cv.minMaxLoc(result, emptyMask);
   const threshold = n.matchThreshold ?? MATCH_THRESHOLD;
 
@@ -388,14 +458,14 @@ export function findAllInScreen(
   const overlapThreshold = options.overlapThreshold ?? n.overlapThreshold ?? 0.3;
   const candidates: FindRes[] = [];
 
-  cv.matchTemplate(screen.gray, n.gray, result, cv.TM_CCOEFF_NORMED);
+  matchTemplate(screen, n);
 
   const scores = result.data32F as Float32Array;
   for (let y = 0; y < result.rows; y += 1) {
     const rowOffset = y * result.cols;
     for (let x = 0; x < result.cols; x += 1) {
       const score = scores[rowOffset + x]!;
-      if (score < threshold) {
+      if (!Number.isFinite(score) || score < threshold) {
         continue;
       }
 
@@ -429,9 +499,16 @@ export function findAllInScreen(
 }
 
 export async function clickFound(found: FindRes): Promise<void> {
-  const cx = Math.round((found.x + found.w / 2) * scaleFactor);
-  const cy = Math.round((found.y + found.h / 2) * scaleFactor);
-  await clickAt(cx, cy);
+  await clickScreenPoint({
+    x: found.x + found.w / 2,
+    y: found.y + found.h / 2,
+  });
+}
+
+export async function clickScreenPoint(point: Point): Promise<void> {
+  const x = Math.round(point.x * scaleFactor);
+  const y = Math.round(point.y * scaleFactor);
+  await clickAt(x, y);
 }
 
 export async function findAndClickInScreen(screen: ScreenCapture, n: Needle): Promise<boolean> {
