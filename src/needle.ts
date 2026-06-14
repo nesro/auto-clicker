@@ -7,6 +7,7 @@ import screenshot from 'screenshot-desktop';
 
 const MATCH_THRESHOLD = 0.9;
 const scaleFactor = 0.5; // adjust if retina / HiDPI
+const DEBUG_SCREEN_CROP = false;
 const DEBUG_CROP_PATH = 'debug-crop.png';
 const NEEDLE_MANIFEST_FILE = 'needles.json';
 const NEEDLE_IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.jpeg']);
@@ -384,7 +385,9 @@ export async function captureScreen(region?: Rect): Promise<ScreenCapture> {
       region.w,
       region.h,
     );
-    fs.writeFileSync(DEBUG_CROP_PATH, cropCanvas.toBuffer('image/png'));
+    if (DEBUG_SCREEN_CROP) {
+      fs.writeFileSync(DEBUG_CROP_PATH, cropCanvas.toBuffer('image/png'));
+    }
     canvas = cropCanvas;
 
     const crop = grayScreen.roi(new cv.Rect(region.x, region.y, region.w, region.h));

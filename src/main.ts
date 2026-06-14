@@ -38,13 +38,15 @@ const DEBUG_SKILL_RARITY_SCREENSHOTS_DIR =
   '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-rarity-screenshots';
 
 const SCREENSHOT_INTERVAL_MS = 1000;
+const SCREEN_CAPTURE_MAX_ATTEMPTS = 10;
+const SCREEN_CAPTURE_RETRY_BASE_DELAY_MS = 250;
 const SCREEN_REGION: Rect = { x: 1326, y: 122, w: 1680, h: 762 };
 
 const READ_TEXT = false;
 const READ_NUMBER = true;
 const DEBUG_NUMBER_OCR = false;
 const DEBUG_NUMBER_NEEDLE = 'skill_number_rare.png';
-const DEBUG_SKILL_RARITY_SCREENSHOTS = true;
+const DEBUG_SKILL_RARITY_SCREENSHOTS = false;
 const DEBUG_SKILL_RARITY_MAX_SCREENSHOTS = 100;
 const SKILL_NUMBER_NEEDLE_KEYS = new Set<NeedleKey>(NEEDLE_GROUPS.skillNumbers);
 const ACTIVE_NEEDLES = NEEDLE_GROUPS.all.filter((name) => !SKILL_NUMBER_NEEDLE_KEYS.has(name));
@@ -215,6 +217,35 @@ async function saveCanvasPng(filePath: string, canvas: Canvas): Promise<void> {
   await fs.writeFile(filePath, canvas.toBuffer('image/png'));
 }
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+async function captureScreenWithRetry(region: Rect): Promise<ScreenCapture> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= SCREEN_CAPTURE_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      return await captureScreen(region);
+    } catch (error) {
+      lastError = error;
+      if (attempt === SCREEN_CAPTURE_MAX_ATTEMPTS) {
+        break;
+      }
+
+      const delayMs = attempt * SCREEN_CAPTURE_RETRY_BASE_DELAY_MS;
+      console.warn(
+        `screen capture failed, retrying ${attempt}/${SCREEN_CAPTURE_MAX_ATTEMPTS}: ${errorMessage(
+          error,
+        )}`,
+      );
+      await setTimeout(delayMs);
+    }
+  }
+
+  throw lastError;
+}
+
 function cropFound(screen: ScreenCapture, found: FindRes): Canvas {
   const cropCanvas = createCanvas(found.w, found.h);
   const cropCtx = cropCanvas.getContext('2d');
@@ -382,11 +413,11 @@ function isSkillNumberValidForRarity(
   rarity?: SkillRarity,
 ): boolean {
   if (rarity === 'common') {
-    return number < 100;
+    return true;
   }
 
   if (rarity === 'rare' || rarity === 'epic') {
-    return rawNumber.length === 3 && number >= 100;
+    return rawNumber.length === 3 && number > 100;
   }
 
   return true;
@@ -897,7 +928,7 @@ async function main(): Promise<void> {
 
     for (;;) {
       const startedAt = Date.now();
-      const screen = await captureScreen(SCREEN_REGION);
+      const screen = await captureScreenWithRetry(SCREEN_REGION);
       let debugFrameDir: string | undefined;
       let debugCropIndex = 0;
 
