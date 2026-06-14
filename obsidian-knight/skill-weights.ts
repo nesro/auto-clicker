@@ -1,4 +1,4 @@
-export const weigths = {
+export const skillWeights = {
   alwaysPick: [
     255, // crit stuns all,
     191, // Crit stuns

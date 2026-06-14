@@ -7,6 +7,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createCanvas, type Canvas } from 'canvas';
 
+import { skillWeights } from '../obsidian-knight/skill-weights.js';
 import { NEEDLE_NAME_BY_KEY, type NeedleKey } from './generated/needle-names.js';
 import { NEEDLE_GROUPS } from './needle-groups.js';
 import {
@@ -30,12 +31,11 @@ import {
 } from './needle.js';
 
 const NEEDLE_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles_dung';
-const SKILL_NEEDLE_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles';
+const SKILL_NEEDLE_DIR =
+  '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles_scrcpy';
 const DEBUG_NUMBER_OCR_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/number-ocr';
 const DEBUG_SKILL_RARITY_SCREENSHOTS_DIR =
   '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-rarity-screenshots';
-const SKILL_PRIORITY_CONFIG_PATH =
-  '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/skill-weights.json';
 
 const SCREENSHOT_INTERVAL_MS = 1000;
 const SCREEN_REGION: Rect = { x: 552, y: 210, w: 2400, h: 1092 };
@@ -84,6 +84,12 @@ interface SkillPickDecision {
   reason: 'alwaysPick' | 'rerollIfPossible' | 'none';
 }
 
+interface ScrcpyActionNeedles {
+  loot2?: Needle;
+  retry?: Needle;
+  start?: Needle;
+}
+
 const SKILL_NUMBER_RECTS_IN_SCREENSHOT: Rect[] = [
   { x: 645, y: 108, w: 66, h: 26 },
   { x: 1172, y: 108, w: 66, h: 26 },
@@ -99,12 +105,19 @@ const SKILL_RARITY_NEEDLE_SETTINGS: NeedleSettings = {
   maxResults: 10,
   overlapThreshold: 0.5,
 };
-const REROLL_NEEDLE_PATH = path.join(NEEDLE_DIR, 'reroll.png');
+const REROLL_NEEDLE_PATH = path.join(SKILL_NEEDLE_DIR, 'reroll.png');
 const REROLL_NEEDLE_SETTINGS: NeedleSettings = {
   matchThreshold: 0.9,
   maxResults: 1,
   overlapThreshold: 0.5,
 };
+const SCRCPY_ACTION_NEEDLE_SETTINGS: NeedleSettings = {
+  matchThreshold: 0.9,
+  maxResults: 1,
+  overlapThreshold: 0.5,
+};
+const AUTO_CLICK_RETRY = false;
+const LOOT_2_AFTER_CLICK_DELAY_MS = 500;
 
 const SKILL_CHOICE_OCR_OPTIONS: OcrImageOptions = { scale: 5, threshold: false };
 const SKILL_CHOICE_OCR_FALLBACK_OPTIONS: OcrImageOptions[] = [
@@ -168,18 +181,14 @@ function parseSkillPriorityList(value: unknown, source: string): number[] {
   return value.map((item, index) => parseSkillPriorityNumber(item, `${source}[${index}]`));
 }
 
-async function loadSkillPriorityConfig(configPath: string): Promise<SkillPriorityConfig> {
-  const raw = JSON.parse(await fs.readFile(configPath, 'utf8')) as unknown;
+function parseSkillPriorityConfig(raw: unknown, source: string): SkillPriorityConfig {
   if (!isRecord(raw)) {
-    throw new Error(`${configPath} must contain a JSON object`);
+    throw new Error(`${source} must contain an object`);
   }
 
   return {
-    alwaysPick: parseSkillPriorityList(raw.alwaysPick, `${configPath}.alwaysPick`),
-    rerollIfPossible: parseSkillPriorityList(
-      raw.rerollIfPossible,
-      `${configPath}.rerollIfPossible`,
-    ),
+    alwaysPick: parseSkillPriorityList(raw.alwaysPick, `${source}.alwaysPick`),
+    rerollIfPossible: parseSkillPriorityList(raw.rerollIfPossible, `${source}.rerollIfPossible`),
   };
 }
 
@@ -275,6 +284,16 @@ async function loadSkillRarityNeedles(): Promise<Needle[]> {
 
 async function loadRerollNeedle(): Promise<Needle | undefined> {
   return loadOptionalNeedle(REROLL_NEEDLE_PATH, REROLL_NEEDLE_SETTINGS);
+}
+
+async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
+  const [loot2, retry, start] = await Promise.all([
+    loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'loot_2.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'retry.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'start.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+  ]);
+
+  return { loot2, retry, start };
 }
 
 function findSkillRarityMatches(
@@ -487,24 +506,28 @@ function chooseFromPriorityList(
   return best;
 }
 
-function chooseSkillByPriority(
+function chooseAlwaysPickSkill(
   rarityMatches: readonly SkillRarityMatch[],
   reads: readonly FixedSkillNumberRead[],
   priorityConfig: SkillPriorityConfig,
 ): SkillPickDecision | undefined {
   const candidates = fixedSkillChoiceCandidates(rarityMatches, reads);
-  const alwaysPick = chooseFromPriorityList(candidates, priorityConfig.alwaysPick, 'alwaysPick');
-  if (alwaysPick) {
-    return alwaysPick;
-  }
+  return chooseFromPriorityList(candidates, priorityConfig.alwaysPick, 'alwaysPick');
+}
 
-  const rerollAcceptable = chooseFromPriorityList(
+function chooseFallbackSkill(
+  rarityMatches: readonly SkillRarityMatch[],
+  reads: readonly FixedSkillNumberRead[],
+  priorityConfig: SkillPriorityConfig,
+): SkillPickDecision | undefined {
+  const candidates = fixedSkillChoiceCandidates(rarityMatches, reads);
+  const rerollIfPossible = chooseFromPriorityList(
     candidates,
     priorityConfig.rerollIfPossible,
     'rerollIfPossible',
   );
-  if (rerollAcceptable) {
-    return rerollAcceptable;
+  if (rerollIfPossible) {
+    return rerollIfPossible;
   }
 
   const [fallback] = candidates;
@@ -555,10 +578,10 @@ function decisionReasonText(decision: SkillPickDecision): string {
   }
 
   if (decision.reason === 'rerollIfPossible') {
-    return `rerollIfPossible priority ${decision.priorityIndex + 1}`;
+    return `reroll is unavailable and rerollIfPossible priority ${decision.priorityIndex + 1}`;
   }
 
-  return 'none is treated as rerollIfPossible';
+  return 'reroll is unavailable and no configured priority matched';
 }
 
 function findReroll(screen: ScreenCapture, rerollNeedle?: Needle): FindRes | undefined {
@@ -568,6 +591,37 @@ function findReroll(screen: ScreenCapture, rerollNeedle?: Needle): FindRes | und
 
   const [found] = findAllInScreen(screen, rerollNeedle, { maxResults: 1 });
   return found;
+}
+
+async function clickFirstFoundAction(screen: ScreenCapture, needle?: Needle): Promise<boolean> {
+  if (!needle) {
+    return false;
+  }
+
+  const [found] = findAllInScreen(screen, needle, { maxResults: 1 });
+  if (!found) {
+    return false;
+  }
+
+  console.log(`found: ${needleDisplayName(needle.name)}, score: ${found.score?.toFixed(3)}`);
+  await clickFound(found);
+  return true;
+}
+
+async function handleScrcpyActionNeedles(
+  screen: ScreenCapture,
+  needles: ScrcpyActionNeedles,
+): Promise<boolean> {
+  if (await clickFirstFoundAction(screen, needles.loot2)) {
+    await setTimeout(LOOT_2_AFTER_CLICK_DELAY_MS);
+    return true;
+  }
+
+  if (AUTO_CLICK_RETRY && (await clickFirstFoundAction(screen, needles.retry))) {
+    return true;
+  }
+
+  return clickFirstFoundAction(screen, needles.start);
 }
 
 function createSkillRarityDebugAnnotation(
@@ -700,18 +754,47 @@ async function handleFixedSkillChoice(
     return true;
   }
 
-  const decision = chooseSkillByPriority(rarityMatches, reads, priorityConfig);
-  if (!decision) {
-    const rerollFound = findReroll(screen, rerollNeedle);
-    if (rerollFound) {
-      console.log(
-        `${rarity} skills: ${formatSkillPriorityStatus(
-          reads,
-          priorityConfig,
-        )} - rerolling because no skill is selectable`,
-      );
-      await clickFound(rerollFound);
+  const alwaysPickDecision = chooseAlwaysPickSkill(rarityMatches, reads, priorityConfig);
+  if (alwaysPickDecision) {
+    const bestNumber = alwaysPickDecision.candidate.read.number;
+    if (bestNumber === undefined) {
+      return true;
     }
+
+    console.log(
+      `${rarity} skills: ${formatSkillPriorityStatus(
+        reads,
+        priorityConfig,
+      )} - choosing ${bestNumber} because ${decisionReasonText(alwaysPickDecision)}`,
+    );
+
+    const targetMatch = alwaysPickDecision.candidate.rarityMatch;
+    if (targetMatch) {
+      await clickFound(targetMatch.found);
+    } else {
+      const bestRead = alwaysPickDecision.candidate.read;
+      await clickScreenPoint({
+        x: bestRead.rect.x + bestRead.rect.w / 2,
+        y: bestRead.rect.y + bestRead.rect.h / 2,
+      });
+    }
+    return true;
+  }
+
+  const rerollFound = findReroll(screen, rerollNeedle);
+  if (rerollFound) {
+    console.log(
+      `${rarity} skills: ${formatSkillPriorityStatus(
+        reads,
+        priorityConfig,
+      )} - rerolling because no alwaysPick skill is available`,
+    );
+    await clickFound(rerollFound);
+    return true;
+  }
+
+  const decision = chooseFallbackSkill(rarityMatches, reads, priorityConfig);
+  if (!decision) {
     return true;
   }
 
@@ -745,8 +828,12 @@ async function main(): Promise<void> {
     const needlesByName = await loadNeedlesByNameFromDir(NEEDLE_DIR, NEEDLE_NAME_BY_KEY);
     const needles = ACTIVE_NEEDLES.map((name) => needlesByName[name]);
     const skillRarityNeedles = await loadSkillRarityNeedles();
-    const skillPriorityConfig = await loadSkillPriorityConfig(SKILL_PRIORITY_CONFIG_PATH);
+    const skillPriorityConfig = parseSkillPriorityConfig(
+      skillWeights,
+      'obsidian-knight/skill-weights.ts:skillWeights',
+    );
     const rerollNeedle = await loadRerollNeedle();
+    const scrcpyActionNeedles = await loadScrcpyActionNeedles();
 
     if (DEBUG_NUMBER_OCR && !needles.some((needle) => isDebugNumberNeedle(needle.name))) {
       console.warn(`debug number needle is not loaded: ${DEBUG_NUMBER_NEEDLE}`);
@@ -780,27 +867,32 @@ async function main(): Promise<void> {
       };
 
       try {
-        const allSkillRarityMatches = findSkillRarityMatches(screen, skillRarityNeedles);
-        const skillRarityMatches = selectSkillRarityMatches(allSkillRarityMatches);
-        const skillNumberReads =
-          skillRarityMatches.length > 0 ? await readFixedSkillNumbers(screen) : [];
-        await saveSkillRarityDebugScreenshots(
-          screen,
-          skillRarityMatches,
-          allSkillRarityMatches,
-          skillNumberReads,
-          startedAt,
-        );
+        const handledScrcpyAction = await handleScrcpyActionNeedles(screen, scrcpyActionNeedles);
+        let handledSkillChoice = false;
 
-        const handledSkillChoice = await handleFixedSkillChoice(
-          screen,
-          skillRarityMatches,
-          skillNumberReads,
-          skillPriorityConfig,
-          rerollNeedle,
-        );
+        if (!handledScrcpyAction) {
+          const allSkillRarityMatches = findSkillRarityMatches(screen, skillRarityNeedles);
+          const skillRarityMatches = selectSkillRarityMatches(allSkillRarityMatches);
+          const skillNumberReads =
+            skillRarityMatches.length > 0 ? await readFixedSkillNumbers(screen) : [];
+          await saveSkillRarityDebugScreenshots(
+            screen,
+            skillRarityMatches,
+            allSkillRarityMatches,
+            skillNumberReads,
+            startedAt,
+          );
 
-        if (!handledSkillChoice) {
+          handledSkillChoice = await handleFixedSkillChoice(
+            screen,
+            skillRarityMatches,
+            skillNumberReads,
+            skillPriorityConfig,
+            rerollNeedle,
+          );
+        }
+
+        if (!handledScrcpyAction && !handledSkillChoice) {
           for (const needle of needles) {
             const foundMatches = findAllInScreen(screen, needle);
             for (const found of foundMatches) {
