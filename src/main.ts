@@ -38,7 +38,7 @@ const DEBUG_SKILL_RARITY_SCREENSHOTS_DIR =
   '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-rarity-screenshots';
 
 const SCREENSHOT_INTERVAL_MS = 1000;
-const SCREEN_REGION: Rect = { x: 552, y: 210, w: 2400, h: 1092 };
+const SCREEN_REGION: Rect = { x: 1326, y: 122, w: 1680, h: 762 };
 
 const READ_TEXT = false;
 const READ_NUMBER = true;
@@ -86,14 +86,17 @@ interface SkillPickDecision {
 
 interface ScrcpyActionNeedles {
   loot2?: Needle;
+  pvpOk?: Needle;
   retry?: Needle;
   start?: Needle;
 }
 
+type SkillRarity = 'common' | 'rare' | 'epic';
+
 const SKILL_NUMBER_RECTS_IN_SCREENSHOT: Rect[] = [
-  { x: 645, y: 108, w: 66, h: 26 },
-  { x: 1172, y: 108, w: 66, h: 26 },
-  { x: 1697, y: 108, w: 66, h: 26 },
+  { x: 453, y: 80, w: 43, h: 15 },
+  { x: 825, y: 80, w: 43, h: 15 },
+  { x: 1196, y: 80, w: 43, h: 15 },
 ];
 
 const MIN_SKILL_NUMBER = 1;
@@ -287,13 +290,14 @@ async function loadRerollNeedle(): Promise<Needle | undefined> {
 }
 
 async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
-  const [loot2, retry, start] = await Promise.all([
+  const [loot2, pvpOk, retry, start] = await Promise.all([
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'loot_2.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'pvp_ok.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'retry.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'start.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
   ]);
 
-  return { loot2, retry, start };
+  return { loot2, pvpOk, retry, start };
 }
 
 function findSkillRarityMatches(
@@ -340,6 +344,20 @@ function selectSkillRarityMatches(matches: readonly SkillRarityMatch[]): SkillRa
     .sort((a, b) => a.found.x - b.found.x);
 }
 
+function skillRarityFromNeedleName(needleName: string): SkillRarity | undefined {
+  const rarity = needleDisplayName(needleName);
+  if (rarity === 'common' || rarity === 'rare' || rarity === 'epic') {
+    return rarity;
+  }
+
+  return;
+}
+
+function selectedSkillRarity(matches: readonly SkillRarityMatch[]): SkillRarity | undefined {
+  const [match] = matches;
+  return match ? skillRarityFromNeedleName(match.needle.name) : undefined;
+}
+
 function skillNumberRectsInScreen(screen: ScreenCapture): Rect[] {
   return SKILL_NUMBER_RECTS_IN_SCREENSHOT.map((rect) => ({
     ...rect,
@@ -358,7 +376,23 @@ function skillNumberOcrRects(rect: Rect): Rect[] {
   ];
 }
 
-function parseFixedSkillNumber(rawNumber: string): number | undefined {
+function isSkillNumberValidForRarity(
+  rawNumber: string,
+  number: number,
+  rarity?: SkillRarity,
+): boolean {
+  if (rarity === 'common') {
+    return number < 100;
+  }
+
+  if (rarity === 'rare' || rarity === 'epic') {
+    return rawNumber.length === 3 && number >= 100;
+  }
+
+  return true;
+}
+
+function parseFixedSkillNumber(rawNumber: string, rarity?: SkillRarity): number | undefined {
   if (!/^\d+$/.test(rawNumber)) {
     return;
   }
@@ -368,12 +402,17 @@ function parseFixedSkillNumber(rawNumber: string): number | undefined {
     return;
   }
 
+  if (!isSkillNumberValidForRarity(rawNumber, number, rarity)) {
+    return;
+  }
+
   return number;
 }
 
 async function readFixedSkillNumber(
   screen: ScreenCapture,
   rect: Rect,
+  rarity?: SkillRarity,
 ): Promise<FixedSkillNumberRead> {
   const attempts: FixedSkillNumberReadAttempt[] = [];
 
@@ -387,7 +426,7 @@ async function readFixedSkillNumber(
       };
       attempts.push(attempt);
 
-      const number = parseFixedSkillNumber(rawNumber);
+      const number = parseFixedSkillNumber(rawNumber, rarity);
       if (attempts.length === 1 && number !== undefined) {
         return {
           rect,
@@ -400,7 +439,7 @@ async function readFixedSkillNumber(
   }
 
   const validAttempts = attempts.flatMap((attempt, index) => {
-    const number = parseFixedSkillNumber(attempt.rawNumber);
+    const number = parseFixedSkillNumber(attempt.rawNumber, rarity);
     return number === undefined ? [] : [{ attempt, index, number }];
   });
 
@@ -447,11 +486,14 @@ async function readFixedSkillNumber(
   };
 }
 
-async function readFixedSkillNumbers(screen: ScreenCapture): Promise<FixedSkillNumberRead[]> {
+async function readFixedSkillNumbers(
+  screen: ScreenCapture,
+  rarity?: SkillRarity,
+): Promise<FixedSkillNumberRead[]> {
   const reads: FixedSkillNumberRead[] = [];
 
   for (const rect of skillNumberRectsInScreen(screen)) {
-    reads.push(await readFixedSkillNumber(screen, rect));
+    reads.push(await readFixedSkillNumber(screen, rect, rarity));
   }
 
   return reads;
@@ -617,6 +659,10 @@ async function handleScrcpyActionNeedles(
     return true;
   }
 
+  if (await clickFirstFoundAction(screen, needles.pvpOk)) {
+    return true;
+  }
+
   if (AUTO_CLICK_RETRY && (await clickFirstFoundAction(screen, needles.retry))) {
     return true;
   }
@@ -674,6 +720,7 @@ async function saveSkillRarityDebugScreenshots(
   const frameName = frameDebugName(startedAt);
   debugSkillRarityScreenshotCount += 1;
   const frameDir = path.join(DEBUG_SKILL_RARITY_SCREENSHOTS_DIR, frameName);
+  const expectedSkillNumberRarity = selectedSkillRarity(matches);
   await fs.mkdir(frameDir, { recursive: true });
   await saveCanvasPng(
     path.join(frameDir, `${frameName}_annotated.png`),
@@ -685,6 +732,7 @@ async function saveSkillRarityDebugScreenshots(
     capturedAt: new Date(startedAt).toISOString(),
     screenRegion: SCREEN_REGION,
     selectedRarity: matches[0]?.needle.name,
+    expectedSkillNumberRarity,
     numberReads: reads.map((read, index) => ({
       index: index + 1,
       rawNumber: read.rawNumber,
@@ -693,7 +741,7 @@ async function saveSkillRarityDebugScreenshots(
       rectInSavedScreenshot: SKILL_NUMBER_RECTS_IN_SCREENSHOT[index],
       attempts: read.attempts.map((attempt) => ({
         rawNumber: attempt.rawNumber,
-        number: parseFixedSkillNumber(attempt.rawNumber),
+        number: parseFixedSkillNumber(attempt.rawNumber, expectedSkillNumberRarity),
         rect: attempt.rect,
         rectInSavedScreenshot: {
           ...attempt.rect,
@@ -873,8 +921,9 @@ async function main(): Promise<void> {
         if (!handledScrcpyAction) {
           const allSkillRarityMatches = findSkillRarityMatches(screen, skillRarityNeedles);
           const skillRarityMatches = selectSkillRarityMatches(allSkillRarityMatches);
+          const skillRarity = selectedSkillRarity(skillRarityMatches);
           const skillNumberReads =
-            skillRarityMatches.length > 0 ? await readFixedSkillNumbers(screen) : [];
+            skillRarityMatches.length > 0 ? await readFixedSkillNumbers(screen, skillRarity) : [];
           await saveSkillRarityDebugScreenshots(
             screen,
             skillRarityMatches,
