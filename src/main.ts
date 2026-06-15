@@ -87,8 +87,17 @@ interface SkillPickDecision {
 }
 
 interface ScrcpyActionNeedles {
+  closeButton?: Needle;
+  closeOffer1?: Needle;
+  closeOffer2?: Needle;
+  closeOffer3?: Needle;
   loot2?: Needle;
   pvpOk?: Needle;
+  questionMarkTreasure?: Needle;
+  rewardDarksteel?: Needle;
+  rewardOrbs?: Needle;
+  rewardRage?: Needle;
+  rewardRubies?: Needle;
   retry?: Needle;
   start?: Needle;
 }
@@ -117,11 +126,16 @@ const REROLL_NEEDLE_SETTINGS: NeedleSettings = {
   overlapThreshold: 0.5,
 };
 const SCRCPY_ACTION_NEEDLE_SETTINGS: NeedleSettings = {
+  matchThreshold: 0.8,
+  maxResults: 1,
+  overlapThreshold: 0.5,
+};
+const CLOSE_OFFER_NEEDLE_SETTINGS: NeedleSettings = {
   matchThreshold: 0.9,
   maxResults: 1,
   overlapThreshold: 0.5,
 };
-const AUTO_CLICK_RETRY = false;
+const AUTO_CLICK_RETRY = true;
 const LOOT_2_AFTER_CLICK_DELAY_MS = 500;
 
 const SKILL_CHOICE_OCR_OPTIONS: OcrImageOptions = { scale: 5, threshold: false };
@@ -321,14 +335,78 @@ async function loadRerollNeedle(): Promise<Needle | undefined> {
 }
 
 async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
-  const [loot2, pvpOk, retry, start] = await Promise.all([
+  const [
+    closeButton,
+    closeOffer1,
+    closeOffer2,
+    closeOffer3,
+    loot2,
+    pvpOk,
+    questionMarkTreasure,
+    rewardDarksteel,
+    rewardOrbs,
+    rewardRage,
+    rewardRubies,
+    retry,
+    start,
+  ] = await Promise.all([
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'close_button.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'close_offer_1.png'),
+      CLOSE_OFFER_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'close_offer_2.png'),
+      CLOSE_OFFER_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'close_offer_3.png'),
+      CLOSE_OFFER_NEEDLE_SETTINGS,
+    ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'loot_2.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'pvp_ok.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'question_mark_treasure.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'reward_darksteel.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'reward_orbs.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'reward_rage.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'reward_rubies.png'),
+      SCRCPY_ACTION_NEEDLE_SETTINGS,
+    ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'retry.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'start.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
   ]);
 
-  return { loot2, pvpOk, retry, start };
+  return {
+    closeButton,
+    closeOffer1,
+    closeOffer2,
+    closeOffer3,
+    loot2,
+    pvpOk,
+    questionMarkTreasure,
+    rewardDarksteel,
+    rewardOrbs,
+    rewardRage,
+    rewardRubies,
+    retry,
+    start,
+  };
 }
 
 function findSkillRarityMatches(
@@ -681,12 +759,79 @@ async function clickFirstFoundAction(screen: ScreenCapture, needle?: Needle): Pr
   return true;
 }
 
+function findFirstNeedleMatch(
+  screen: ScreenCapture,
+  needles: readonly (Needle | undefined)[],
+): { needle: Needle; found: FindRes } | undefined {
+  for (const needle of needles) {
+    if (!needle) {
+      continue;
+    }
+
+    const [found] = findAllInScreen(screen, needle, { maxResults: 1 });
+    if (found) {
+      return { needle, found };
+    }
+  }
+
+  return;
+}
+
+async function handleCloseOffer(
+  screen: ScreenCapture,
+  needles: ScrcpyActionNeedles,
+): Promise<boolean> {
+  const closeOfferMatch = findFirstNeedleMatch(screen, [
+    needles.closeOffer1,
+    needles.closeOffer2,
+    needles.closeOffer3,
+  ]);
+  if (!closeOfferMatch) {
+    return false;
+  }
+
+  console.log(
+    `found: ${needleDisplayName(closeOfferMatch.needle.name)}, score: ${closeOfferMatch.found.score?.toFixed(3)}`,
+  );
+
+  if (await clickFirstFoundAction(screen, needles.closeButton)) {
+    return true;
+  }
+
+  console.warn('close offer is visible, but close_button was not found');
+  return true;
+}
+
 async function handleScrcpyActionNeedles(
   screen: ScreenCapture,
   needles: ScrcpyActionNeedles,
 ): Promise<boolean> {
   if (await clickFirstFoundAction(screen, needles.loot2)) {
     await setTimeout(LOOT_2_AFTER_CLICK_DELAY_MS);
+    return true;
+  }
+
+  if (await handleCloseOffer(screen, needles)) {
+    return true;
+  }
+
+  if (await clickFirstFoundAction(screen, needles.questionMarkTreasure)) {
+    return true;
+  }
+
+  if (await clickFirstFoundAction(screen, needles.rewardDarksteel)) {
+    return true;
+  }
+
+  if (await clickFirstFoundAction(screen, needles.rewardOrbs)) {
+    return true;
+  }
+
+  if (await clickFirstFoundAction(screen, needles.rewardRage)) {
+    return true;
+  }
+
+  if (await clickFirstFoundAction(screen, needles.rewardRubies)) {
     return true;
   }
 
