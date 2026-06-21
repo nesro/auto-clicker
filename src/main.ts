@@ -92,6 +92,8 @@ interface ScrcpyActionNeedles {
   closeOffer2?: Needle;
   closeOffer3?: Needle;
   loot2?: Needle;
+  offerBlacksmiths?: Needle;
+  offerJourneyman?: Needle;
   pvpOk?: Needle;
   questionMarkTreasure?: Needle;
   rewardDarksteel?: Needle;
@@ -131,7 +133,7 @@ const SCRCPY_ACTION_NEEDLE_SETTINGS: NeedleSettings = {
   overlapThreshold: 0.5,
 };
 const CLOSE_OFFER_NEEDLE_SETTINGS: NeedleSettings = {
-  matchThreshold: 0.9,
+  matchThreshold: 0.99,
   maxResults: 1,
   overlapThreshold: 0.5,
 };
@@ -341,6 +343,8 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
     closeOffer2,
     closeOffer3,
     loot2,
+    offerBlacksmiths,
+    offerJourneyman,
     pvpOk,
     questionMarkTreasure,
     rewardDarksteel,
@@ -367,6 +371,14 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
       CLOSE_OFFER_NEEDLE_SETTINGS,
     ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'loot_2.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'offer_blacksmiths.png'),
+      CLOSE_OFFER_NEEDLE_SETTINGS,
+    ),
+    loadOptionalNeedle(
+      path.join(SKILL_NEEDLE_DIR, 'offer_journeyman.png'),
+      CLOSE_OFFER_NEEDLE_SETTINGS,
+    ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'pvp_ok.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(
       path.join(SKILL_NEEDLE_DIR, 'question_mark_treasure.png'),
@@ -398,6 +410,8 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
     closeOffer2,
     closeOffer3,
     loot2,
+    offerBlacksmiths,
+    offerJourneyman,
     pvpOk,
     questionMarkTreasure,
     rewardDarksteel,
@@ -785,6 +799,8 @@ async function handleCloseOffer(
     needles.closeOffer1,
     needles.closeOffer2,
     needles.closeOffer3,
+    needles.offerBlacksmiths,
+    needles.offerJourneyman,
   ]);
   if (!closeOfferMatch) {
     return false;
