@@ -112,6 +112,11 @@ interface ScrcpyActionNeedles {
   rewardRage?: Needle;
   rewardRubies?: Needle;
   retry?: Needle;
+  ruinsArrowDown?: Needle;
+  ruinsEnter?: Needle;
+  ruinsToDepth?: Needle;
+  ruinsWorld?: Needle;
+  ruinsYes?: Needle;
   start?: Needle;
 }
 
@@ -149,6 +154,7 @@ const CLOSE_OFFER_NEEDLE_SETTINGS: NeedleSettings = {
   overlapThreshold: 0.5,
 };
 const AUTO_CLICK_RETRY = true;
+const ENABLE_RUINS = false;
 const LOOT_2_AFTER_CLICK_DELAY_MS = 500;
 
 const SKILL_CHOICE_OCR_OPTIONS: OcrImageOptions = { scale: 5, threshold: false };
@@ -307,6 +313,14 @@ async function loadRerollNeedle(): Promise<Needle | undefined> {
   return loadOptionalNeedle(REROLL_NEEDLE_PATH, REROLL_NEEDLE_SETTINGS);
 }
 
+async function loadRuinsActionNeedle(fileName: string): Promise<Needle | undefined> {
+  if (!ENABLE_RUINS) {
+    return;
+  }
+
+  return loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, fileName), SCRCPY_ACTION_NEEDLE_SETTINGS);
+}
+
 async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
   const [
     closeButton,
@@ -323,6 +337,11 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
     rewardRage,
     rewardRubies,
     retry,
+    ruinsArrowDown,
+    ruinsEnter,
+    ruinsToDepth,
+    ruinsWorld,
+    ruinsYes,
     start,
   ] = await Promise.all([
     loadOptionalNeedle(
@@ -372,6 +391,11 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
       SCRCPY_ACTION_NEEDLE_SETTINGS,
     ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'retry.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
+    loadRuinsActionNeedle('ruins_arrow_down.png'),
+    loadRuinsActionNeedle('ruins_enter.png'),
+    loadRuinsActionNeedle('ruins_to_depth.png'),
+    loadRuinsActionNeedle('ruins_world.png'),
+    loadRuinsActionNeedle('ruins_yes.png'),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'start.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
   ]);
 
@@ -390,6 +414,11 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
     rewardRage,
     rewardRubies,
     retry,
+    ruinsArrowDown,
+    ruinsEnter,
+    ruinsToDepth,
+    ruinsWorld,
+    ruinsYes,
     start,
   };
 }
@@ -628,6 +657,7 @@ function createSkillContext(
     activeSkills: runState.activeSkills,
     activeSkillTexts: activeSkillTexts(strategy, runState),
     elapsedMs: nowMs - runState.startedAtMs,
+    flags: runState.flags,
     gameMode: runState.gameMode,
     nowMs,
     offeredSkillNumbers: offeredSkillNumbers(reads),
@@ -896,6 +926,30 @@ async function handleScrcpyActionNeedles(
     return true;
   }
 
+  if (ENABLE_RUINS) {
+    if (await clickEnabledActionNeedle(screen, runState, 'ruinsWorld', needles.ruinsWorld)) {
+      return true;
+    }
+
+    if (await clickEnabledActionNeedle(screen, runState, 'ruinsEnter', needles.ruinsEnter)) {
+      return true;
+    }
+
+    if (
+      await clickEnabledActionNeedle(screen, runState, 'ruinsArrowDown', needles.ruinsArrowDown)
+    ) {
+      return true;
+    }
+
+    if (await clickEnabledActionNeedle(screen, runState, 'ruinsToDepth', needles.ruinsToDepth)) {
+      return true;
+    }
+
+    if (await clickEnabledActionNeedle(screen, runState, 'ruinsYes', needles.ruinsYes)) {
+      return true;
+    }
+  }
+
   return clickEnabledActionNeedle(screen, runState, 'start', needles.start);
 }
 
@@ -1112,7 +1166,7 @@ async function main(): Promise<void> {
     const needlesByName = await loadNeedlesByNameFromDir(NEEDLE_DIR, NEEDLE_NAME_BY_KEY);
     const needles = ACTIVE_NEEDLES.map((name) => needlesByName[name]);
     const skillRarityNeedles = await loadSkillRarityNeedles();
-    const skillRunState = createSkillRunState(GAME_MODE);
+    const skillRunState = createSkillRunState(GAME_MODE, { ruins: ENABLE_RUINS });
     const rerollNeedle = await loadRerollNeedle();
     const scrcpyActionNeedles = await loadScrcpyActionNeedles();
 

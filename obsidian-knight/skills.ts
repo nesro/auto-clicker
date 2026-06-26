@@ -1,9 +1,4 @@
-import {
-  BaseSkill,
-  createSkillStrategy,
-  type SkillEvaluationContext,
-  type SkillRunState,
-} from '../src/skill-strategy.js';
+import { BaseSkill, createSkillStrategy, type SkillBehaviorSet } from '../src/skill-strategy.js';
 
 // Skill: add potion
 export class Skill001 extends BaseSkill {
@@ -15,17 +10,16 @@ export class Skill001 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100164;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100164,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100164,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit after dodge
@@ -38,17 +32,16 @@ export class Skill002 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000087;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000087,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000087,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: max dmg +6
@@ -61,17 +54,16 @@ export class Skill003 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000058;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000058,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000058,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: first ranged dodged
@@ -84,17 +76,16 @@ export class Skill004 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000057;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000057,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000057,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit 55% after crit
@@ -107,17 +98,16 @@ export class Skill005 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000056;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000056,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000056,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: hit next after halting
@@ -130,17 +120,16 @@ export class Skill006 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100156;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100156,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100156,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 15% hit all others
@@ -153,17 +142,16 @@ export class Skill007 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100155;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100155,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100155,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +30% attack speed
@@ -176,17 +164,16 @@ export class Skill008 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000082;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000082,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000082,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 4 attack without missing thorn dmg
@@ -199,17 +186,16 @@ export class Skill009 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100154;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100154,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100154,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +40% first attack crit chance
@@ -222,17 +208,16 @@ export class Skill010 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000086;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000086,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000086,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +75% dmg next attack per ranged hit
@@ -245,17 +230,16 @@ export class Skill011 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100153;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100153,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100153,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: healing and rage fountain doubled
@@ -268,17 +252,16 @@ export class Skill012 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100128;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100128,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100128,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: min dmg +6
@@ -291,17 +274,16 @@ export class Skill013 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000033;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000033,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000033,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: aid arrows
@@ -314,17 +296,16 @@ export class Skill014 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100127;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100127,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100127,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: random common skill at camps
@@ -337,17 +318,16 @@ export class Skill015 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100126;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100126,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100126,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: increase dmg every hit on enemy
@@ -360,17 +340,16 @@ export class Skill016 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000032;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000032,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000032,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit +17.5%
@@ -383,17 +362,16 @@ export class Skill017 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000090;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000090,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000090,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: melee dodge +17.5%
@@ -406,17 +384,16 @@ export class Skill018 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000089;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000089,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000089,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit dmg +1.5%
@@ -429,17 +406,16 @@ export class Skill019 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000039;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000039,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000039,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 35% crit hits random
@@ -452,17 +428,16 @@ export class Skill020 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000038;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000038,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000038,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit has 20% chance to explode
@@ -475,17 +450,16 @@ export class Skill021 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000037;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000037,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000037,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit repairs 13 armor
@@ -498,17 +472,16 @@ export class Skill022 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000035;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000035,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000035,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit has 25% change to execute
@@ -521,17 +494,16 @@ export class Skill023 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000036;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000036,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000036,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit 20% change inc max hp
@@ -544,17 +516,16 @@ export class Skill024 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100157;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100157,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100157,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -567,17 +538,16 @@ export class Skill025 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 0;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Critical Kills Always Give Rage Bonus
@@ -590,17 +560,16 @@ export class Skill026 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100149;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100149,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100149,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Critical Kills Drains HP from Random
@@ -613,17 +582,16 @@ export class Skill027 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100148;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100148,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100148,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every 10th Attack Hits All In Sight
@@ -636,17 +604,16 @@ export class Skill028 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100144;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100144,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100144,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Critical Kills Increase Max HP by 18
@@ -659,17 +626,16 @@ export class Skill029 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100147;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100147,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100147,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Damage to Enemies Behind Doubles
@@ -682,17 +648,16 @@ export class Skill030 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100143;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100143,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100143,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Deal 55 Damage to All Nearby Enemies Now
@@ -705,17 +670,16 @@ export class Skill031 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100051;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100051,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100051,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Deal 11 Damage to Melee Enemies On Sight
@@ -728,17 +692,16 @@ export class Skill032 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100050;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100050,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100050,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Deflect Every 4th Attack
@@ -751,17 +714,16 @@ export class Skill033 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000054;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000054,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000054,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodge has 20% Change to Explode Enemy
@@ -774,17 +736,16 @@ export class Skill034 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000052;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000052,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000052,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Drains 7hp
@@ -797,17 +758,16 @@ export class Skill035 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100160;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100160,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100160,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +25% Dodge for Next Attack After Dodging
@@ -820,17 +780,16 @@ export class Skill036 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000051;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000051,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000051,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodge Next 12 Attacks
@@ -843,17 +802,16 @@ export class Skill037 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100049;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100049,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100049,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Ranged Attacks Returns Them
@@ -866,17 +824,16 @@ export class Skill038 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100125;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100125,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100125,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Twice in a Row Heals 20 HP
@@ -889,17 +846,16 @@ export class Skill039 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000030;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000030,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000030,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Failing to Dodge 8 Arrow in a Row Fully Heals
@@ -912,17 +868,16 @@ export class Skill040 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100045;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100045,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100045,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Melee Hits Enemy Behind
@@ -935,17 +890,16 @@ export class Skill041 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000050;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000050,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000050,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Does 6 Damage to All Enemies Behind
@@ -958,17 +912,16 @@ export class Skill042 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100159;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100159,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100159,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Overhealing Deals Damage
@@ -981,17 +934,16 @@ export class Skill043 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100132;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100132,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100132,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodging Ranged Repairs 16 Armor
@@ -1004,17 +956,16 @@ export class Skill044 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000053;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000053,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000053,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Drain 80 HP from Nearby Enemy Now
@@ -1027,17 +978,16 @@ export class Skill045 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100041;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100041,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100041,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Damage to Enemy In Back Drains 7 HP from Random
@@ -1050,17 +1000,16 @@ export class Skill046 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100124;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100124,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100124,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Potions Make Nearby Enemies Take +250% Damage
@@ -1073,17 +1022,16 @@ export class Skill047 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100135;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100135,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100135,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Potions Deflect Damage for 9.5 Seconds
@@ -1096,17 +1044,16 @@ export class Skill048 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000112;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000112,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000112,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Potions Will Mark Enemy to Explode
@@ -1119,17 +1066,16 @@ export class Skill049 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100133;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100133,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100133,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Enemies have 20% Chance to be Executed On Sight
@@ -1142,17 +1088,16 @@ export class Skill050 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100130;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100130,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100130,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Attack has 30% Change to Hit Next Enemy
@@ -1165,17 +1110,16 @@ export class Skill051 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000031;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000031,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000031,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Each Kill Stuns One Archer for 5.5 Seconds
@@ -1188,17 +1132,16 @@ export class Skill052 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000034;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000034,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000034,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Enemies 3rd Melee Attack Heals and Repairs Armor
@@ -1211,17 +1154,16 @@ export class Skill053 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000055;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000055,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000055,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Enemies Never Damage HP and Armor Simultaneously
@@ -1234,17 +1176,16 @@ export class Skill054 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100131;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100131,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100131,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: When Dying, Enemy Attacks Ally in Front of it For 4x Damage
@@ -1257,17 +1198,16 @@ export class Skill055 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100034;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100034,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100034,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Critical Chance +3.5% per Hit Taken, Resets on Critical Hit
@@ -1280,17 +1220,16 @@ export class Skill056 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000088;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000088,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000088,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every 3rd Critical Hit Does +350% Damage
@@ -1303,17 +1242,16 @@ export class Skill057 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100150;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100150,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100150,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every Fifth Attack Hits Next Enemy, Dealing 200% Damage
@@ -1326,17 +1264,16 @@ export class Skill058 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100129;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100129,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100129,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: If First Enemy After Halting is an Archer, Execute it
@@ -1349,17 +1286,16 @@ export class Skill059 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100052;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100052,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100052,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Explode One Random Nearby Enemy Now
@@ -1372,17 +1308,16 @@ export class Skill060 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100047;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100047,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100047,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Receiving an Angel of Death Doubles it
@@ -1395,17 +1330,16 @@ export class Skill061 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100039;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100039,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100039,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Potions Increase Damage by +375% for 3 Attacks
@@ -1418,17 +1352,16 @@ export class Skill062 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100134;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100134,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100134,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal 25 HP for Killing Enemy Unstruck
@@ -1441,17 +1374,16 @@ export class Skill063 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100053;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100053,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100053,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal 6 HP for Each Arrow Fired
@@ -1464,17 +1396,16 @@ export class Skill064 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100181;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100181,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100181,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Fire 8 Air Arrows (2-29 Dmg) Now
@@ -1487,17 +1418,16 @@ export class Skill065 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100054;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100054,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100054,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: First Attack After Halting Heals
@@ -1510,17 +1440,16 @@ export class Skill066 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100178;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100178,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100178,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: First Attack After Repairs Armor
@@ -1533,17 +1462,16 @@ export class Skill067 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100177;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100177,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100177,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Automatically Drink Potions at 0 HP
@@ -1556,17 +1484,16 @@ export class Skill068 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100030;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100030,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100030,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Fountains also Give Gold
@@ -1579,17 +1506,16 @@ export class Skill069 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100031;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100031,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100031,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal Fountains Increases Max HP
@@ -1602,17 +1528,16 @@ export class Skill070 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100040;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100040,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100040,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Fountains also Repair Armor
@@ -1625,17 +1550,16 @@ export class Skill071 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100044;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100044,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100044,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Full Armor Sets Dodge to 85%
@@ -1648,17 +1572,16 @@ export class Skill072 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100056;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100056,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100056,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Getting Fully Healed Repairs 30 Armor
@@ -1671,17 +1594,16 @@ export class Skill073 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100055;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100055,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100055,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +300 Damage every 5th Attack
@@ -1694,17 +1616,16 @@ export class Skill074 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100123;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100123,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100123,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Repairing Armor Deals Damage
@@ -1717,17 +1638,16 @@ export class Skill075 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100145;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100145,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100145,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Get 1 Random Rare Skill Now
@@ -1740,17 +1660,16 @@ export class Skill076 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100176;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100176,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100176,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal 23 HP Every Time Enemy Drops Gold
@@ -1763,17 +1682,16 @@ export class Skill077 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100163;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100163,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100163,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Deal 33 Damage Every Time an Enemy Drops Gold
@@ -1786,17 +1704,16 @@ export class Skill078 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100162;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100162,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100162,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Having Armor Increases Dodge by 15%
@@ -1809,17 +1726,16 @@ export class Skill079 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100175;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100175,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100175,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 0 Armor Increases Melee Dodge by 15%
@@ -1832,17 +1748,16 @@ export class Skill080 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100174;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100174,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100174,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Surviving with 11HP and 0 Armor Repairs All Armor
@@ -1855,17 +1770,16 @@ export class Skill081 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100033;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100033,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100033,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Healing on Level Up +30 HP
@@ -1878,17 +1792,16 @@ export class Skill082 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100032;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100032,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100032,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Healing Fountains also Give Rage
@@ -1901,17 +1814,16 @@ export class Skill083 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100057;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100057,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100057,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Fully Heal Once After Killing 10 Enemies
@@ -1924,17 +1836,16 @@ export class Skill084 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100048;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100048,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100048,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal 20 HP when Armor Depletes
@@ -1947,17 +1858,16 @@ export class Skill085 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100043;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100043,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100043,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Also Heal Equivalent to Armor at Camps
@@ -1970,17 +1880,16 @@ export class Skill086 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100042;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100042,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100042,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 35% Change for Ranged Attacks to Heal
@@ -1993,17 +1902,16 @@ export class Skill087 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100180;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100180,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100180,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Healing Deals 13 Thorn Damage
@@ -2016,17 +1924,16 @@ export class Skill088 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100179;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100179,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100179,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal Fully Now
@@ -2039,17 +1946,16 @@ export class Skill089 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100058;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100058,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100058,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Heal 22HP Every 4 Seconds Spent Running
@@ -2062,17 +1968,16 @@ export class Skill090 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100161;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100161,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100161,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Dodge is 80% if HP less than 34
@@ -2085,17 +1990,16 @@ export class Skill091 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000091;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000091,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000091,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every Attack Deals 6 Damage to Enemy in Back
@@ -2108,17 +2012,16 @@ export class Skill092 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100173;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100173,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100173,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Archers Behind, when Damaged, will shoot Ally (5.5x Dmg); Archers Behind, when Damaged, will shoot All Allies (3x Dmg)
@@ -2132,17 +2035,16 @@ export class Skill093 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100060;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100060,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100060,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2155,17 +2057,16 @@ export class Skill094 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 0;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 70% Change for Lethal Attacks to Hit Random Enemy Instead
@@ -2178,17 +2079,16 @@ export class Skill095 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100029;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100029,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100029,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +55% Critical Chance on Archers
@@ -2201,17 +2101,16 @@ export class Skill096 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000085;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000085,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000085,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Chance for Enemy to Drop Gold +110%
@@ -2224,17 +2123,16 @@ export class Skill097 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100038;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100038,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100038,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Getting Common SKills Increases Max Armor by 24
@@ -2247,17 +2145,16 @@ export class Skill098 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100037;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100037,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100037,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +19 Max HP at Level Up
@@ -2270,17 +2167,16 @@ export class Skill099 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100036;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100036,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100036,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Execute 1 Random Enemy at Level Up
@@ -2293,17 +2189,16 @@ export class Skill100 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100035;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100035,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100035,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every 8th Critical Hit Executes the Enemy
@@ -2316,17 +2211,16 @@ export class Skill101 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000084;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000084,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000084,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Instant Level Up at Camp
@@ -2339,17 +2233,16 @@ export class Skill102 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100146;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100146,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100146,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Killing Enemy Behind Heals 25HP
@@ -2362,17 +2255,16 @@ export class Skill103 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100152;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100152,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100152,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Killing deals 17 Thorn Damage to Random
@@ -2385,17 +2277,16 @@ export class Skill104 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100151;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100151,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100151,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Killing an Enemy Behind Fires 3 Air Arrows 2-24Dmg
@@ -2408,17 +2299,16 @@ export class Skill105 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100046;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100046,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100046,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Every Kill increases Ranged Dodge by 1%
@@ -2431,17 +2321,16 @@ export class Skill106 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000049;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000049,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000049,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2454,17 +2343,16 @@ export class Skill107 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100028;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100028,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100028,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2477,17 +2365,16 @@ export class Skill108 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100027;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100027,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100027,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2500,17 +2387,16 @@ export class Skill109 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100026;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100026,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100026,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2523,17 +2409,16 @@ export class Skill110 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100025;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100025,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100025,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2546,17 +2431,16 @@ export class Skill111 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100024;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100024,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100024,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2569,17 +2453,16 @@ export class Skill112 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000029;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000029,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000029,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2592,17 +2475,16 @@ export class Skill113 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100023;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100023,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100023,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2615,17 +2497,16 @@ export class Skill114 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100022;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100022,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100022,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2638,17 +2519,16 @@ export class Skill115 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100021;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100021,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100021,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2661,17 +2541,16 @@ export class Skill116 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100020;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100020,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100020,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2684,17 +2563,16 @@ export class Skill117 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100019;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100019,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100019,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2707,17 +2585,16 @@ export class Skill118 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100018;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100018,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100018,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2730,17 +2607,16 @@ export class Skill119 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100017;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100017,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100017,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2753,17 +2629,16 @@ export class Skill120 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100016;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100016,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100016,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2776,17 +2651,16 @@ export class Skill121 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100015;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100015,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100015,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2799,17 +2673,16 @@ export class Skill122 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100104;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100104,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100104,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2822,17 +2695,16 @@ export class Skill123 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100103;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100103,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100103,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2845,17 +2717,16 @@ export class Skill124 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100102;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100102,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100102,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2868,17 +2739,16 @@ export class Skill125 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100101;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100101,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100101,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2891,17 +2761,16 @@ export class Skill126 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100100;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100100,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100100,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2914,17 +2783,16 @@ export class Skill127 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100014;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100014,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100014,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -2937,17 +2805,16 @@ export class Skill128 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100013;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100013,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100013,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Ranged Dodge +17.5%
@@ -2960,17 +2827,16 @@ export class Skill129 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000081;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000081,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000081,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: dodging ranged stabs
@@ -2983,17 +2849,16 @@ export class Skill130 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000048;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000048,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000048,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3006,17 +2871,16 @@ export class Skill131 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100099;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100099,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100099,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3029,17 +2893,16 @@ export class Skill132 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100098;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100098,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100098,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3052,17 +2915,16 @@ export class Skill133 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100097;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100097,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100097,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3075,17 +2937,16 @@ export class Skill134 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100012;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100012,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100012,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3098,17 +2959,16 @@ export class Skill135 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100096;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100096,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100096,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3121,17 +2981,16 @@ export class Skill136 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100095;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100095,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100095,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3144,17 +3003,16 @@ export class Skill137 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100094;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100094,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100094,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3167,17 +3025,16 @@ export class Skill138 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100093;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100093,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100093,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3190,17 +3047,16 @@ export class Skill139 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100092;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100092,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100092,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3213,17 +3069,16 @@ export class Skill140 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100091;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100091,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100091,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3236,17 +3091,16 @@ export class Skill141 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100090;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100090,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100090,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3259,17 +3113,16 @@ export class Skill142 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100089;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100089,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100089,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3282,17 +3135,16 @@ export class Skill143 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100106;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100106,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100106,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3305,17 +3157,16 @@ export class Skill144 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100105;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100105,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100105,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: reroll
@@ -3328,17 +3179,16 @@ export class Skill145 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000001;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000001,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000001,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3351,17 +3201,16 @@ export class Skill146 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100108;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100108,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100108,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3374,17 +3223,16 @@ export class Skill147 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100107;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100107,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100107,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3397,17 +3245,16 @@ export class Skill148 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100088;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100088,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100088,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3420,17 +3267,16 @@ export class Skill149 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100087;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100087,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100087,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3443,17 +3289,16 @@ export class Skill150 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100086;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100086,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100086,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3466,17 +3311,16 @@ export class Skill151 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100085;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100085,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100085,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3489,17 +3333,16 @@ export class Skill152 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100084;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100084,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100084,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3512,17 +3355,16 @@ export class Skill153 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100083;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100083,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100083,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3535,17 +3377,16 @@ export class Skill154 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100082;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100082,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100082,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3558,17 +3399,16 @@ export class Skill155 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100081;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100081,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100081,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: xx Damage Behind Stuns
@@ -3581,17 +3421,16 @@ export class Skill156 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100172;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100172,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100172,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Potions Stuns Nearby Enemies for 10.5 Seconds
@@ -3604,17 +3443,16 @@ export class Skill157 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000111;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000111,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000111,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3627,17 +3465,16 @@ export class Skill158 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100080;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100080,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100080,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3650,17 +3487,16 @@ export class Skill159 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100079;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100079,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100079,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3673,17 +3509,16 @@ export class Skill160 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100078;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100078,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100078,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3696,17 +3531,16 @@ export class Skill161 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100077;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100077,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100077,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3719,17 +3553,16 @@ export class Skill162 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100076;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100076,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100076,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: first attack after halt 3.5x dmg
@@ -3742,17 +3575,16 @@ export class Skill163 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100182;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100182,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100182,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3765,17 +3597,16 @@ export class Skill164 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 0;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: halting inc dodge and crit
@@ -3788,17 +3619,16 @@ export class Skill165 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000096;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000096,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000096,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3811,17 +3641,16 @@ export class Skill166 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000026;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000026,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000026,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3834,17 +3663,16 @@ export class Skill167 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100109;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100109,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100109,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3857,17 +3685,16 @@ export class Skill168 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100110;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100110,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100110,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3880,17 +3707,16 @@ export class Skill169 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100111;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100111,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100111,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3903,17 +3729,16 @@ export class Skill170 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100112;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100112,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100112,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3926,17 +3751,16 @@ export class Skill171 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000025;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000025,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000025,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3949,17 +3773,16 @@ export class Skill172 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000024;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000024,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000024,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3972,17 +3795,16 @@ export class Skill173 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000023;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000023,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000023,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -3995,17 +3817,16 @@ export class Skill174 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000022;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000022,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000022,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4018,17 +3839,16 @@ export class Skill175 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000047;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000047,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000047,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 2 crits heals
@@ -4041,17 +3861,16 @@ export class Skill176 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000110;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000110,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000110,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4064,17 +3883,16 @@ export class Skill177 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100171;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100171,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100171,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4087,17 +3905,16 @@ export class Skill178 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100170;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100170,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100170,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4110,17 +3927,16 @@ export class Skill179 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100011;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100011,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100011,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: deflect after kill
@@ -4133,17 +3949,16 @@ export class Skill180 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000080;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000080,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000080,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: deflect after level
@@ -4156,17 +3971,16 @@ export class Skill181 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000079;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000079,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000079,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: dodge +17.5%
@@ -4179,17 +3993,16 @@ export class Skill182 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000095;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000095,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000095,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4202,17 +4015,16 @@ export class Skill183 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000046;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000046,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000046,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4225,17 +4037,16 @@ export class Skill184 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100113;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100113,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100113,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: double dodge ranged
@@ -4248,17 +4059,16 @@ export class Skill185 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000094;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000094,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000094,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4271,17 +4081,16 @@ export class Skill186 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100114;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100114,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100114,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4294,17 +4103,16 @@ export class Skill187 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100169;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100169,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100169,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4317,17 +4125,16 @@ export class Skill188 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100010;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100010,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100010,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4340,17 +4147,16 @@ export class Skill189 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100009;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100009,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100009,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4363,17 +4169,16 @@ export class Skill190 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100075;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100075,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100075,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Crit stuns
@@ -4386,17 +4191,16 @@ export class Skill191 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000114;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000114,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000114,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: Crit refils
@@ -4409,17 +4213,16 @@ export class Skill192 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000113;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000113,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000113,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4432,17 +4235,16 @@ export class Skill193 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100074;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100074,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100074,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4455,17 +4257,16 @@ export class Skill194 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100073;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100073,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100073,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4478,17 +4279,16 @@ export class Skill195 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100168;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100168,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100168,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: dodge stuns
@@ -4501,17 +4301,16 @@ export class Skill196 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000109;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000109,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000109,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4524,17 +4323,16 @@ export class Skill197 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100142;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100142,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100142,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4547,17 +4345,16 @@ export class Skill198 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100072;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100072,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100072,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4570,17 +4367,16 @@ export class Skill199 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100141;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100141,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100141,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4593,17 +4389,16 @@ export class Skill200 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100140;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100140,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100140,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4616,17 +4411,16 @@ export class Skill201 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100139;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100139,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100139,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4639,17 +4433,16 @@ export class Skill202 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000078;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000078,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000078,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4662,17 +4455,16 @@ export class Skill203 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100007;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100007,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100007,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4685,17 +4477,16 @@ export class Skill204 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100006;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100006,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100006,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4708,17 +4499,16 @@ export class Skill205 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100005;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100005,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100005,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4731,17 +4521,16 @@ export class Skill206 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100071;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100071,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100071,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4754,17 +4543,16 @@ export class Skill207 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100070;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100070,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100070,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4777,17 +4565,16 @@ export class Skill208 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100167;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100167,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100167,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 0 armor inc crit %
@@ -4800,17 +4587,16 @@ export class Skill209 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000108;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000108,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000108,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4823,17 +4609,16 @@ export class Skill210 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100166;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100166,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100166,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit heals
@@ -4846,17 +4631,16 @@ export class Skill211 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000107;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000107,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000107,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4869,17 +4653,16 @@ export class Skill212 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100115;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100115,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100115,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4892,17 +4675,16 @@ export class Skill213 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000045;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000045,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000045,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4915,17 +4697,16 @@ export class Skill214 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100004;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100004,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100004,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4938,17 +4719,16 @@ export class Skill215 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000077;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000077,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000077,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4961,17 +4741,16 @@ export class Skill216 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100158;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100158,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100158,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -4984,17 +4763,16 @@ export class Skill217 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100069;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100069,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100069,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5007,17 +4785,16 @@ export class Skill218 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100068;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100068,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100068,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5030,17 +4807,16 @@ export class Skill219 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100067;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100067,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100067,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5053,17 +4829,16 @@ export class Skill220 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100116;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100116,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100116,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5076,17 +4851,16 @@ export class Skill221 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100117;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100117,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100117,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5099,17 +4873,16 @@ export class Skill222 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100118;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100118,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100118,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5122,17 +4895,16 @@ export class Skill223 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100119;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100119,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100119,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5145,17 +4917,16 @@ export class Skill224 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100165;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100165,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100165,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5168,17 +4939,16 @@ export class Skill225 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000044;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000044,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000044,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5191,17 +4961,16 @@ export class Skill226 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000043;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000043,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000043,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5214,17 +4983,16 @@ export class Skill227 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000042;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000042,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000042,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: dodge refils
@@ -5237,17 +5005,16 @@ export class Skill228 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000106;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000106,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000106,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5260,17 +5027,16 @@ export class Skill229 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100121;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100121,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100121,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5283,17 +5049,16 @@ export class Skill230 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100120;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100120,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100120,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5306,17 +5071,16 @@ export class Skill231 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000021;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000021,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000021,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5329,17 +5093,16 @@ export class Skill232 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100066;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100066,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100066,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5352,17 +5115,16 @@ export class Skill233 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100065;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100065,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100065,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5375,17 +5137,16 @@ export class Skill234 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100064;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100064,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100064,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5398,17 +5159,16 @@ export class Skill235 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000020;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000020,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000020,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5421,17 +5181,16 @@ export class Skill236 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000019;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000019,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000019,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5444,17 +5203,16 @@ export class Skill237 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100063;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100063,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100063,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5467,17 +5225,16 @@ export class Skill238 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000018;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000018,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000018,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5490,17 +5247,16 @@ export class Skill239 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100138;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100138,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100138,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5513,17 +5269,16 @@ export class Skill240 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100062;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100062,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100062,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: triple rage
@@ -5536,17 +5291,16 @@ export class Skill241 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100183;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100183,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100183,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5559,17 +5313,16 @@ export class Skill242 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100008;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100008,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100008,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5582,17 +5335,16 @@ export class Skill243 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100061;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100061,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100061,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5605,17 +5357,16 @@ export class Skill244 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000017;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000017,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000017,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5628,17 +5379,16 @@ export class Skill245 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000016;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000016,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000016,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5651,17 +5401,16 @@ export class Skill246 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000015;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000015,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000015,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5674,17 +5423,16 @@ export class Skill247 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000014;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000014,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000014,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5697,17 +5445,16 @@ export class Skill248 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000013;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000013,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000013,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5720,17 +5467,16 @@ export class Skill249 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000012;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000012,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000012,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5743,17 +5489,16 @@ export class Skill250 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000011;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000011,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000011,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: block archers in combat; crit hits all
@@ -5766,17 +5511,16 @@ export class Skill251 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000105;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000105,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000105,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5789,17 +5533,16 @@ export class Skill252 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 0;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 0,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5812,17 +5555,16 @@ export class Skill253 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000028;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000028,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000028,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5835,17 +5577,16 @@ export class Skill254 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000027;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000027,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000027,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: crit stuns all,
@@ -5858,17 +5599,16 @@ export class Skill255 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000115;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000115,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000115,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5881,17 +5621,16 @@ export class Skill256 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000076;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000076,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000076,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5904,17 +5643,16 @@ export class Skill257 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000010;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000010,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000010,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5927,17 +5665,16 @@ export class Skill258 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000009;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000009,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000009,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5950,17 +5687,16 @@ export class Skill259 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000008;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000008,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000008,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5973,17 +5709,16 @@ export class Skill260 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000007;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000007,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000007,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -5996,17 +5731,16 @@ export class Skill261 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100122;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100122,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100122,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6019,17 +5753,16 @@ export class Skill262 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000075;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000075,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000075,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6042,17 +5775,16 @@ export class Skill263 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000074;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000074,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000074,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6065,17 +5797,16 @@ export class Skill264 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000073;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000073,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000073,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6088,17 +5819,16 @@ export class Skill265 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000072;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000072,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000072,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6111,17 +5841,16 @@ export class Skill266 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000071;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000071,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000071,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6134,17 +5863,16 @@ export class Skill267 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000097;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000097,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000097,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6157,17 +5885,16 @@ export class Skill268 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000006;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000006,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000006,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6180,17 +5907,16 @@ export class Skill269 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000005;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000005,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000005,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6203,17 +5929,16 @@ export class Skill270 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100003;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100003,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100003,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6226,17 +5951,16 @@ export class Skill271 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000004;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000004,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000004,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6249,17 +5973,16 @@ export class Skill272 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000003;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000003,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000003,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6272,17 +5995,16 @@ export class Skill273 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000002;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000002,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000002,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6295,17 +6017,16 @@ export class Skill274 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000070;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000070,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000070,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6318,17 +6039,16 @@ export class Skill275 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000069;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000069,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000069,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6341,17 +6061,16 @@ export class Skill276 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000068;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000068,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000068,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6364,17 +6083,16 @@ export class Skill277 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000067;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000067,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000067,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 60% chance keep potion
@@ -6387,17 +6105,16 @@ export class Skill278 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000101;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000101,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000101,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6410,17 +6127,16 @@ export class Skill279 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100137;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100137,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100137,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6433,17 +6149,16 @@ export class Skill280 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100136;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100136,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100136,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: 20 % refill on kill
@@ -6456,17 +6171,16 @@ export class Skill281 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000100;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000100,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000100,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6479,17 +6193,16 @@ export class Skill282 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000066;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000066,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000066,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6502,17 +6215,16 @@ export class Skill283 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000065;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000065,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000065,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6525,17 +6237,16 @@ export class Skill284 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100002;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100002,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100002,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6548,17 +6259,16 @@ export class Skill285 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000093;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000093,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000093,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6571,17 +6281,16 @@ export class Skill286 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000041;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000041,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000041,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6594,17 +6303,16 @@ export class Skill287 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000040;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000040,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000040,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: min dmg = max dmg
@@ -6617,17 +6325,16 @@ export class Skill288 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000083;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000083,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000083,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: no more common skills
@@ -6640,17 +6347,16 @@ export class Skill289 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000103;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000103,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000103,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: dodge twice heals
@@ -6663,17 +6369,16 @@ export class Skill290 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000102;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000102,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000102,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: +1 max dmg per skill
@@ -6686,17 +6391,16 @@ export class Skill291 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000099;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000099,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000099,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6709,17 +6413,16 @@ export class Skill292 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000098;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000098,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000098,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6732,17 +6435,16 @@ export class Skill293 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000064;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000064,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000064,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6755,17 +6457,16 @@ export class Skill294 extends BaseSkill {
 
   override readonly tags = ['legacy', 'rerollIfPossible'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 100001;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 100001,
+      shouldRerollIfPossible: true,
+    },
+    ruins: {
+      weight: 100001,
+      shouldRerollIfPossible: true,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // Skill: healing repairs armor
@@ -6778,17 +6479,16 @@ export class Skill295 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000092;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000092,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000092,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6801,17 +6501,16 @@ export class Skill296 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000063;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000063,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000063,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6824,17 +6523,16 @@ export class Skill297 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000062;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000062,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000062,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6847,17 +6545,16 @@ export class Skill298 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000061;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000061,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000061,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6870,17 +6567,16 @@ export class Skill299 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000060;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000060,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000060,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 // TODO: Add skill description.
@@ -6893,17 +6589,16 @@ export class Skill300 extends BaseSkill {
 
   override readonly tags = ['legacy', 'alwaysPick'] as const;
 
-  override weight(_context: SkillEvaluationContext): number {
-    return 1000059;
-  }
-
-  override shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return false;
-  }
-
-  override applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
-  }
+  protected override readonly behaviors = {
+    default: {
+      weight: 1000059,
+      shouldRerollIfPossible: false,
+    },
+    ruins: {
+      weight: 1000059,
+      shouldRerollIfPossible: false,
+    },
+  } as const satisfies SkillBehaviorSet;
 }
 
 export const skills = [

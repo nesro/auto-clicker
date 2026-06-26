@@ -10,14 +10,20 @@ export interface SkillStats {
 export interface SkillRunState {
   activeSkills: Set<number>;
   actionNeedleOverrides: Map<string, boolean>;
+  flags: SkillFeatureFlags;
   gameMode: GameMode;
   startedAtMs: number;
+}
+
+export interface SkillFeatureFlags {
+  ruins: boolean;
 }
 
 export interface SkillEvaluationContext {
   activeSkills: ReadonlySet<number>;
   activeSkillTexts: readonly string[];
   elapsedMs: number;
+  flags: SkillFeatureFlags;
   gameMode: GameMode;
   nowMs: number;
   offeredSkillNumbers: readonly number[];
@@ -26,6 +32,20 @@ export interface SkillEvaluationContext {
   skillNumber: number;
   stats: SkillStats;
 }
+
+export type SkillBehaviorValue<T> = T | ((context: SkillEvaluationContext) => T);
+
+export interface SkillBehavior {
+  applyEffects?: (context: SkillEvaluationContext, runState: SkillRunState) => void;
+  shouldRerollIfPossible: SkillBehaviorValue<boolean>;
+  weight: SkillBehaviorValue<number>;
+}
+
+export type SkillBehaviorVariant = 'default' | 'ruins';
+
+export type SkillBehaviorSet = { default: SkillBehavior } & Partial<
+  Record<Exclude<SkillBehaviorVariant, 'default'>, SkillBehavior>
+>;
 
 export interface SkillDefinition {
   applyEffects: (context: SkillEvaluationContext, runState: SkillRunState) => void;
@@ -37,6 +57,13 @@ export interface SkillDefinition {
 }
 
 export class BaseSkill implements SkillDefinition {
+  protected readonly behaviors: SkillBehaviorSet = {
+    default: {
+      shouldRerollIfPossible: true,
+      weight: 0,
+    },
+  };
+
   readonly skillNumber: number;
   readonly tags: readonly string[] = ['unconfigured'];
   readonly text: string = 'TODO: Add skill description.';
@@ -45,16 +72,35 @@ export class BaseSkill implements SkillDefinition {
     this.skillNumber = skillNumber;
   }
 
-  weight(_context: SkillEvaluationContext): number {
-    return 0;
+  protected behaviorVariant(context: SkillEvaluationContext): SkillBehaviorVariant {
+    switch (true) {
+      case context.flags.ruins:
+        return 'ruins';
+      default:
+        return 'default';
+    }
   }
 
-  shouldRerollIfPossible(_context: SkillEvaluationContext): boolean {
-    return true;
+  protected behavior(context: SkillEvaluationContext): SkillBehavior {
+    return this.behaviors[this.behaviorVariant(context)] ?? this.behaviors.default;
   }
 
-  applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
-    return;
+  protected behaviorValue<T>(value: SkillBehaviorValue<T>, context: SkillEvaluationContext): T {
+    return typeof value === 'function'
+      ? (value as (context: SkillEvaluationContext) => T)(context)
+      : value;
+  }
+
+  weight(context: SkillEvaluationContext): number {
+    return this.behaviorValue(this.behavior(context).weight, context);
+  }
+
+  shouldRerollIfPossible(context: SkillEvaluationContext): boolean {
+    return this.behaviorValue(this.behavior(context).shouldRerollIfPossible, context);
+  }
+
+  applyEffects(context: SkillEvaluationContext, _runState: SkillRunState): void {
+    this.behavior(context).applyEffects?.(context, _runState);
   }
 }
 
@@ -63,10 +109,15 @@ export interface SkillStrategy {
   skills: ReadonlyMap<number, SkillDefinition>;
 }
 
-export function createSkillRunState(gameMode: GameMode, startedAtMs = Date.now()): SkillRunState {
+export function createSkillRunState(
+  gameMode: GameMode,
+  flags: SkillFeatureFlags,
+  startedAtMs = Date.now(),
+): SkillRunState {
   return {
     activeSkills: new Set(),
     actionNeedleOverrides: new Map(),
+    flags,
     gameMode,
     startedAtMs,
   };
