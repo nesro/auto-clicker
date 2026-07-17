@@ -9,6 +9,7 @@
     "start": "tsx src/main.ts",
     "dev": "tsx watch src/index.ts",
     "generate:needles": "node scripts/generate-needle-names.mjs obsidian-knight/needles_dung src/generated/needle-names.ts",
+    "skill-priorities": "tsx scripts/skill-priorities.ts",
     "start2": "node dist/index.js",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint .",
@@ -33,9 +34,7 @@
     "@nut-tree-fork/nut-js": "^4.2.6",
     "@techstark/opencv-js": "4.11.0-release.1",
     "canvas": "^3.1.2",
-    "opencv4nodejs": "^5.6.0",
-    "robotjs": "^0.6.0",
-    "screenshot-desktop": "^1.15.1",
-    "tesseract.js": "^5.1.1"
+    "tesseract.js": "^5.1.1",
+    "screenshot-desktop": "^1.15.1"
   }
 }

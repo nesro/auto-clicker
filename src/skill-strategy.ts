@@ -19,6 +19,12 @@ export interface SkillFeatureFlags {
   ruins: boolean;
 }
 
+export interface SkillTuning {
+  offenseDefenseBalance: number;
+  rerollAggression: number;
+  rerollThreshold: number;
+}
+
 export interface SkillEvaluationContext {
   activeSkills: ReadonlySet<number>;
   activeSkillTexts: readonly string[];
@@ -31,24 +37,19 @@ export interface SkillEvaluationContext {
   runStartedAtMs: number;
   skillNumber: number;
   stats: SkillStats;
+  tuning: SkillTuning;
 }
 
-export type SkillBehaviorValue<T> = T | ((context: SkillEvaluationContext) => T);
-
-export interface SkillBehavior {
-  applyEffects?: (context: SkillEvaluationContext, runState: SkillRunState) => void;
-  shouldRerollIfPossible: SkillBehaviorValue<boolean>;
-  weight: SkillBehaviorValue<number>;
-}
-
-export type SkillBehaviorVariant = 'default' | 'ruins';
-
-export type SkillBehaviorSet = { default: SkillBehavior } & Partial<
-  Record<Exclude<SkillBehaviorVariant, 'default'>, SkillBehavior>
->;
+export type SkillWeightValue = number | ((context: SkillEvaluationContext) => number);
 
 export interface SkillDefinition {
   applyEffects: (context: SkillEvaluationContext, runState: SkillRunState) => void;
+  defensivePickWeight?: SkillWeightValue;
+  offensivePickWeight?: SkillWeightValue;
+  pickScore: (context: SkillEvaluationContext) => number;
+  pickWeight: SkillWeightValue;
+  rerollScore: (context: SkillEvaluationContext) => number;
+  rerollWeight: SkillWeightValue;
   shouldRerollIfPossible: (context: SkillEvaluationContext) => boolean;
   skillNumber: number;
   tags: readonly string[];
@@ -56,14 +57,45 @@ export interface SkillDefinition {
   weight: (context: SkillEvaluationContext) => number;
 }
 
-export class BaseSkill implements SkillDefinition {
-  protected readonly behaviors: SkillBehaviorSet = {
-    default: {
-      shouldRerollIfPossible: true,
-      weight: 0,
-    },
-  };
+const LEGACY_REROLL_WEIGHT = 100;
+const DEFAULT_REROLL_AGGRESSION = 0.5;
+const DEFAULT_OFFENSE_DEFENSE_BALANCE = 0.5;
 
+function clamp(value: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) {
+    return min;
+  }
+
+  return Math.min(max, Math.max(min, value));
+}
+
+function lerp(from: number, to: number, amount: number): number {
+  return from + (to - from) * amount;
+}
+
+function rerollThresholdFromAggression(rerollAggression: number): number {
+  return LEGACY_REROLL_WEIGHT * (1 - clamp(rerollAggression, 0, 1));
+}
+
+export function createSkillTuning(tuning: Partial<SkillTuning> = {}): SkillTuning {
+  const rerollAggression = clamp(tuning.rerollAggression ?? DEFAULT_REROLL_AGGRESSION, 0, 1);
+
+  return {
+    offenseDefenseBalance: clamp(
+      tuning.offenseDefenseBalance ?? DEFAULT_OFFENSE_DEFENSE_BALANCE,
+      0,
+      1,
+    ),
+    rerollAggression,
+    rerollThreshold: tuning.rerollThreshold ?? rerollThresholdFromAggression(rerollAggression),
+  };
+}
+
+export class BaseSkill implements SkillDefinition {
+  readonly defensivePickWeight?: SkillWeightValue;
+  readonly offensivePickWeight?: SkillWeightValue;
+  readonly pickWeight: SkillWeightValue = 0;
+  readonly rerollWeight: SkillWeightValue = LEGACY_REROLL_WEIGHT;
   readonly skillNumber: number;
   readonly tags: readonly string[] = ['unconfigured'];
   readonly text: string = 'TODO: Add skill description.';
@@ -72,35 +104,50 @@ export class BaseSkill implements SkillDefinition {
     this.skillNumber = skillNumber;
   }
 
-  protected behaviorVariant(context: SkillEvaluationContext): SkillBehaviorVariant {
-    switch (true) {
-      case context.flags.ruins:
-        return 'ruins';
-      default:
-        return 'default';
-    }
-  }
-
-  protected behavior(context: SkillEvaluationContext): SkillBehavior {
-    return this.behaviors[this.behaviorVariant(context)] ?? this.behaviors.default;
-  }
-
-  protected behaviorValue<T>(value: SkillBehaviorValue<T>, context: SkillEvaluationContext): T {
+  protected weightValue(value: SkillWeightValue, context: SkillEvaluationContext): number {
     return typeof value === 'function'
-      ? (value as (context: SkillEvaluationContext) => T)(context)
+      ? (value as (context: SkillEvaluationContext) => number)(context)
       : value;
   }
 
+  protected optionalWeightValue(
+    value: SkillWeightValue | undefined,
+    context: SkillEvaluationContext,
+  ): number | undefined {
+    return value === undefined ? undefined : this.weightValue(value, context);
+  }
+
+  protected balancedPickWeight(context: SkillEvaluationContext): number {
+    return this.weightValue(this.pickWeight, context);
+  }
+
+  pickScore(context: SkillEvaluationContext): number {
+    const balance = clamp(context.tuning.offenseDefenseBalance, 0, 1);
+    const balanced = this.balancedPickWeight(context);
+    const offensive = this.optionalWeightValue(this.offensivePickWeight, context) ?? balanced;
+    const defensive = this.optionalWeightValue(this.defensivePickWeight, context) ?? balanced;
+
+    if (balance >= DEFAULT_OFFENSE_DEFENSE_BALANCE) {
+      return lerp(balanced, offensive, (balance - DEFAULT_OFFENSE_DEFENSE_BALANCE) * 2);
+    }
+
+    return lerp(defensive, balanced, balance * 2);
+  }
+
   weight(context: SkillEvaluationContext): number {
-    return this.behaviorValue(this.behavior(context).weight, context);
+    return this.pickScore(context);
+  }
+
+  rerollScore(context: SkillEvaluationContext): number {
+    return this.weightValue(this.rerollWeight, context);
   }
 
   shouldRerollIfPossible(context: SkillEvaluationContext): boolean {
-    return this.behaviorValue(this.behavior(context).shouldRerollIfPossible, context);
+    return this.rerollScore(context) > context.tuning.rerollThreshold;
   }
 
-  applyEffects(context: SkillEvaluationContext, _runState: SkillRunState): void {
-    this.behavior(context).applyEffects?.(context, _runState);
+  applyEffects(_context: SkillEvaluationContext, _runState: SkillRunState): void {
+    return;
   }
 }
 
@@ -131,7 +178,7 @@ export function isActionNeedleEnabled(
   return runState.actionNeedleOverrides.get(needleKey) ?? defaultEnabled;
 }
 
-export function setActionNeedleEnabled(
+function setActionNeedleEnabled(
   runState: SkillRunState,
   needleKey: string,
   enabled: boolean,
@@ -139,14 +186,14 @@ export function setActionNeedleEnabled(
   runState.actionNeedleOverrides.set(needleKey, enabled);
 }
 
-export function gameModeValue<T>(
+function gameModeValue<T>(
   context: SkillEvaluationContext,
   values: Partial<Record<GameMode, T>> & { default: T },
 ): T {
   return values[context.gameMode] ?? values.default;
 }
 
-export function defaultSkillDefinition(skillNumber: number): SkillDefinition {
+function defaultSkillDefinition(skillNumber: number): SkillDefinition {
   return new BaseSkill(skillNumber);
 }
 
@@ -163,7 +210,7 @@ export function markSkillPicked(
   getSkillDefinition(strategy, context.skillNumber).applyEffects(context, runState);
 }
 
-export function activeSkillDefinitions(
+function activeSkillDefinitions(
   strategy: SkillStrategy,
   runState: SkillRunState,
 ): SkillDefinition[] {

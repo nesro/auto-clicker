@@ -1,535 +1,346 @@
-import { BaseSkill, createSkillStrategy, type SkillBehaviorSet } from '../src/skill-strategy.js';
+import {
+  BaseSkill,
+  createSkillStrategy,
+  type SkillEvaluationContext,
+} from '../src/skill-strategy.js';
 
-// Skill: add potion
-export class Skill001 extends BaseSkill {
+class Skill001 extends BaseSkill {
   constructor() {
     super(1);
   }
 
   override readonly text = 'add potion';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100164,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100164,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100164;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: crit after dodge
-export class Skill002 extends BaseSkill {
+class Skill002 extends BaseSkill {
   constructor() {
     super(2);
   }
 
   override readonly text = 'crit after dodge';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000087,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000087,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000087;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: max dmg +6
-export class Skill003 extends BaseSkill {
+class Skill003 extends BaseSkill {
   constructor() {
     super(3);
   }
 
   override readonly text = 'max dmg +6';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000058,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000058,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000058;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: first ranged dodged
-export class Skill004 extends BaseSkill {
+class Skill004 extends BaseSkill {
   constructor() {
     super(4);
   }
 
   override readonly text = 'first ranged dodged';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000057,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000057,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000057;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit 55% after crit
-export class Skill005 extends BaseSkill {
+class Skill005 extends BaseSkill {
   constructor() {
     super(5);
   }
 
   override readonly text = 'crit 55% after crit';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000056,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000056,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000056;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: hit next after halting
-export class Skill006 extends BaseSkill {
+class Skill006 extends BaseSkill {
   constructor() {
     super(6);
   }
 
   override readonly text = 'hit next after halting';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100156,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100156,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100156;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 15% hit all others
-export class Skill007 extends BaseSkill {
+class Skill007 extends BaseSkill {
   constructor() {
     super(7);
   }
 
   override readonly text = '15% hit all others';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100155,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100155,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100155;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +30% attack speed
-export class Skill008 extends BaseSkill {
+class Skill008 extends BaseSkill {
   constructor() {
     super(8);
   }
 
   override readonly text = '+30% attack speed';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000082,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000082,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000082;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: 4 attack without missing thorn dmg
-export class Skill009 extends BaseSkill {
+class Skill009 extends BaseSkill {
   constructor() {
     super(9);
   }
 
   override readonly text = '4 attack without missing thorn dmg';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100154,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100154,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100154;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +40% first attack crit chance
-export class Skill010 extends BaseSkill {
+class Skill010 extends BaseSkill {
   constructor() {
     super(10);
   }
 
   override readonly text = '+40% first attack crit chance';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000086,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000086,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000086;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: +75% dmg next attack per ranged hit
-export class Skill011 extends BaseSkill {
+class Skill011 extends BaseSkill {
   constructor() {
     super(11);
   }
 
   override readonly text = '+75% dmg next attack per ranged hit';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100153,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100153,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100153;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: healing and rage fountain doubled
-export class Skill012 extends BaseSkill {
+class Skill012 extends BaseSkill {
   constructor() {
     super(12);
   }
 
   override readonly text = 'healing and rage fountain doubled';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100128,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100128,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100128;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: min dmg +6
-export class Skill013 extends BaseSkill {
+class Skill013 extends BaseSkill {
   constructor() {
     super(13);
   }
 
   override readonly text = 'min dmg +6';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000033,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000033,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000033;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: aid arrows
-export class Skill014 extends BaseSkill {
+class Skill014 extends BaseSkill {
   constructor() {
     super(14);
   }
 
   override readonly text = 'aid arrows';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100127,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100127,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100127;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: random common skill at camps
-export class Skill015 extends BaseSkill {
+class Skill015 extends BaseSkill {
   constructor() {
     super(15);
   }
 
   override readonly text = 'random common skill at camps';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100126,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100126,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100126;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: increase dmg every hit on enemy
-export class Skill016 extends BaseSkill {
+class Skill016 extends BaseSkill {
   constructor() {
     super(16);
   }
 
   override readonly text = 'increase dmg every hit on enemy';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000032,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000032,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000032;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit +17.5%
-export class Skill017 extends BaseSkill {
+class Skill017 extends BaseSkill {
   constructor() {
     super(17);
   }
 
   override readonly text = 'crit +17.5%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000090,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000090,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000090;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: melee dodge +17.5%
-export class Skill018 extends BaseSkill {
+class Skill018 extends BaseSkill {
   constructor() {
     super(18);
   }
 
   override readonly text = 'melee dodge +17.5%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000089,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000089,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000089;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit dmg +1.5%
-export class Skill019 extends BaseSkill {
+class Skill019 extends BaseSkill {
   constructor() {
     super(19);
   }
 
   override readonly text = 'crit dmg +1.5%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000039,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000039,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000039;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: 35% crit hits random
-export class Skill020 extends BaseSkill {
+class Skill020 extends BaseSkill {
   constructor() {
     super(20);
   }
 
   override readonly text = '35% crit hits random';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000038,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000038,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000038;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit has 20% chance to explode
-export class Skill021 extends BaseSkill {
+class Skill021 extends BaseSkill {
   constructor() {
     super(21);
   }
 
   override readonly text = 'crit has 20% chance to explode';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000037,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000037,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000037;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit repairs 13 armor
-export class Skill022 extends BaseSkill {
+class Skill022 extends BaseSkill {
   constructor() {
     super(22);
   }
 
   override readonly text = 'crit repairs 13 armor';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000035,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000035,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000035;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit has 25% change to execute
-export class Skill023 extends BaseSkill {
+class Skill023 extends BaseSkill {
   constructor() {
     super(23);
   }
 
   override readonly text = 'crit has 25% change to execute';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000036,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000036,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000036;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit 20% change inc max hp
-export class Skill024 extends BaseSkill {
+class Skill024 extends BaseSkill {
   constructor() {
     super(24);
   }
 
   override readonly text = 'crit 20% change inc max hp';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100157,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100157,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100157;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill025 extends BaseSkill {
+class Skill025 extends BaseSkill {
   constructor() {
     super(25);
   }
@@ -538,1494 +349,950 @@ export class Skill025 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 0;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Critical Kills Always Give Rage Bonus
-export class Skill026 extends BaseSkill {
+class Skill026 extends BaseSkill {
   constructor() {
     super(26);
   }
 
   override readonly text = 'Critical Kills Always Give Rage Bonus';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100149,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100149,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100149;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Critical Kills Drains HP from Random
-export class Skill027 extends BaseSkill {
+class Skill027 extends BaseSkill {
   constructor() {
     super(27);
   }
 
   override readonly text = 'Critical Kills Drains HP from Random';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100148,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100148,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100148;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Every 10th Attack Hits All In Sight
-export class Skill028 extends BaseSkill {
+class Skill028 extends BaseSkill {
   constructor() {
     super(28);
   }
 
   override readonly text = 'Every 10th Attack Hits All In Sight';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100144,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100144,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100144;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Critical Kills Increase Max HP by 18
-export class Skill029 extends BaseSkill {
+class Skill029 extends BaseSkill {
   constructor() {
     super(29);
   }
 
   override readonly text = 'Critical Kills Increase Max HP by 18';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100147,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100147,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100147;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Damage to Enemies Behind Doubles
-export class Skill030 extends BaseSkill {
+class Skill030 extends BaseSkill {
   constructor() {
     super(30);
   }
 
   override readonly text = 'Damage to Enemies Behind Doubles';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100143,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100143,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100143;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Deal 55 Damage to All Nearby Enemies Now
-export class Skill031 extends BaseSkill {
+class Skill031 extends BaseSkill {
   constructor() {
     super(31);
   }
 
   override readonly text = 'Deal 55 Damage to All Nearby Enemies Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100051,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100051,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100051;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Deal 11 Damage to Melee Enemies On Sight
-export class Skill032 extends BaseSkill {
+class Skill032 extends BaseSkill {
   constructor() {
     super(32);
   }
 
   override readonly text = 'Deal 11 Damage to Melee Enemies On Sight';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100050,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100050,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100050;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Deflect Every 4th Attack
-export class Skill033 extends BaseSkill {
+class Skill033 extends BaseSkill {
   constructor() {
     super(33);
   }
 
   override readonly text = 'Deflect Every 4th Attack';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000054,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000054,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000054;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Dodge has 20% Change to Explode Enemy
-export class Skill034 extends BaseSkill {
+class Skill034 extends BaseSkill {
   constructor() {
     super(34);
   }
 
   override readonly text = 'Dodge has 20% Change to Explode Enemy';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000052,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000052,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000052;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Dodging Drains 7hp
-export class Skill035 extends BaseSkill {
+class Skill035 extends BaseSkill {
   constructor() {
     super(35);
   }
 
   override readonly text = 'Dodging Drains 7hp';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100160,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100160,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100160;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +25% Dodge for Next Attack After Dodging
-export class Skill036 extends BaseSkill {
+class Skill036 extends BaseSkill {
   constructor() {
     super(36);
   }
 
   override readonly text = '+25% Dodge for Next Attack After Dodging';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000051,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000051,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000051;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Dodge Next 12 Attacks
-export class Skill037 extends BaseSkill {
+class Skill037 extends BaseSkill {
   constructor() {
     super(37);
   }
 
   override readonly text = 'Dodge Next 12 Attacks';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100049,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100049,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100049;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Dodging Ranged Attacks Returns Them
-export class Skill038 extends BaseSkill {
+class Skill038 extends BaseSkill {
   constructor() {
     super(38);
   }
 
   override readonly text = 'Dodging Ranged Attacks Returns Them';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100125,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100125,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100125;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Dodging Twice in a Row Heals 20 HP
-export class Skill039 extends BaseSkill {
+class Skill039 extends BaseSkill {
   constructor() {
     super(39);
   }
 
   override readonly text = 'Dodging Twice in a Row Heals 20 HP';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000030,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000030,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000030;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Failing to Dodge 8 Arrow in a Row Fully Heals
-export class Skill040 extends BaseSkill {
+class Skill040 extends BaseSkill {
   constructor() {
     super(40);
   }
 
   override readonly text = 'Failing to Dodge 8 Arrow in a Row Fully Heals';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100045,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100045,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100045;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Dodging Melee Hits Enemy Behind
-export class Skill041 extends BaseSkill {
+class Skill041 extends BaseSkill {
   constructor() {
     super(41);
   }
 
   override readonly text = 'Dodging Melee Hits Enemy Behind';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000050,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000050,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000050;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Dodging Does 6 Damage to All Enemies Behind
-export class Skill042 extends BaseSkill {
+class Skill042 extends BaseSkill {
   constructor() {
     super(42);
   }
 
   override readonly text = 'Dodging Does 6 Damage to All Enemies Behind';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100159,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100159,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100159;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Overhealing Deals Damage
-export class Skill043 extends BaseSkill {
+class Skill043 extends BaseSkill {
   constructor() {
     super(43);
   }
 
   override readonly text = 'Overhealing Deals Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100132,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100132,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100132;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Dodging Ranged Repairs 16 Armor
-export class Skill044 extends BaseSkill {
+class Skill044 extends BaseSkill {
   constructor() {
     super(44);
   }
 
   override readonly text = 'Dodging Ranged Repairs 16 Armor';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000053,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000053,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000053;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Drain 80 HP from Nearby Enemy Now
-export class Skill045 extends BaseSkill {
+class Skill045 extends BaseSkill {
   constructor() {
     super(45);
   }
 
   override readonly text = 'Drain 80 HP from Nearby Enemy Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100041,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100041,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100041;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Damage to Enemy In Back Drains 7 HP from Random
-export class Skill046 extends BaseSkill {
+class Skill046 extends BaseSkill {
   constructor() {
     super(46);
   }
 
   override readonly text = 'Damage to Enemy In Back Drains 7 HP from Random';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100124,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100124,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100124;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Potions Make Nearby Enemies Take +250% Damage
-export class Skill047 extends BaseSkill {
+class Skill047 extends BaseSkill {
   constructor() {
     super(47);
   }
 
   override readonly text = 'Potions Make Nearby Enemies Take +250% Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100135,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100135,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100135;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Potions Deflect Damage for 9.5 Seconds
-export class Skill048 extends BaseSkill {
+class Skill048 extends BaseSkill {
   constructor() {
     super(48);
   }
 
   override readonly text = 'Potions Deflect Damage for 9.5 Seconds';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000112,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000112,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000112;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Potions Will Mark Enemy to Explode
-export class Skill049 extends BaseSkill {
+class Skill049 extends BaseSkill {
   constructor() {
     super(49);
   }
 
   override readonly text = 'Potions Will Mark Enemy to Explode';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100133,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100133,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100133;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Enemies have 20% Chance to be Executed On Sight
-export class Skill050 extends BaseSkill {
+class Skill050 extends BaseSkill {
   constructor() {
     super(50);
   }
 
   override readonly text = 'Enemies have 20% Chance to be Executed On Sight';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100130,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100130,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100130;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Attack has 30% Change to Hit Next Enemy
-export class Skill051 extends BaseSkill {
+class Skill051 extends BaseSkill {
   constructor() {
     super(51);
   }
 
   override readonly text = 'Attack has 30% Change to Hit Next Enemy';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000031,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000031,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000031;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Each Kill Stuns One Archer for 5.5 Seconds
-export class Skill052 extends BaseSkill {
+class Skill052 extends BaseSkill {
   constructor() {
     super(52);
   }
 
   override readonly text = 'Each Kill Stuns One Archer for 5.5 Seconds';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000034,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000034,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000034;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Enemies 3rd Melee Attack Heals and Repairs Armor
-export class Skill053 extends BaseSkill {
+class Skill053 extends BaseSkill {
   constructor() {
     super(53);
   }
 
   override readonly text = 'Enemies 3rd Melee Attack Heals and Repairs Armor';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000055,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000055,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000055;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Enemies Never Damage HP and Armor Simultaneously
-export class Skill054 extends BaseSkill {
+class Skill054 extends BaseSkill {
   constructor() {
     super(54);
   }
 
   override readonly text = 'Enemies Never Damage HP and Armor Simultaneously';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100131,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100131,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100131;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: When Dying, Enemy Attacks Ally in Front of it For 4x Damage
-export class Skill055 extends BaseSkill {
+class Skill055 extends BaseSkill {
   constructor() {
     super(55);
   }
 
   override readonly text = 'When Dying, Enemy Attacks Ally in Front of it For 4x Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100034,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100034,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100034;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Critical Chance +3.5% per Hit Taken, Resets on Critical Hit
-export class Skill056 extends BaseSkill {
+class Skill056 extends BaseSkill {
   constructor() {
     super(56);
   }
 
   override readonly text = 'Critical Chance +3.5% per Hit Taken, Resets on Critical Hit';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000088,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000088,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000088;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Every 3rd Critical Hit Does +350% Damage
-export class Skill057 extends BaseSkill {
+class Skill057 extends BaseSkill {
   constructor() {
     super(57);
   }
 
   override readonly text = 'Every 3rd Critical Hit Does +350% Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100150,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100150,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100150;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Every Fifth Attack Hits Next Enemy, Dealing 200% Damage
-export class Skill058 extends BaseSkill {
+class Skill058 extends BaseSkill {
   constructor() {
     super(58);
   }
 
   override readonly text = 'Every Fifth Attack Hits Next Enemy, Dealing 200% Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100129,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100129,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100129;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: If First Enemy After Halting is an Archer, Execute it
-export class Skill059 extends BaseSkill {
+class Skill059 extends BaseSkill {
   constructor() {
     super(59);
   }
 
   override readonly text = 'If First Enemy After Halting is an Archer, Execute it';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100052,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100052,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100052;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Explode One Random Nearby Enemy Now
-export class Skill060 extends BaseSkill {
+class Skill060 extends BaseSkill {
   constructor() {
     super(60);
   }
 
   override readonly text = 'Explode One Random Nearby Enemy Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100047,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100047,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100047;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Receiving an Angel of Death Doubles it
-export class Skill061 extends BaseSkill {
+class Skill061 extends BaseSkill {
   constructor() {
     super(61);
   }
 
   override readonly text = 'Receiving an Angel of Death Doubles it';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100039,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100039,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100039;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Potions Increase Damage by +375% for 3 Attacks
-export class Skill062 extends BaseSkill {
+class Skill062 extends BaseSkill {
   constructor() {
     super(62);
   }
 
   override readonly text = 'Potions Increase Damage by +375% for 3 Attacks';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100134,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100134,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100134;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal 25 HP for Killing Enemy Unstruck
-export class Skill063 extends BaseSkill {
+class Skill063 extends BaseSkill {
   constructor() {
     super(63);
   }
 
   override readonly text = 'Heal 25 HP for Killing Enemy Unstruck';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100053,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100053,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100053;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal 6 HP for Each Arrow Fired
-export class Skill064 extends BaseSkill {
+class Skill064 extends BaseSkill {
   constructor() {
     super(64);
   }
 
   override readonly text = 'Heal 6 HP for Each Arrow Fired';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100181,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100181,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100181;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Fire 8 Air Arrows (2-29 Dmg) Now
-export class Skill065 extends BaseSkill {
+class Skill065 extends BaseSkill {
   constructor() {
     super(65);
   }
 
   override readonly text = 'Fire 8 Air Arrows (2-29 Dmg) Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100054,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100054,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100054;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: First Attack After Halting Heals
-export class Skill066 extends BaseSkill {
+class Skill066 extends BaseSkill {
   constructor() {
     super(66);
   }
 
   override readonly text = 'First Attack After Halting Heals';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100178,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100178,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100178;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: First Attack After Repairs Armor
-export class Skill067 extends BaseSkill {
+class Skill067 extends BaseSkill {
   constructor() {
     super(67);
   }
 
   override readonly text = 'First Attack After Repairs Armor';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100177,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100177,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100177;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Automatically Drink Potions at 0 HP
-export class Skill068 extends BaseSkill {
+class Skill068 extends BaseSkill {
   constructor() {
     super(68);
   }
 
   override readonly text = 'Automatically Drink Potions at 0 HP';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100030,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100030,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100030;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Fountains also Give Gold
-export class Skill069 extends BaseSkill {
+class Skill069 extends BaseSkill {
   constructor() {
     super(69);
   }
 
   override readonly text = 'Fountains also Give Gold';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100031,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100031,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100031;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal Fountains Increases Max HP
-export class Skill070 extends BaseSkill {
+class Skill070 extends BaseSkill {
   constructor() {
     super(70);
   }
 
   override readonly text = 'Heal Fountains Increases Max HP';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100040,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100040,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100040;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Fountains also Repair Armor
-export class Skill071 extends BaseSkill {
+class Skill071 extends BaseSkill {
   constructor() {
     super(71);
   }
 
   override readonly text = 'Fountains also Repair Armor';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100044,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100044,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100044;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Full Armor Sets Dodge to 85%
-export class Skill072 extends BaseSkill {
+class Skill072 extends BaseSkill {
   constructor() {
     super(72);
   }
 
   override readonly text = 'Full Armor Sets Dodge to 85%';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100056,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100056,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100056;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Getting Fully Healed Repairs 30 Armor
-export class Skill073 extends BaseSkill {
+class Skill073 extends BaseSkill {
   constructor() {
     super(73);
   }
 
   override readonly text = 'Getting Fully Healed Repairs 30 Armor';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100055,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100055,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100055;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +300 Damage every 5th Attack
-export class Skill074 extends BaseSkill {
+class Skill074 extends BaseSkill {
   constructor() {
     super(74);
   }
 
   override readonly text = '+300 Damage every 5th Attack';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100123,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100123,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100123;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Repairing Armor Deals Damage
-export class Skill075 extends BaseSkill {
+class Skill075 extends BaseSkill {
   constructor() {
     super(75);
   }
 
   override readonly text = 'Repairing Armor Deals Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100145,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100145,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100145;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Get 1 Random Rare Skill Now
-export class Skill076 extends BaseSkill {
+class Skill076 extends BaseSkill {
   constructor() {
     super(76);
   }
 
   override readonly text = 'Get 1 Random Rare Skill Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100176,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100176,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100176;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal 23 HP Every Time Enemy Drops Gold
-export class Skill077 extends BaseSkill {
+class Skill077 extends BaseSkill {
   constructor() {
     super(77);
   }
 
   override readonly text = 'Heal 23 HP Every Time Enemy Drops Gold';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100163,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100163,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100163;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Deal 33 Damage Every Time an Enemy Drops Gold
-export class Skill078 extends BaseSkill {
+class Skill078 extends BaseSkill {
   constructor() {
     super(78);
   }
 
   override readonly text = 'Deal 33 Damage Every Time an Enemy Drops Gold';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100162,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100162,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100162;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Having Armor Increases Dodge by 15%
-export class Skill079 extends BaseSkill {
+class Skill079 extends BaseSkill {
   constructor() {
     super(79);
   }
 
   override readonly text = 'Having Armor Increases Dodge by 15%';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100175,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100175,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100175;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 0 Armor Increases Melee Dodge by 15%
-export class Skill080 extends BaseSkill {
+class Skill080 extends BaseSkill {
   constructor() {
     super(80);
   }
 
   override readonly text = '0 Armor Increases Melee Dodge by 15%';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100174,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100174,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100174;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Surviving with 11HP and 0 Armor Repairs All Armor
-export class Skill081 extends BaseSkill {
+class Skill081 extends BaseSkill {
   constructor() {
     super(81);
   }
 
   override readonly text = 'Surviving with 11HP and 0 Armor Repairs All Armor';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100033,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100033,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100033;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Healing on Level Up +30 HP
-export class Skill082 extends BaseSkill {
+class Skill082 extends BaseSkill {
   constructor() {
     super(82);
   }
 
   override readonly text = 'Healing on Level Up +30 HP';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100032,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100032,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100032;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Healing Fountains also Give Rage
-export class Skill083 extends BaseSkill {
+class Skill083 extends BaseSkill {
   constructor() {
     super(83);
   }
 
   override readonly text = 'Healing Fountains also Give Rage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100057,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100057,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100057;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Fully Heal Once After Killing 10 Enemies
-export class Skill084 extends BaseSkill {
+class Skill084 extends BaseSkill {
   constructor() {
     super(84);
   }
 
   override readonly text = 'Fully Heal Once After Killing 10 Enemies';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100048,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100048,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100048;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal 20 HP when Armor Depletes
-export class Skill085 extends BaseSkill {
+class Skill085 extends BaseSkill {
   constructor() {
     super(85);
   }
 
   override readonly text = 'Heal 20 HP when Armor Depletes';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100043,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100043,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100043;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Also Heal Equivalent to Armor at Camps
-export class Skill086 extends BaseSkill {
+class Skill086 extends BaseSkill {
   constructor() {
     super(86);
   }
 
   override readonly text = 'Also Heal Equivalent to Armor at Camps';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100042,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100042,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100042;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 35% Change for Ranged Attacks to Heal
-export class Skill087 extends BaseSkill {
+class Skill087 extends BaseSkill {
   constructor() {
     super(87);
   }
 
   override readonly text = '35% Change for Ranged Attacks to Heal';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100180,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100180,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100180;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Healing Deals 13 Thorn Damage
-export class Skill088 extends BaseSkill {
+class Skill088 extends BaseSkill {
   constructor() {
     super(88);
   }
 
   override readonly text = 'Healing Deals 13 Thorn Damage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100179,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100179,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100179;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal Fully Now
-export class Skill089 extends BaseSkill {
+class Skill089 extends BaseSkill {
   constructor() {
     super(89);
   }
 
   override readonly text = 'Heal Fully Now';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100058,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100058,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100058;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Heal 22HP Every 4 Seconds Spent Running
-export class Skill090 extends BaseSkill {
+class Skill090 extends BaseSkill {
   constructor() {
     super(90);
   }
 
   override readonly text = 'Heal 22HP Every 4 Seconds Spent Running';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100161,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100161,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100161;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Dodge is 80% if HP less than 34
-export class Skill091 extends BaseSkill {
+class Skill091 extends BaseSkill {
   constructor() {
     super(91);
   }
 
   override readonly text = 'Dodge is 80% if HP less than 34';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000091,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000091,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000091;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Every Attack Deals 6 Damage to Enemy in Back
-export class Skill092 extends BaseSkill {
+class Skill092 extends BaseSkill {
   constructor() {
     super(92);
   }
 
   override readonly text = 'Every Attack Deals 6 Damage to Enemy in Back';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100173,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100173,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100173;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Archers Behind, when Damaged, will shoot Ally (5.5x Dmg); Archers Behind, when Damaged, will shoot All Allies (3x Dmg)
-export class Skill093 extends BaseSkill {
+class Skill093 extends BaseSkill {
   constructor() {
     super(93);
   }
@@ -2033,22 +1300,14 @@ export class Skill093 extends BaseSkill {
   override readonly text =
     'Archers Behind, when Damaged, will shoot Ally (5.5x Dmg); Archers Behind, when Damaged, will shoot All Allies (3x Dmg)';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100060,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100060,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100060;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill094 extends BaseSkill {
+class Skill094 extends BaseSkill {
   constructor() {
     super(94);
   }
@@ -2057,1538 +1316,989 @@ export class Skill094 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 0;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 70% Change for Lethal Attacks to Hit Random Enemy Instead
-export class Skill095 extends BaseSkill {
+class Skill095 extends BaseSkill {
   constructor() {
     super(95);
   }
 
   override readonly text = '70% Change for Lethal Attacks to Hit Random Enemy Instead';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100029,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100029,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100029;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +55% Critical Chance on Archers
-export class Skill096 extends BaseSkill {
+class Skill096 extends BaseSkill {
   constructor() {
     super(96);
   }
 
   override readonly text = '+55% Critical Chance on Archers';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000085,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000085,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000085;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Chance for Enemy to Drop Gold +110%
-export class Skill097 extends BaseSkill {
+class Skill097 extends BaseSkill {
   constructor() {
     super(97);
   }
 
   override readonly text = 'Chance for Enemy to Drop Gold +110%';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100038,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100038,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100038;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Getting Common SKills Increases Max Armor by 24
-export class Skill098 extends BaseSkill {
+class Skill098 extends BaseSkill {
   constructor() {
     super(98);
   }
 
   override readonly text = 'Getting Common SKills Increases Max Armor by 24';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100037,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100037,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100037;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: +19 Max HP at Level Up
-export class Skill099 extends BaseSkill {
+class Skill099 extends BaseSkill {
   constructor() {
     super(99);
   }
 
   override readonly text = '+19 Max HP at Level Up';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100036,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100036,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100036;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Execute 1 Random Enemy at Level Up
-export class Skill100 extends BaseSkill {
+class Skill100 extends BaseSkill {
   constructor() {
     super(100);
   }
 
   override readonly text = 'Execute 1 Random Enemy at Level Up';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100035,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100035,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100035;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Every 8th Critical Hit Executes the Enemy
-export class Skill101 extends BaseSkill {
+class Skill101 extends BaseSkill {
   constructor() {
     super(101);
   }
 
   override readonly text = 'Every 8th Critical Hit Executes the Enemy';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000084,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000084,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000084;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Instant Level Up at Camp
-export class Skill102 extends BaseSkill {
+class Skill102 extends BaseSkill {
   constructor() {
     super(102);
   }
 
   override readonly text = 'Instant Level Up at Camp';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100146,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100146,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100146;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Killing Enemy Behind Heals 25HP
-export class Skill103 extends BaseSkill {
+class Skill103 extends BaseSkill {
   constructor() {
     super(103);
   }
 
   override readonly text = 'Killing Enemy Behind Heals 25HP';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100152,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100152,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100152;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Killing deals 17 Thorn Damage to Random
-export class Skill104 extends BaseSkill {
+class Skill104 extends BaseSkill {
   constructor() {
     super(104);
   }
 
   override readonly text = 'Killing deals 17 Thorn Damage to Random';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100151,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100151,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100151;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Killing an Enemy Behind Fires 3 Air Arrows 2-24Dmg
-export class Skill105 extends BaseSkill {
+class Skill105 extends BaseSkill {
   constructor() {
     super(105);
   }
 
   override readonly text = 'Killing an Enemy Behind Fires 3 Air Arrows 2-24Dmg';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100046,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100046,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100046;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Every Kill increases Ranged Dodge by 1%
-export class Skill106 extends BaseSkill {
+class Skill106 extends BaseSkill {
   constructor() {
     super(106);
   }
 
   override readonly text = 'Every Kill increases Ranged Dodge by 1%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000049,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000049,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000049;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill107 extends BaseSkill {
+class Skill107 extends BaseSkill {
   constructor() {
     super(107);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100028,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100028,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100028;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill108 extends BaseSkill {
+class Skill108 extends BaseSkill {
   constructor() {
     super(108);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100027,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100027,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100027;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill109 extends BaseSkill {
+class Skill109 extends BaseSkill {
   constructor() {
     super(109);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100026,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100026,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100026;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill110 extends BaseSkill {
+class Skill110 extends BaseSkill {
   constructor() {
     super(110);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100025,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100025,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100025;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill111 extends BaseSkill {
+class Skill111 extends BaseSkill {
   constructor() {
     super(111);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100024,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100024,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100024;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill112 extends BaseSkill {
+class Skill112 extends BaseSkill {
   constructor() {
     super(112);
   }
 
-  override readonly text = 'TODO: Add skill description.';
+  override readonly text = 'TODO: Add skill description. Tuned scoring example.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['example', 'balanced', 'tuned'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000029,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000029,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000029;
+
+  override readonly offensivePickWeight = (context: SkillEvaluationContext) =>
+    context.activeSkills.size < 12 ? 1000120 : 1000060;
+
+  override readonly defensivePickWeight = 1000005;
+
+  override readonly rerollWeight = (context: SkillEvaluationContext) => {
+    if (context.rarity === 'epic') {
+      return 0;
+    }
+
+    return context.activeSkills.size < 8 ? 10 : 35;
+  };
 }
 
-// TODO: Add skill description.
-export class Skill113 extends BaseSkill {
+class Skill113 extends BaseSkill {
   constructor() {
     super(113);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100023,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100023,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100023;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill114 extends BaseSkill {
+class Skill114 extends BaseSkill {
   constructor() {
     super(114);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100022,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100022,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100022;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill115 extends BaseSkill {
+class Skill115 extends BaseSkill {
   constructor() {
     super(115);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100021,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100021,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100021;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill116 extends BaseSkill {
+class Skill116 extends BaseSkill {
   constructor() {
     super(116);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100020,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100020,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100020;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill117 extends BaseSkill {
+class Skill117 extends BaseSkill {
   constructor() {
     super(117);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100019,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100019,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100019;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill118 extends BaseSkill {
+class Skill118 extends BaseSkill {
   constructor() {
     super(118);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100018,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100018,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100018;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill119 extends BaseSkill {
+class Skill119 extends BaseSkill {
   constructor() {
     super(119);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100017,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100017,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100017;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill120 extends BaseSkill {
+class Skill120 extends BaseSkill {
   constructor() {
     super(120);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100016,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100016,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100016;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill121 extends BaseSkill {
+class Skill121 extends BaseSkill {
   constructor() {
     super(121);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100015,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100015,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100015;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill122 extends BaseSkill {
+class Skill122 extends BaseSkill {
   constructor() {
     super(122);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100104,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100104,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100104;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill123 extends BaseSkill {
+class Skill123 extends BaseSkill {
   constructor() {
     super(123);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100103,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100103,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100103;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill124 extends BaseSkill {
+class Skill124 extends BaseSkill {
   constructor() {
     super(124);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100102,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100102,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100102;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill125 extends BaseSkill {
+class Skill125 extends BaseSkill {
   constructor() {
     super(125);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100101,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100101,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100101;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill126 extends BaseSkill {
+class Skill126 extends BaseSkill {
   constructor() {
     super(126);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100100,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100100,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100100;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill127 extends BaseSkill {
+class Skill127 extends BaseSkill {
   constructor() {
     super(127);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100014,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100014,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100014;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill128 extends BaseSkill {
+class Skill128 extends BaseSkill {
   constructor() {
     super(128);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100013,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100013,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100013;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Ranged Dodge +17.5%
-export class Skill129 extends BaseSkill {
+class Skill129 extends BaseSkill {
   constructor() {
     super(129);
   }
 
   override readonly text = 'Ranged Dodge +17.5%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000081,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000081,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000081;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: dodging ranged stabs
-export class Skill130 extends BaseSkill {
+class Skill130 extends BaseSkill {
   constructor() {
     super(130);
   }
 
   override readonly text = 'dodging ranged stabs';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000048,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000048,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000048;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill131 extends BaseSkill {
+class Skill131 extends BaseSkill {
   constructor() {
     super(131);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100099,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100099,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100099;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill132 extends BaseSkill {
+class Skill132 extends BaseSkill {
   constructor() {
     super(132);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100098,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100098,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100098;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill133 extends BaseSkill {
+class Skill133 extends BaseSkill {
   constructor() {
     super(133);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100097,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100097,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100097;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill134 extends BaseSkill {
+class Skill134 extends BaseSkill {
   constructor() {
     super(134);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100012,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100012,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100012;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill135 extends BaseSkill {
+class Skill135 extends BaseSkill {
   constructor() {
     super(135);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100096,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100096,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100096;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill136 extends BaseSkill {
+class Skill136 extends BaseSkill {
   constructor() {
     super(136);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100095,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100095,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100095;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill137 extends BaseSkill {
+class Skill137 extends BaseSkill {
   constructor() {
     super(137);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100094,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100094,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100094;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill138 extends BaseSkill {
+class Skill138 extends BaseSkill {
   constructor() {
     super(138);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100093,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100093,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100093;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill139 extends BaseSkill {
+class Skill139 extends BaseSkill {
   constructor() {
     super(139);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100092,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100092,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100092;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill140 extends BaseSkill {
+class Skill140 extends BaseSkill {
   constructor() {
     super(140);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100091,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100091,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100091;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill141 extends BaseSkill {
+class Skill141 extends BaseSkill {
   constructor() {
     super(141);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100090,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100090,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100090;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill142 extends BaseSkill {
+class Skill142 extends BaseSkill {
   constructor() {
     super(142);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100089,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100089,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100089;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill143 extends BaseSkill {
+class Skill143 extends BaseSkill {
   constructor() {
     super(143);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100106,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100106,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100106;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill144 extends BaseSkill {
+class Skill144 extends BaseSkill {
   constructor() {
     super(144);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100105,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100105,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100105;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: reroll
-export class Skill145 extends BaseSkill {
+class Skill145 extends BaseSkill {
   constructor() {
     super(145);
   }
 
   override readonly text = 'reroll';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000001,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000001,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000001;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill146 extends BaseSkill {
+class Skill146 extends BaseSkill {
   constructor() {
     super(146);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100108,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100108,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100108;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill147 extends BaseSkill {
+class Skill147 extends BaseSkill {
   constructor() {
     super(147);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100107,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100107,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100107;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill148 extends BaseSkill {
+class Skill148 extends BaseSkill {
   constructor() {
     super(148);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100088,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100088,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100088;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill149 extends BaseSkill {
+class Skill149 extends BaseSkill {
   constructor() {
     super(149);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100087,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100087,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100087;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill150 extends BaseSkill {
+class Skill150 extends BaseSkill {
   constructor() {
     super(150);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100086,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100086,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100086;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill151 extends BaseSkill {
+class Skill151 extends BaseSkill {
   constructor() {
     super(151);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100085,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100085,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100085;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill152 extends BaseSkill {
+class Skill152 extends BaseSkill {
   constructor() {
     super(152);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100084,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100084,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100084;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill153 extends BaseSkill {
+class Skill153 extends BaseSkill {
   constructor() {
     super(153);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100083,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100083,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100083;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill154 extends BaseSkill {
+class Skill154 extends BaseSkill {
   constructor() {
     super(154);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100082,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100082,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100082;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill155 extends BaseSkill {
+class Skill155 extends BaseSkill {
   constructor() {
     super(155);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100081,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100081,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100081;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: xx Damage Behind Stuns
-export class Skill156 extends BaseSkill {
+class Skill156 extends BaseSkill {
   constructor() {
     super(156);
   }
 
   override readonly text = 'xx Damage Behind Stuns';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100172,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100172,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100172;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Potions Stuns Nearby Enemies for 10.5 Seconds
-export class Skill157 extends BaseSkill {
+class Skill157 extends BaseSkill {
   constructor() {
     super(157);
   }
 
   override readonly text = 'Potions Stuns Nearby Enemies for 10.5 Seconds';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000111,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000111,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000111;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill158 extends BaseSkill {
+class Skill158 extends BaseSkill {
   constructor() {
     super(158);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100080,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100080,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100080;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill159 extends BaseSkill {
+class Skill159 extends BaseSkill {
   constructor() {
     super(159);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100079,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100079,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100079;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill160 extends BaseSkill {
+class Skill160 extends BaseSkill {
   constructor() {
     super(160);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100078,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100078,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100078;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill161 extends BaseSkill {
+class Skill161 extends BaseSkill {
   constructor() {
     super(161);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100077,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100077,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100077;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill162 extends BaseSkill {
+class Skill162 extends BaseSkill {
   constructor() {
     super(162);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100076,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100076,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100076;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: first attack after halt 3.5x dmg
-export class Skill163 extends BaseSkill {
+class Skill163 extends BaseSkill {
   constructor() {
     super(163);
   }
 
   override readonly text = 'first attack after halt 3.5x dmg';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100182,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100182,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100182;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill164 extends BaseSkill {
+class Skill164 extends BaseSkill {
   constructor() {
     super(164);
   }
@@ -3597,1934 +2307,1230 @@ export class Skill164 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 0;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: halting inc dodge and crit
-export class Skill165 extends BaseSkill {
+class Skill165 extends BaseSkill {
   constructor() {
     super(165);
   }
 
   override readonly text = 'halting inc dodge and crit';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000096,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000096,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000096;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill166 extends BaseSkill {
+class Skill166 extends BaseSkill {
   constructor() {
     super(166);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000026,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000026,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000026;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill167 extends BaseSkill {
+class Skill167 extends BaseSkill {
   constructor() {
     super(167);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100109,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100109,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100109;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill168 extends BaseSkill {
+class Skill168 extends BaseSkill {
   constructor() {
     super(168);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100110,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100110,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100110;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill169 extends BaseSkill {
+class Skill169 extends BaseSkill {
   constructor() {
     super(169);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100111,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100111,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100111;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill170 extends BaseSkill {
+class Skill170 extends BaseSkill {
   constructor() {
     super(170);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100112,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100112,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100112;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill171 extends BaseSkill {
+class Skill171 extends BaseSkill {
   constructor() {
     super(171);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000025,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000025,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000025;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill172 extends BaseSkill {
+class Skill172 extends BaseSkill {
   constructor() {
     super(172);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000024,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000024,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000024;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill173 extends BaseSkill {
+class Skill173 extends BaseSkill {
   constructor() {
     super(173);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000023,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000023,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000023;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill174 extends BaseSkill {
+class Skill174 extends BaseSkill {
   constructor() {
     super(174);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000022,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000022,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000022;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill175 extends BaseSkill {
+class Skill175 extends BaseSkill {
   constructor() {
     super(175);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000047,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000047,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000047;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: 2 crits heals
-export class Skill176 extends BaseSkill {
+class Skill176 extends BaseSkill {
   constructor() {
     super(176);
   }
 
   override readonly text = '2 crits heals';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000110,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000110,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000110;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill177 extends BaseSkill {
+class Skill177 extends BaseSkill {
   constructor() {
     super(177);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100171,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100171,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100171;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill178 extends BaseSkill {
+class Skill178 extends BaseSkill {
   constructor() {
     super(178);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100170,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100170,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100170;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill179 extends BaseSkill {
+class Skill179 extends BaseSkill {
   constructor() {
     super(179);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100011,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100011,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100011;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: deflect after kill
-export class Skill180 extends BaseSkill {
+class Skill180 extends BaseSkill {
   constructor() {
     super(180);
   }
 
   override readonly text = 'deflect after kill';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000080,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000080,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000080;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: deflect after level
-export class Skill181 extends BaseSkill {
+class Skill181 extends BaseSkill {
   constructor() {
     super(181);
   }
 
   override readonly text = 'deflect after level';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000079,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000079,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000079;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: dodge +17.5%
-export class Skill182 extends BaseSkill {
+class Skill182 extends BaseSkill {
   constructor() {
     super(182);
   }
 
   override readonly text = 'dodge +17.5%';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000095,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000095,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000095;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill183 extends BaseSkill {
+class Skill183 extends BaseSkill {
   constructor() {
     super(183);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000046,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000046,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000046;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill184 extends BaseSkill {
+class Skill184 extends BaseSkill {
   constructor() {
     super(184);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100113,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100113,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100113;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: double dodge ranged
-export class Skill185 extends BaseSkill {
+class Skill185 extends BaseSkill {
   constructor() {
     super(185);
   }
 
   override readonly text = 'double dodge ranged';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000094,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000094,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000094;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill186 extends BaseSkill {
+class Skill186 extends BaseSkill {
   constructor() {
     super(186);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100114,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100114,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100114;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill187 extends BaseSkill {
+class Skill187 extends BaseSkill {
   constructor() {
     super(187);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100169,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100169,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100169;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill188 extends BaseSkill {
+class Skill188 extends BaseSkill {
   constructor() {
     super(188);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100010,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100010,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100010;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill189 extends BaseSkill {
+class Skill189 extends BaseSkill {
   constructor() {
     super(189);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100009,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100009,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100009;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill190 extends BaseSkill {
+class Skill190 extends BaseSkill {
   constructor() {
     super(190);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100075,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100075,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100075;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: Crit stuns
-export class Skill191 extends BaseSkill {
+class Skill191 extends BaseSkill {
   constructor() {
     super(191);
   }
 
   override readonly text = 'Crit stuns';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000114,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000114,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000114;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: Crit refils
-export class Skill192 extends BaseSkill {
+class Skill192 extends BaseSkill {
   constructor() {
     super(192);
   }
 
   override readonly text = 'Crit refils';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000113,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000113,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000113;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill193 extends BaseSkill {
+class Skill193 extends BaseSkill {
   constructor() {
     super(193);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100074,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100074,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100074;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill194 extends BaseSkill {
+class Skill194 extends BaseSkill {
   constructor() {
     super(194);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100073,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100073,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100073;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill195 extends BaseSkill {
+class Skill195 extends BaseSkill {
   constructor() {
     super(195);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100168,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100168,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100168;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: dodge stuns
-export class Skill196 extends BaseSkill {
+class Skill196 extends BaseSkill {
   constructor() {
     super(196);
   }
 
   override readonly text = 'dodge stuns';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000109,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000109,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000109;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill197 extends BaseSkill {
+class Skill197 extends BaseSkill {
   constructor() {
     super(197);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100142,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100142,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100142;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill198 extends BaseSkill {
+class Skill198 extends BaseSkill {
   constructor() {
     super(198);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100072,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100072,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100072;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill199 extends BaseSkill {
+class Skill199 extends BaseSkill {
   constructor() {
     super(199);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100141,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100141,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100141;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill200 extends BaseSkill {
+class Skill200 extends BaseSkill {
   constructor() {
     super(200);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100140,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100140,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100140;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill201 extends BaseSkill {
+class Skill201 extends BaseSkill {
   constructor() {
     super(201);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100139,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100139,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100139;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill202 extends BaseSkill {
+class Skill202 extends BaseSkill {
   constructor() {
     super(202);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000078,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000078,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000078;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill203 extends BaseSkill {
+class Skill203 extends BaseSkill {
   constructor() {
     super(203);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100007,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100007,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100007;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill204 extends BaseSkill {
+class Skill204 extends BaseSkill {
   constructor() {
     super(204);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100006,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100006,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100006;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill205 extends BaseSkill {
+class Skill205 extends BaseSkill {
   constructor() {
     super(205);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100005,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100005,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100005;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill206 extends BaseSkill {
+class Skill206 extends BaseSkill {
   constructor() {
     super(206);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100071,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100071,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100071;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill207 extends BaseSkill {
+class Skill207 extends BaseSkill {
   constructor() {
     super(207);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100070,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100070,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100070;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill208 extends BaseSkill {
+class Skill208 extends BaseSkill {
   constructor() {
     super(208);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100167,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100167,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100167;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 0 armor inc crit %
-export class Skill209 extends BaseSkill {
+class Skill209 extends BaseSkill {
   constructor() {
     super(209);
   }
 
   override readonly text = '0 armor inc crit %';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000108,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000108,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000108;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill210 extends BaseSkill {
+class Skill210 extends BaseSkill {
   constructor() {
     super(210);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100166,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100166,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100166;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: crit heals
-export class Skill211 extends BaseSkill {
+class Skill211 extends BaseSkill {
   constructor() {
     super(211);
   }
 
   override readonly text = 'crit heals';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000107,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000107,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000107;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill212 extends BaseSkill {
+class Skill212 extends BaseSkill {
   constructor() {
     super(212);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100115,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100115,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100115;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill213 extends BaseSkill {
+class Skill213 extends BaseSkill {
   constructor() {
     super(213);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000045,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000045,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000045;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill214 extends BaseSkill {
+class Skill214 extends BaseSkill {
   constructor() {
     super(214);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100004,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100004,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100004;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill215 extends BaseSkill {
+class Skill215 extends BaseSkill {
   constructor() {
     super(215);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000077,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000077,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000077;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill216 extends BaseSkill {
+class Skill216 extends BaseSkill {
   constructor() {
     super(216);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100158,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100158,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100158;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill217 extends BaseSkill {
+class Skill217 extends BaseSkill {
   constructor() {
     super(217);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100069,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100069,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100069;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill218 extends BaseSkill {
+class Skill218 extends BaseSkill {
   constructor() {
     super(218);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100068,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100068,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100068;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill219 extends BaseSkill {
+class Skill219 extends BaseSkill {
   constructor() {
     super(219);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100067,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100067,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100067;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill220 extends BaseSkill {
+class Skill220 extends BaseSkill {
   constructor() {
     super(220);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100116,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100116,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100116;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill221 extends BaseSkill {
+class Skill221 extends BaseSkill {
   constructor() {
     super(221);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100117,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100117,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100117;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill222 extends BaseSkill {
+class Skill222 extends BaseSkill {
   constructor() {
     super(222);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100118,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100118,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100118;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill223 extends BaseSkill {
+class Skill223 extends BaseSkill {
   constructor() {
     super(223);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100119,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100119,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100119;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill224 extends BaseSkill {
+class Skill224 extends BaseSkill {
   constructor() {
     super(224);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100165,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100165,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100165;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill225 extends BaseSkill {
+class Skill225 extends BaseSkill {
   constructor() {
     super(225);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000044,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000044,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000044;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill226 extends BaseSkill {
+class Skill226 extends BaseSkill {
   constructor() {
     super(226);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000043,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000043,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000043;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill227 extends BaseSkill {
+class Skill227 extends BaseSkill {
   constructor() {
     super(227);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000042,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000042,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000042;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: dodge refils
-export class Skill228 extends BaseSkill {
+class Skill228 extends BaseSkill {
   constructor() {
     super(228);
   }
 
   override readonly text = 'dodge refils';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000106,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000106,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000106;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill229 extends BaseSkill {
+class Skill229 extends BaseSkill {
   constructor() {
     super(229);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100121,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100121,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100121;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill230 extends BaseSkill {
+class Skill230 extends BaseSkill {
   constructor() {
     super(230);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100120,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100120,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100120;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill231 extends BaseSkill {
+class Skill231 extends BaseSkill {
   constructor() {
     super(231);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000021,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000021,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000021;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill232 extends BaseSkill {
+class Skill232 extends BaseSkill {
   constructor() {
     super(232);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100066,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100066,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100066;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill233 extends BaseSkill {
+class Skill233 extends BaseSkill {
   constructor() {
     super(233);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100065,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100065,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100065;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill234 extends BaseSkill {
+class Skill234 extends BaseSkill {
   constructor() {
     super(234);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100064,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100064,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100064;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill235 extends BaseSkill {
+class Skill235 extends BaseSkill {
   constructor() {
     super(235);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000020,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000020,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000020;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill236 extends BaseSkill {
+class Skill236 extends BaseSkill {
   constructor() {
     super(236);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000019,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000019,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000019;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill237 extends BaseSkill {
+class Skill237 extends BaseSkill {
   constructor() {
     super(237);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100063,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100063,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100063;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill238 extends BaseSkill {
+class Skill238 extends BaseSkill {
   constructor() {
     super(238);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000018,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000018,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000018;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill239 extends BaseSkill {
+class Skill239 extends BaseSkill {
   constructor() {
     super(239);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100138,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100138,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100138;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill240 extends BaseSkill {
+class Skill240 extends BaseSkill {
   constructor() {
     super(240);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100062,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100062,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100062;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: triple rage
-export class Skill241 extends BaseSkill {
+class Skill241 extends BaseSkill {
   constructor() {
     super(241);
   }
 
   override readonly text = 'triple rage';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100183,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100183,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100183;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill242 extends BaseSkill {
+class Skill242 extends BaseSkill {
   constructor() {
     super(242);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100008,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100008,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100008;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill243 extends BaseSkill {
+class Skill243 extends BaseSkill {
   constructor() {
     super(243);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100061,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100061,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100061;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill244 extends BaseSkill {
+class Skill244 extends BaseSkill {
   constructor() {
     super(244);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000017,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000017,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000017;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill245 extends BaseSkill {
+class Skill245 extends BaseSkill {
   constructor() {
     super(245);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000016,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000016,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000016;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill246 extends BaseSkill {
+class Skill246 extends BaseSkill {
   constructor() {
     super(246);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000015,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000015,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000015;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill247 extends BaseSkill {
+class Skill247 extends BaseSkill {
   constructor() {
     super(247);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000014,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000014,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000014;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill248 extends BaseSkill {
+class Skill248 extends BaseSkill {
   constructor() {
     super(248);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000013,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000013,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000013;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill249 extends BaseSkill {
+class Skill249 extends BaseSkill {
   constructor() {
     super(249);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000012,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000012,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000012;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill250 extends BaseSkill {
+class Skill250 extends BaseSkill {
   constructor() {
     super(250);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000011,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000011,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000011;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: block archers in combat; crit hits all
-export class Skill251 extends BaseSkill {
+class Skill251 extends BaseSkill {
   constructor() {
     super(251);
   }
 
   override readonly text = 'block archers in combat; crit hits all';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000105,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000105,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000105;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill252 extends BaseSkill {
+class Skill252 extends BaseSkill {
   constructor() {
     super(252);
   }
@@ -5533,1075 +3539,684 @@ export class Skill252 extends BaseSkill {
 
   override readonly tags = ['unconfigured'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 0,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 0;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill253 extends BaseSkill {
+class Skill253 extends BaseSkill {
   constructor() {
     super(253);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000028,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000028,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000028;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill254 extends BaseSkill {
+class Skill254 extends BaseSkill {
   constructor() {
     super(254);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000027,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000027,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000027;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: crit stuns all,
-export class Skill255 extends BaseSkill {
+class Skill255 extends BaseSkill {
   constructor() {
     super(255);
   }
 
   override readonly text = 'crit stuns all,';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000115,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000115,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000115;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill256 extends BaseSkill {
+class Skill256 extends BaseSkill {
   constructor() {
     super(256);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000076,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000076,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000076;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill257 extends BaseSkill {
+class Skill257 extends BaseSkill {
   constructor() {
     super(257);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000010,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000010,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000010;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill258 extends BaseSkill {
+class Skill258 extends BaseSkill {
   constructor() {
     super(258);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000009,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000009,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000009;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill259 extends BaseSkill {
+class Skill259 extends BaseSkill {
   constructor() {
     super(259);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000008,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000008,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000008;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill260 extends BaseSkill {
+class Skill260 extends BaseSkill {
   constructor() {
     super(260);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000007,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000007,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000007;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill261 extends BaseSkill {
+class Skill261 extends BaseSkill {
   constructor() {
     super(261);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100122,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100122,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100122;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill262 extends BaseSkill {
+class Skill262 extends BaseSkill {
   constructor() {
     super(262);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000075,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000075,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000075;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill263 extends BaseSkill {
+class Skill263 extends BaseSkill {
   constructor() {
     super(263);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000074,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000074,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000074;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill264 extends BaseSkill {
+class Skill264 extends BaseSkill {
   constructor() {
     super(264);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000073,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000073,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000073;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill265 extends BaseSkill {
+class Skill265 extends BaseSkill {
   constructor() {
     super(265);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000072,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000072,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000072;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill266 extends BaseSkill {
+class Skill266 extends BaseSkill {
   constructor() {
     super(266);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000071,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000071,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000071;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill267 extends BaseSkill {
+class Skill267 extends BaseSkill {
   constructor() {
     super(267);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000097,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000097,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000097;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill268 extends BaseSkill {
+class Skill268 extends BaseSkill {
   constructor() {
     super(268);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000006,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000006,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000006;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill269 extends BaseSkill {
+class Skill269 extends BaseSkill {
   constructor() {
     super(269);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000005,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000005,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000005;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill270 extends BaseSkill {
+class Skill270 extends BaseSkill {
   constructor() {
     super(270);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100003,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100003,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100003;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill271 extends BaseSkill {
+class Skill271 extends BaseSkill {
   constructor() {
     super(271);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000004,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000004,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000004;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill272 extends BaseSkill {
+class Skill272 extends BaseSkill {
   constructor() {
     super(272);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000003,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000003,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000003;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill273 extends BaseSkill {
+class Skill273 extends BaseSkill {
   constructor() {
     super(273);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000002,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000002,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000002;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill274 extends BaseSkill {
+class Skill274 extends BaseSkill {
   constructor() {
     super(274);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000070,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000070,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000070;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill275 extends BaseSkill {
+class Skill275 extends BaseSkill {
   constructor() {
     super(275);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000069,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000069,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000069;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill276 extends BaseSkill {
+class Skill276 extends BaseSkill {
   constructor() {
     super(276);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000068,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000068,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000068;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill277 extends BaseSkill {
+class Skill277 extends BaseSkill {
   constructor() {
     super(277);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000067,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000067,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000067;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: 60% chance keep potion
-export class Skill278 extends BaseSkill {
+class Skill278 extends BaseSkill {
   constructor() {
     super(278);
   }
 
   override readonly text = '60% chance keep potion';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000101,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000101,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000101;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill279 extends BaseSkill {
+class Skill279 extends BaseSkill {
   constructor() {
     super(279);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100137,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100137,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100137;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill280 extends BaseSkill {
+class Skill280 extends BaseSkill {
   constructor() {
     super(280);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100136,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100136,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100136;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: 20 % refill on kill
-export class Skill281 extends BaseSkill {
+class Skill281 extends BaseSkill {
   constructor() {
     super(281);
   }
 
   override readonly text = '20 % refill on kill';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000100,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000100,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000100;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill282 extends BaseSkill {
+class Skill282 extends BaseSkill {
   constructor() {
     super(282);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000066,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000066,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000066;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill283 extends BaseSkill {
+class Skill283 extends BaseSkill {
   constructor() {
     super(283);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000065,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000065,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000065;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill284 extends BaseSkill {
+class Skill284 extends BaseSkill {
   constructor() {
     super(284);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100002,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100002,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100002;
+
+  override readonly rerollWeight = 100;
 }
 
-// TODO: Add skill description.
-export class Skill285 extends BaseSkill {
+class Skill285 extends BaseSkill {
   constructor() {
     super(285);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000093,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000093,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000093;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill286 extends BaseSkill {
+class Skill286 extends BaseSkill {
   constructor() {
     super(286);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000041,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000041,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000041;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill287 extends BaseSkill {
+class Skill287 extends BaseSkill {
   constructor() {
     super(287);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000040,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000040,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000040;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: min dmg = max dmg
-export class Skill288 extends BaseSkill {
+class Skill288 extends BaseSkill {
   constructor() {
     super(288);
   }
 
   override readonly text = 'min dmg = max dmg';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000083,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000083,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000083;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: no more common skills
-export class Skill289 extends BaseSkill {
+class Skill289 extends BaseSkill {
   constructor() {
     super(289);
   }
 
   override readonly text = 'no more common skills';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000103,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000103,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000103;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: dodge twice heals
-export class Skill290 extends BaseSkill {
+class Skill290 extends BaseSkill {
   constructor() {
     super(290);
   }
 
   override readonly text = 'dodge twice heals';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000102,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000102,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000102;
+
+  override readonly rerollWeight = 0;
 }
 
-// Skill: +1 max dmg per skill
-export class Skill291 extends BaseSkill {
+class Skill291 extends BaseSkill {
   constructor() {
     super(291);
   }
 
   override readonly text = '+1 max dmg per skill';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000099,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000099,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000099;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill292 extends BaseSkill {
+class Skill292 extends BaseSkill {
   constructor() {
     super(292);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000098,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000098,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000098;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill293 extends BaseSkill {
+class Skill293 extends BaseSkill {
   constructor() {
     super(293);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000064,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000064,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000064;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill294 extends BaseSkill {
+class Skill294 extends BaseSkill {
   constructor() {
     super(294);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'rerollIfPossible'] as const;
+  override readonly tags = ['reroll'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 100001,
-      shouldRerollIfPossible: true,
-    },
-    ruins: {
-      weight: 100001,
-      shouldRerollIfPossible: true,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 100001;
+
+  override readonly rerollWeight = 100;
 }
 
-// Skill: healing repairs armor
-export class Skill295 extends BaseSkill {
+class Skill295 extends BaseSkill {
   constructor() {
     super(295);
   }
 
   override readonly text = 'healing repairs armor';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000092,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000092,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000092;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill296 extends BaseSkill {
+class Skill296 extends BaseSkill {
   constructor() {
     super(296);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000063,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000063,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000063;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill297 extends BaseSkill {
+class Skill297 extends BaseSkill {
   constructor() {
     super(297);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000062,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000062,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000062;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill298 extends BaseSkill {
+class Skill298 extends BaseSkill {
   constructor() {
     super(298);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000061,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000061,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000061;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill299 extends BaseSkill {
+class Skill299 extends BaseSkill {
   constructor() {
     super(299);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000060,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000060,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000060;
+
+  override readonly rerollWeight = 0;
 }
 
-// TODO: Add skill description.
-export class Skill300 extends BaseSkill {
+class Skill300 extends BaseSkill {
   constructor() {
     super(300);
   }
 
   override readonly text = 'TODO: Add skill description.';
 
-  override readonly tags = ['legacy', 'alwaysPick'] as const;
+  override readonly tags = ['pick'] as const;
 
-  protected override readonly behaviors = {
-    default: {
-      weight: 1000059,
-      shouldRerollIfPossible: false,
-    },
-    ruins: {
-      weight: 1000059,
-      shouldRerollIfPossible: false,
-    },
-  } as const satisfies SkillBehaviorSet;
+  override readonly pickWeight = 1000059;
+
+  override readonly rerollWeight = 0;
 }
 
-export const skills = [
+const skills = [
   new Skill001(),
   new Skill002(),
   new Skill003(),

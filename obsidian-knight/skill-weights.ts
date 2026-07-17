@@ -1,1 +1,1 @@
-export { skillStrategy, skills } from './skills.js';
+export { skillStrategy } from './skills.js';

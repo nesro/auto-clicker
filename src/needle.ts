@@ -319,7 +319,7 @@ export async function loadNeedle(
   };
 }
 
-export async function loadNeedlesFromDir(
+async function loadNeedlesFromDir(
   needleDir: string,
   options: LoadNeedlesOptions = {},
 ): Promise<Needle[]> {
@@ -360,7 +360,7 @@ export async function loadNeedlesByNameFromDir<T extends NeedleNameByKey>(
   return needlesByName as NeedlesByName<T>;
 }
 
-export async function functionLoadNeedles(): Promise<void> {
+async function functionLoadNeedles(): Promise<void> {
   console.log('a');
 }
 
@@ -411,7 +411,7 @@ export async function captureScreen(region?: Rect): Promise<ScreenCapture> {
   };
 }
 
-export function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefined {
+function findInScreen(screen: ScreenCapture, n: Needle): FindRes | undefined {
   if (screen.gray.cols < n.w || screen.gray.rows < n.h) {
     return;
   }
@@ -514,7 +514,7 @@ export async function clickScreenPoint(point: Point): Promise<void> {
   await clickAt(x, y);
 }
 
-export async function findAndClickInScreen(screen: ScreenCapture, n: Needle): Promise<boolean> {
+async function findAndClickInScreen(screen: ScreenCapture, n: Needle): Promise<boolean> {
   const found = findInScreen(screen, n);
   if (!found) {
     return false;
@@ -525,7 +525,7 @@ export async function findAndClickInScreen(screen: ScreenCapture, n: Needle): Pr
   return true;
 }
 
-export const findAndClick = async (n: Needle) => {
+const findAndClick = async (n: Needle) => {
   const screen = await captureScreen();
   try {
     await findAndClickInScreen(screen, n);

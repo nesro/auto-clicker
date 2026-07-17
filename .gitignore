@@ -8,3 +8,4 @@ match.png
 *.traineddata
 debug-crop.png
 debug/
+pnpm-lock.yaml

@@ -86,7 +86,7 @@ function normalizeMultilineText(text: string): string {
     .join('\n');
 }
 
-export async function readNumberInRect(
+async function readNumberInRect(
   rect: Rect,
   screenCanvas: Canvas,
   options: OcrImageOptions = {},
@@ -97,7 +97,7 @@ export async function readNumberInRect(
   return result.data?.text?.replace(/\D/g, '') ?? '';
 }
 
-export async function readTextInRect(
+async function readTextInRect(
   rect: Rect,
   screenCanvas: Canvas,
   options: TextOcrOptions = {},
@@ -114,13 +114,13 @@ export async function readTextInRect(
   return normalizeMultilineText(result.data?.text ?? '');
 }
 
-export async function readNumber(rect: FindRes): Promise<string> {
+async function readNumber(rect: FindRes): Promise<string> {
   const screenBuf = await screenshot({ format: 'png' });
   const { canvas } = await matFromBuffer(screenBuf);
   return readNumberInRect(rect, canvas as unknown as Canvas);
 }
 
-export async function readText(rect: FindRes, options?: TextOcrOptions): Promise<string> {
+async function readText(rect: FindRes, options?: TextOcrOptions): Promise<string> {
   const screenBuf = await screenshot({ format: 'png' });
   const { canvas } = await matFromBuffer(screenBuf);
   return readTextInRect(rect, canvas as unknown as Canvas, options);
@@ -154,7 +154,7 @@ export async function readNumberInScreen(
   return readNumberInRect(rectRelativeToScreen(screen, rect), screen.canvas, options);
 }
 
-export async function readTextInScreen(
+async function readTextInScreen(
   screen: ScreenCapture,
   rect: Rect,
   options?: TextOcrOptions,

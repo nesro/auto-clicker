@@ -40,7 +40,9 @@ import {
   type SkillEvaluationContext,
   type SkillRunState,
   type SkillStrategy,
+  type SkillTuning,
 } from './skill-strategy.js';
+import { skillTuningForActiveSkillCount } from './skill-tuning-config.js';
 
 const NEEDLE_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles_dung';
 const SKILL_NEEDLE_DIR =
@@ -92,9 +94,10 @@ interface SkillPickDecision {
   candidate: FixedSkillChoiceCandidate;
   context: SkillEvaluationContext;
   definition: SkillDefinition;
+  pickWeight: number;
+  rerollWeight: number;
   shouldRerollIfPossible: boolean;
   tags: readonly string[];
-  weight: number;
 }
 
 interface ScrcpyActionNeedles {
@@ -127,6 +130,7 @@ const SKILL_NUMBER_RECTS_IN_SCREENSHOT: Rect[] = [
   { x: 825, y: 80, w: 43, h: 15 },
   { x: 1196, y: 80, w: 43, h: 15 },
 ];
+const SKILL_NUMBER_CLICK_Y_OFFSET = 150;
 
 const MIN_SKILL_NUMBER = 1;
 const MAX_SKILL_NUMBER = 300;
@@ -150,6 +154,11 @@ const SCRCPY_ACTION_NEEDLE_SETTINGS: NeedleSettings = {
 };
 const CLOSE_OFFER_NEEDLE_SETTINGS: NeedleSettings = {
   matchThreshold: 0.99,
+  maxResults: 1,
+  overlapThreshold: 0.5,
+};
+const OFFER_BUNDLE_NEEDLE_SETTINGS: NeedleSettings = {
+  matchThreshold: 0.7,
   maxResults: 1,
   overlapThreshold: 0.5,
 };
@@ -363,11 +372,11 @@ async function loadScrcpyActionNeedles(): Promise<ScrcpyActionNeedles> {
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'loot_2.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(
       path.join(SKILL_NEEDLE_DIR, 'offer_blacksmiths.png'),
-      CLOSE_OFFER_NEEDLE_SETTINGS,
+      OFFER_BUNDLE_NEEDLE_SETTINGS,
     ),
     loadOptionalNeedle(
       path.join(SKILL_NEEDLE_DIR, 'offer_journeyman.png'),
-      CLOSE_OFFER_NEEDLE_SETTINGS,
+      OFFER_BUNDLE_NEEDLE_SETTINGS,
     ),
     loadOptionalNeedle(path.join(SKILL_NEEDLE_DIR, 'pvp_ok.png'), SCRCPY_ACTION_NEEDLE_SETTINGS),
     loadOptionalNeedle(
@@ -487,6 +496,13 @@ function skillNumberRectsInScreen(screen: ScreenCapture): Rect[] {
     x: screen.x + rect.x,
     y: screen.y + rect.y,
   }));
+}
+
+function skillNumberClickPoint(read: FixedSkillNumberRead): { x: number; y: number } {
+  return {
+    x: read.rect.x + read.rect.w / 2,
+    y: read.rect.y + read.rect.h / 2 + SKILL_NUMBER_CLICK_Y_OFFSET,
+  };
 }
 
 function skillNumberOcrRects(rect: Rect): Rect[] {
@@ -645,12 +661,17 @@ function offeredSkillNumbers(reads: readonly FixedSkillNumberRead[]): number[] {
   return reads.flatMap((read) => (read.number === undefined ? [] : [read.number]));
 }
 
+function skillTuningForRunState(runState: SkillRunState): SkillTuning {
+  return skillTuningForActiveSkillCount(runState.activeSkills.size);
+}
+
 function createSkillContext(
   strategy: SkillStrategy,
   runState: SkillRunState,
   reads: readonly FixedSkillNumberRead[],
   skillNumber: number,
   rarity: SkillRarity | undefined,
+  tuning: SkillTuning,
   nowMs = Date.now(),
 ): SkillEvaluationContext {
   return {
@@ -665,6 +686,7 @@ function createSkillContext(
     runStartedAtMs: runState.startedAtMs,
     skillNumber,
     stats: {},
+    tuning,
   };
 }
 
@@ -675,26 +697,38 @@ function evaluateSkillCandidates(
   runState: SkillRunState,
 ): SkillPickDecision[] {
   const rarity = selectedSkillRarity(rarityMatches);
+  const tuning = skillTuningForRunState(runState);
   const nowMs = Date.now();
 
   return fixedSkillChoiceCandidates(rarityMatches, reads).map((candidate) => {
     const skillNumber = candidate.read.number!;
-    const context = createSkillContext(strategy, runState, reads, skillNumber, rarity, nowMs);
+    const context = createSkillContext(
+      strategy,
+      runState,
+      reads,
+      skillNumber,
+      rarity,
+      tuning,
+      nowMs,
+    );
     const definition = getSkillDefinition(strategy, skillNumber);
+    const pickWeight = definition.pickScore(context);
+    const rerollWeight = definition.rerollScore(context);
 
     return {
       candidate,
       context,
       definition,
+      pickWeight,
+      rerollWeight,
       shouldRerollIfPossible: definition.shouldRerollIfPossible(context),
       tags: definition.tags,
-      weight: definition.weight(context),
     };
   });
 }
 
 function compareSkillDecisions(a: SkillPickDecision, b: SkillPickDecision): number {
-  return b.weight - a.weight || a.candidate.index - b.candidate.index;
+  return b.pickWeight - a.pickWeight || a.candidate.index - b.candidate.index;
 }
 
 function chooseBestSkill(decisions: readonly SkillPickDecision[]): SkillPickDecision | undefined {
@@ -709,6 +743,10 @@ function chooseBestNonRerollSkill(
 
 function formatSkillTags(tags: readonly string[]): string {
   return tags.length > 0 ? tags.join(', ') : '(none)';
+}
+
+function formatSkillScore(score: number): string {
+  return Number.isInteger(score) ? String(score) : score.toFixed(2);
 }
 
 function formatSkillDecisionIntent(decision: SkillPickDecision): string {
@@ -739,9 +777,11 @@ function formatSkillDecisionLine(
 
   return [
     `  ${slot}: ${formatSkillDecisionName(decision)}`,
-    `    raw=${JSON.stringify(read.rawNumber || '')}, weight=${decision.weight}, decision=${formatSkillDecisionIntent(
-      decision,
-    )}`,
+    `    raw=${JSON.stringify(read.rawNumber || '')}, pick=${formatSkillScore(
+      decision.pickWeight,
+    )}, reroll=${formatSkillScore(decision.rerollWeight)}/${formatSkillScore(
+      decision.context.tuning.rerollThreshold,
+    )}, decision=${formatSkillDecisionIntent(decision)}`,
     `    tags=${formatSkillTags(decision.tags)}${matchText}`,
   ].join('\n');
 }
@@ -760,8 +800,18 @@ function logSkillChoiceDecision({
   selectedDecision?: SkillPickDecision;
 }): void {
   const activeSkillCount = decisions[0]?.context.activeSkills.size ?? 0;
+  const tuning = decisions[0]?.context.tuning;
+  const tuningText = tuning
+    ? `tuning: offense=${formatSkillScore(
+        tuning.offenseDefenseBalance,
+      )}, rerollAggression=${formatSkillScore(
+        tuning.rerollAggression,
+      )}, rerollThreshold=${formatSkillScore(tuning.rerollThreshold)}`
+    : undefined;
   const selectedText = selectedDecision
-    ? `selected: ${formatSkillDecisionName(selectedDecision)}, weight=${selectedDecision.weight}, decision=${formatSkillDecisionIntent(
+    ? `selected: ${formatSkillDecisionName(selectedDecision)}, pick=${formatSkillScore(
+        selectedDecision.pickWeight,
+      )}, reroll=${formatSkillScore(selectedDecision.rerollWeight)}, decision=${formatSkillDecisionIntent(
         selectedDecision,
       )}`
     : undefined;
@@ -770,6 +820,7 @@ function logSkillChoiceDecision({
     [
       '================ skill choice ================',
       `active skills: ${activeSkillCount}`,
+      tuningText,
       'offered skills:',
       ...reads.map((read, index) => formatSkillDecisionLine(read, index, decisions)),
       selectedText,
@@ -1103,16 +1154,7 @@ async function handleFixedSkillChoice(
       selectedDecision: nonRerollDecision,
     });
 
-    const targetMatch = nonRerollDecision.candidate.rarityMatch;
-    if (targetMatch) {
-      await clickFound(targetMatch.found);
-    } else {
-      const bestRead = nonRerollDecision.candidate.read;
-      await clickScreenPoint({
-        x: bestRead.rect.x + bestRead.rect.w / 2,
-        y: bestRead.rect.y + bestRead.rect.h / 2,
-      });
-    }
+    await clickScreenPoint(skillNumberClickPoint(nonRerollDecision.candidate.read));
     markSkillPicked(strategy, runState, nonRerollDecision.context);
     return true;
   }
@@ -1147,16 +1189,7 @@ async function handleFixedSkillChoice(
     selectedDecision: decision,
   });
 
-  const targetMatch = decision.candidate.rarityMatch;
-  if (targetMatch) {
-    await clickFound(targetMatch.found);
-  } else {
-    const bestRead = decision.candidate.read;
-    await clickScreenPoint({
-      x: bestRead.rect.x + bestRead.rect.w / 2,
-      y: bestRead.rect.y + bestRead.rect.h / 2,
-    });
-  }
+  await clickScreenPoint(skillNumberClickPoint(decision.candidate.read));
   markSkillPicked(strategy, runState, decision.context);
   return true;
 }
