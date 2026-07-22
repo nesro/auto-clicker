@@ -30,7 +30,9 @@ import {
   type ScreenCapture,
 } from './needle.js';
 import {
+  activeSkillTags,
   activeSkillTexts,
+  activeSkillTiers,
   createSkillRunState,
   getSkillDefinition,
   isActionNeedleEnabled,
@@ -676,7 +678,9 @@ function createSkillContext(
 ): SkillEvaluationContext {
   return {
     activeSkills: runState.activeSkills,
+    activeSkillTags: activeSkillTags(strategy, runState),
     activeSkillTexts: activeSkillTexts(strategy, runState),
+    activeSkillTiers: activeSkillTiers(strategy, runState),
     elapsedMs: nowMs - runState.startedAtMs,
     flags: runState.flags,
     gameMode: runState.gameMode,

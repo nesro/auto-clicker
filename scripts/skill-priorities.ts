@@ -4,6 +4,8 @@ import { skillStrategy } from '../obsidian-knight/skill-weights.js';
 import { skillTuningForActiveSkillCount } from '../src/skill-tuning-config.js';
 import {
   createSkillTuning,
+  skillTagCounts,
+  skillTierCounts,
   type GameMode,
   type SkillDefinition,
   type SkillEvaluationContext,
@@ -34,7 +36,7 @@ interface SkillPriorityRow {
 }
 
 const VALID_RARITIES = new Set<SkillRarity>(['common', 'rare', 'epic']);
-const VALID_GAME_MODES = new Set<GameMode>(['default', 'pvp']);
+const VALID_GAME_MODES = new Set<GameMode>(['default', 'pvp', 'hard']);
 const VALID_SORT_MODES = new Set<SortMode>(['pick', 'reroll']);
 
 function usage(): string {
@@ -51,7 +53,7 @@ function usage(): string {
     '  --active <numbers>                   Comma-separated active skills, for example 112,236',
     '  --active-count <number>              Simulate this many active skills using 1..N',
     '  --rarity <common|rare|epic>          Simulate the offered skill rarity',
-    '  --game-mode <default|pvp>            Simulate the game mode',
+    '  --game-mode <default|pvp|hard>       Simulate the game mode',
     '  --ruins, --no-ruins                  Toggle the ruins feature flag',
     '  --sort <pick|reroll>                 Sort by pick score or reroll score',
     '  --limit <number>                     Print only the first N skills',
@@ -262,18 +264,11 @@ function parseArgs(argv: readonly string[]): Options | 'help' {
   return options;
 }
 
-function activeSkillTexts(activeSkills: readonly number[]): string[] {
-  const texts: string[] = [];
-
-  for (const skillNumber of activeSkills) {
+function activeSkillDefinitions(activeSkills: readonly number[]): SkillDefinition[] {
+  return activeSkills.flatMap((skillNumber) => {
     const skill = skillStrategy.skills.get(skillNumber);
-
-    if (skill !== undefined) {
-      texts.push(skill.text);
-    }
-  }
-
-  return texts;
+    return skill === undefined ? [] : [skill];
+  });
 }
 
 function createContext(
@@ -282,9 +277,13 @@ function createContext(
   tuning: SkillTuning,
   nowMs: number,
 ): SkillEvaluationContext {
+  const activeDefinitions = activeSkillDefinitions(options.activeSkills);
+
   return {
     activeSkills: new Set(options.activeSkills),
-    activeSkillTexts: activeSkillTexts(options.activeSkills),
+    activeSkillTags: skillTagCounts(activeDefinitions),
+    activeSkillTexts: activeDefinitions.map((definition) => definition.text),
+    activeSkillTiers: skillTierCounts(activeDefinitions),
     elapsedMs: 0,
     flags: { ruins: options.ruins },
     gameMode: options.gameMode,
@@ -369,6 +368,7 @@ function renderTable(
       'pick'.padStart(12),
       'reroll'.padStart(10),
       'action'.padEnd(6),
+      'tier'.padEnd(7),
       'tags'.padEnd(28),
       'text',
     ].join('  '),
@@ -384,6 +384,7 @@ function renderTable(
         formatScore(row.pickScore).padStart(12),
         `${formatScore(row.rerollScore)}/${formatScore(tuning.rerollThreshold)}`.padStart(10),
         row.action.padEnd(6),
+        row.skill.tier.padEnd(7),
         tags.padEnd(28),
         normalizeText(row.skill.text),
       ].join('  '),
@@ -415,6 +416,7 @@ function renderJson(
         rerollScore: row.rerollScore,
         rerollThreshold: tuning.rerollThreshold,
         action: row.action,
+        tier: row.skill.tier,
         tags: row.skill.tags,
         text: row.skill.text,
       })),
