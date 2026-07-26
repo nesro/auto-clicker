@@ -1,0 +1,296 @@
+Epic | Heal 32 HP per Kill
+Epic | Fully Repair Armor at Level Up
+Common | Receiving an Angel of Death Doubles it
+Common | Reflect Enemy's First Melee Attack
+Common | Deal 55 Damage to All Nearby Enemies Now
+Common | Chance for Enemy to Drop Gold +110%
+Common | Misses Trigger an Extra Attack with +300% Damage
+Common | Getting Common Skills Increases Max Armor by 24
+Common | Heal 23 HP Every Time Enemy Drops Gold
+Common | Misses Repairs 19 Armor
+Common | Heal 23 HP Each Time Halting
+Common | Deal 33 Damage Every Time an Enemy Drops Gold
+Rare | Potions Increase Max HP
+Common | If First Enemy After Halting is an Archer, Execute it
+Common | Attacks Hit Random Enemy
+Common | Overhealing Deals Damage
+Common | Explode One Random Nearby Enemy Now
+Common | +75% Damage Next Attack per Ranged Hit Taken
+Common | Archers Behind, when Damaged, will shoot All Allies (3 x Dmg)
+Common | Max HP: +82 HP
+Common | Dodging Melee Hits Enemy Behind
+Common | Getting Melee Hit deals 12 Damage
+Common | Every Attack Deals 6 Damage to Enemy In Back
+Common | Repair 31 Armor Every 8 Seconds While Running
+Common | Loot Chests Heal and Give Rage
+Common | Each Attack has 15% Chance to Hit All Others Instead
+Common | Misses Hit Next Enemy, Dealing 3x Damage
+Common | Fountains also Repair Armor
+Common | Reaching a Fountain with Full Armor Heals Fully
+Common | Also Heal Equivalent to Armor at Camps
+Common | +25 Max Armor at Level Up
+Common | Melee Damage less than 18 is Reflected
+Common | Misses will Critically Hit 2 Enemies Behind
+Common | Surviving with 11 HP and 0 Armor Repairs All Armor
+Common | Never Miss an Attack
+Common | +8 Max Dmg if Armor is Above 50% at Camps
+Rare | Losing Armor Deals 18 Thorn Damage
+Rare | Stab (+300% Dmg) when Dodging Melee
+Common | Misses Increase Next Attack Damage by 525%
+Common | Repairing Armor Deals Damage
+Common | Dodging Ranged Attacks Returns Them
+Common | Every 10th Enemy has 1 HP
+Common | Heal 22 HP Every 4 Seconds Spent Running
+Common | Deal 11 Damage to Melee Enemies On Sight
+Common | Heal Fountains Increases Max HP
+Common | Failing to Dodge 8 Arrows in a Row Fully Heals
+Common | Killing Enemy Behind Heals 25 HP
+Common | Archers Fire at Ally On Sight
+Common | Damage to Enemy In Back Drains 7 HP from Random
+Common | First Ranged Attack Always Dodged
+Common | Refill Random Empty Potion at Camps
+Common | Pick Two Skills Next Level Up
+Common | First Attack After Halting Heals
+Common | Dodging Ranged Stabs (+300% Dmg)
+Common | Critical Damage: +1.5x
+Common | Anvils also Heal 4.5x Repair Amount
+Common | Archers Only Fire When Behind
+Common | Every 3rd Critical Hit Does +350% Damage
+Common | Critical Kills Drains HP from Random
+Common | Potions Will Mark Enemy to Explode
+Rare | Killing Deals 11 Damage to 3 Enemies Behind
+Rare | Each Kill Stuns All Archers for 5.5 Seconds
+Common | Repair 20 Armor at Level Up
+Common | Stun All Melee Enemies Now for 25 Seconds
+Common | +25% Dodge for Next Attack After Dodging
+Common | Repair All Armor Now
+Common | Every 8th Critical Hit Executes the Enemy
+Common | When Dying, Enemy Attacks Ally in Front of it For 4x Damage
+Common | Anvils Repairs 5.5x More Armor
+Common | 4 Attacks in a Row Without Missing Deals 24 Thorn Damage
+Common | Enemies have 20% Chance to be Executed On Sight
+Common | Heal 25 HP for Killing Enemy Unstruck
+Rare | Every 3rd Enemy Loses 51% of HP On Sight
+Rare | Running Returns Arrows
+Rare | Deal 11 Damage to EVERY Remaining Enemy Now
+Rare | Heal 33 HP Every 8 Seconds Spent Running
+Rare | +12 Max Dmg if Armor is Above 0 at Camps
+Common | Archers' First Arrow is Fired Backwards
+Common | Every 10th Attack Hits All In Sight
+Common | First Attack After Halting Repairs Armor
+Common | Heal 6 HP for each Arrow Fired
+Common | Fountains also Give Gold
+Common | Healing Fountains also Give Rage
+Common | Getting Fully Healed Repairs 30 Armor
+Epic | Fully Repair Armor at Camps
+Rare | Repair 40 Armor at Level Up
+Rare | Having 6 or More Skills Doubles Max HP
+Rare | First Attack +150% Damage
+Rare | 43% Chance to Return Arrow, Hitting All
+Common | Fire 3 Aid Arrows (2-29 Dmg) in 5, 15, and 50 Seconds
+Common | Automatically Drink Potions at 0 HP
+Common | Refill All Potions Now
+Common | Healing and Rage from Fountains is Doubled
+Common | Killing an Enemy Behind Fires 3 Aid Arrows (2-24 Dmg)
+Common | Healing Deals 13 Thorn Damage
+Common | Next Level Up is Epic
+Epic | Fire Aid Arrow (2-39 Dmg) when Reaching an Enemy
+Rare | 0 Armor Increases Max Damage by 12
+Common | Enemies Never Damage HP and Armor Simultaneously
+Common | Upgrade All Potions at Camp
+Common | Drain 80 HP from Nearby Enemy Now
+Common | Dodging Ranged Repairs 16 Armor
+Common | Next Fountain Acts Like a Camp
+Common | 50% Chance to Deal 16 Thorn Damage On Sight
+Common | Heal Fully Now
+Common | Fully Repair Armor and Fully Heal at Skill Statues
+Common | Fully Heal Once After Killing 10 Enemies
+Common | Missing Enemy Deals 23 Thorn Damage
+Epic | Double Max HP and Max Armor Now
+Common | +19 Max HP at Level Up
+Common | First Attack After Halting Also Hits Next Enemy
+Common | Every Fifth Attack Hits Next Enemy, Dealing 200% Damage
+Common | Stun All Archers Now for 25 Seconds
+Common | Fully Repair Armor Once After Killing 8 Enemies
+Common | Getting Melee Hit deals 12 Damage to Random Enemy Behind
+Common | Critical Kills Increase Max HP by 18
+Common | Rage Fountains also Heal
+Common | Repair 24 Armor Each Time Halting
+Common | 35% Chance for Ranged Attacks to Heal
+Common | Heal 20 HP when Armor Depletes
+Epic | Get 400 Gold Now
+Epic | 6 Non-Critical Hits in a Row deals +1500% Damage
+Rare | Dealing Damage has 15% chance to Drain 9 HP from Random
+Rare | Killing Blow Hits Next Enemy
+Rare | Get All Three Skills Next Level Up
+Common | Damage to Enemies Behind Doubled
+Common | Critical Hit Repairs 13 Armor
+Common | Min Dmg +6
+Common | Mark 2 Nearby Enemies to Explode
+Common | Critical Hits have 25% Chance to Execute
+Common | Get 1 Random Rare Skill Now
+Common | Deflect Every 4th Attack
+Epic | Every 4th Melee Hit Taken Repairs Armor
+Epic | All Damage Taken by Armor is Reflected
+Rare | On Sight has 22.5% to Mark Enemy to Explode
+Rare | Potions Increase Max Damage by 7
+Rare | Archer Damage Reduced by 11
+Rare | +150% Damage and Attack Speed if HP less than 25%
+Common | Add a Potion Slot with a Random Potion
+Common | First Attack has +40% Critical Chance
+Common | Instant Level Up at Camp
+Common | 35% of Critical Damage Hits Random Enemy
+Common | Damage to Enemy Behind Stuns It for 7.5 Seconds
+Common | Dodging Drains 7 HP
+Epic | Killing an Enemy Stuns the One Behind for 6.5 Seconds.
+Epic | No More Common Skills
+Rare | Increase Max Damage by 7 at Each Camp
+Rare | Potions Repair Armor x3
+Rare | First Attack After Halting Also Hits 3 Random
+Rare | Deflect All Damage for 4.25 Seconds After Each Kill
+Rare | Getting an Epic Skill Fully Heals
+Common | Gain a Random Common Skill at Camps
+Common | Full Armor Sets Dodge to 85%
+Common | +300% Damage every 5th Attack
+Common | Dodge Next 12 Attacks
+Common | 25% Chance to Stab (+300% Dmg) Enemies Below 50% HP
+Rare | Killing Enemy Behind Drains 24 HP from Random
+Rare | Healing Does 12 Damage to All Enemies
+Rare | Killing Deals 11 Thorn Damage to All Enemies
+Rare | Armor Resists 60% of Ranged Damage
+Rare | Always Dodge First Melee Attack
+Rare | Healing Does 15 Damage to Random In Back
+Rare | +22 Max HP for Each Owned Skill
+Common | Killing Deals 17 Thorn Damage to Random
+Common | Critical Hit has 40% Chance to deal +350% Damage
+Common | Execute 1 Random Enemy at Level Up
+Common | Dodge has 20% Chance to Explode Enemy
+Common | Having Armor Increases Dodge by 15%
+Rare | Drain 23 HP Every 10 Seconds
+Rare | Enemies' First Melee Attack Hits Random Enemy
+Rare | Archers Take 1-13 Damage On Sight
+Rare | First Attack After Halting Deals 3.5x Damage
+Rare | Armor has 45% Chance to Deflect Melee Damage
+Rare | Archers Firing Suffer 11 Thorn Damage
+Rare | Critical Kills: Nearby enemies take +250% Damage
+Common | Critical Chance is 55% After Critical Hit
+Common | Critical Hits have 20% Chance to Increase Max HP by 15
+Common | Max Damage: +6
+Common | Melee Dodge: +17.5%
+Common | Critical Hit has 20% Chance to Explode
+Epic | Killing Blow Hits 2 Random Enemies
+Rare | Critical Hits also Deal Armor as Damage
+Rare | Enemy Melee Damage Reduced by 11
+Rare | Potions Increase Max Armor
+Rare | All Non-Potion Healing +75%
+Rare | Getting Rare Skills Increases Max HP by 23
+Rare | Next 12 Hits Are Critical
+Rare | Critical Hits also Hit Next Enemy
+Common | Fire 8 Aid Arrows (2-29 Dmg) Now
+Common | Critical Kills Always Give Rage Bonus
+Common | Attack has 30% Chance to Hit Next Enemy
+Common | Attack Speed: +30%
+Epic | Every 6th Melee Attack Received Hits 1 Enemy (2.5 x Damage)
+Epic | Max Damage: +9
+Rare | First Attack has 60% Chance for +250% Damage
+Rare | Armor has 55% Chance to Deflect Ranged Attacks
+Rare | Double Base Ranged Dodge Now
+Rare | Killing Archer Fires Arrow Backward Hitting All
+Rare | Getting Rare and Epic Skills Increases Max Damage by 7
+Rare | Level Up Deflects All Damage for 12.5 Seconds
+Rare | First Attack Also Hits Next Enemy
+Rare | Every 5th Attack is a Stab (+300% Dmg)
+Rare | Archers' First Arrow Hits Itself
+Common | Potions Increase Damage by +375% for 3 Attacks
+Epic | Reduce Enemy Damage by 11
+Epic | Refill and Upgrade All Potions Now
+Rare | 55% Chance to Reflect Ranged Damage to Random
+Rare | Potions Heal 200% More
+Common | Archers Behind, when Damaged, will shoot Ally (5.5 x Dmg)
+Common | 0 Armor Increases Melee Dodge by 15%
+Common | Potions Deal Damage
+Common | Always Critical Hit After Dodge
+Common | Dodging Does 6 Damage to All Enemies Behind
+Common | 30% Chance First Attack is a Stab (+300% Dmg)
+Common | +55% Critical Chance on Archers
+Common | Level Up Stuns All Enemies for 8.5 Seconds
+Rare | Rewards Tripled at Camps
+Rare | Fire Aid Arrow (2-19 Dmg) on Dodge
+Rare | Next 2 Level Ups are at Least Rare
+Rare | On Sight has 11.25% Chance to Explode Enemy
+Common | Increase Damage by 1 for Each Consecutive Hit on Enemy
+Common | Each Kill Stuns One Archer for 5.5 Seconds
+Common | Healing on Level Up: +30 HP
+Common | 20% Chance to Stun On Sight for 10.5 Seconds
+Common | Getting Ranged Hit deals 7 Damage
+Common | Dodging Twice in a Row Heals 20 HP
+Common | Melee Enemy has 25% Chance to Hit Self On Sight
+Common | Level Up Marks 1 Enemy to Explode
+Epic | 15% Chance for Stab (+300% Dmg) after Each Attack
+Epic | Each Hit Before Enemy Attacks Heals 17 HP
+Epic | Every Kill Repairs 32 Armor
+Rare | Every 4th Enemy Gives Triple Rage
+Rare | Fire Aid Arrow (2-19 Dmg) on Critical Hit
+Rare | Archers have 55% Chance to Hit Allies
+Common | Potions Make Nearby Enemies Take +250% Damage
+Common | Ranged Dodge: +17.5%
+Common | Critical Chance +3.5% per Hit Taken. Resets on Critical Hit
+Common | Critical Chance: +17.5%
+Common | Every Kill Increases Ranged Dodge by 1%
+Common | Reroll Each Level Once
+Epic | Every 3rd Enemy Melee Attack Hits Enemy Behind
+Epic | Healing Deals Damage to a Random Enemy
+Epic | 60% Chance to Keep Potions After Drinking
+Epic | Max Damage +6 and Each Kill Heals 6 HP
+Epic | Critical Hits Hit All Enemies
+Epic | Stun (7.5 Seconds) and Mark First Enemy After Halting
+Epic | All Ranged Damage is Reflected to Random Enemy
+Rare | Critical Hits Stun Enemy for 6.5 Seconds
+Epic | Archers suffer 16 Dmg per shot, +1 Dmg for each shot
+Epic | +1 Max Damage for Each Skill
+Epic | Every Hit Also Hits Random Enemy Behind
+Epic | Min Damage Equals Max Damage
+Epic | Increase Max Damage with 50% of Armor
+Epic | Dodging Twice in a Row Heals Fully
+Epic | At 0 HP, 45% Chance to Trigger an Angel of Death
+Epic | Every Arrow Fired Heals 13 HP
+Epic | Having Armor Increases Max Damage by 14
+Epic | Critical Damage: +3x
+Epic | Killing Strike Hits All, Dealing 50% Damage
+Epic | Every 4th Attack Hits All In Sight
+Epic | Block Archers when in Melee Combat
+Epic | Execute 2 Random Enemies at Level Up
+Epic | Potions Deal Damage to All Enemies
+Epic | Critical Hits also Deals Armor x2.5 in Damage
+Epic | Each Kill has 20% Chance to Refill Random Potion
+Epic | Critical Hits Stun All Enemies for 3.5 Seconds
+Epic | Arrows Pierce Enemies, Dealing 70% Damage
+Epic | Level Up Increases Max Damage by 6
+Epic | Fully Heal at Level Up
+Epic | Increase Damage by 75% for 6 Seconds After Each Kill
+Rare | Dodging Stuns Enemy for 6.5 Seconds
+Common | +10 Level Up Rerolls
+Epic | Every 5th Melee Hit Taken Heals
+Epic | +400% Damage to Enemies Behind
+Epic | Killing Enemy Drains 17 HP from Random
+Epic | Mark 12 out of ALL Enemies to Explode
+Rare | Attack has 45% Chance to Hit Next Enemy
+Rare | Damage to Enemies Behind: +275%
+Rare | Every 6th Dodge Increases Max Damage by 6
+Rare | Max Damage: +7
+Rare | 0 Armor Increases Critical Damage by 2x
+Rare | 0 Armor Increases Critical Chance by 22.5%
+Rare | Halting Increases Melee Dodge and Critical Chance by 1.5
+Common | 70% Chance for Lethal Attacks to Hit Random Enemy Instead
+Epic | Healing Repairs Armor
+Epic | Dodge Heals 15 HP
+Epic | Armor Reduces Incoming Damage by 60%
+Rare | Killing an Enemy has 30% Chance to Explode It
+Rare | Dodge: +17.5%
+Rare | Critical Hit has 30% Chance to Refill Random Potion
+Rare | 2 Critical Hits in a Row Heal 50% of Max HP
+Rare | Dodge has 30% Chance to Refill Random Potion
+Common | Potions Deflect Damage for 9.5 Seconds
+Common | Dodge is 80% if HP less than 34
+Common | Enemies 3rd Melee Attack Heals and Repairs Armor
+Common | Potions Stun Nearby Enemies for 10.5 Seconds

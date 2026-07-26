@@ -12,6 +12,7 @@
     "skill-priorities": "tsx scripts/skill-priorities.ts",
     "start2": "node dist/index.js",
     "build": "tsc -p tsconfig.json",
+    "skill-texts:debug": "tsx scripts/match-skill-texts-from-debug.ts",
     "lint": "eslint .",
     "format": "prettier . --write",
     "check:format": "prettier . --check"

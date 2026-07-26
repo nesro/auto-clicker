@@ -154,7 +154,7 @@ export async function readNumberInScreen(
   return readNumberInRect(rectRelativeToScreen(screen, rect), screen.canvas, options);
 }
 
-async function readTextInScreen(
+export async function readTextInScreen(
   screen: ScreenCapture,
   rect: Rect,
   options?: TextOcrOptions,
@@ -178,4 +178,9 @@ export async function readTextInFound(
   options?: TextOcrOptions,
 ): Promise<string> {
   return readTextInScreen(screen, rectInFound(found, relativeRect), options);
+}
+
+export async function terminateOcrWorkers(): Promise<void> {
+  const workers = await Promise.all([numberOcrWorkerPromise, textOcrWorkerPromise]);
+  await Promise.all(workers.map((worker) => worker.terminate()));
 }

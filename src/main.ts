@@ -14,7 +14,9 @@ import {
   readNumberInFound,
   readNumberInScreen,
   readTextInFound,
+  readTextInScreen,
   type OcrImageOptions,
+  type TextOcrOptions,
 } from './ocr.js';
 import {
   captureScreen,
@@ -44,6 +46,13 @@ import {
   type SkillStrategy,
   type SkillTuning,
 } from './skill-strategy.js';
+import {
+  bestSkillTextCatalogMatch,
+  isReliableSkillTextCatalogMatch,
+  loadSkillTextCatalog,
+  type SkillTextCatalogEntry,
+  type SkillTextCatalogMatch,
+} from './skill-text-catalog.js';
 import { skillTuningForActiveSkillCount } from './skill-tuning-config.js';
 
 const NEEDLE_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/needles_dung';
@@ -52,6 +61,12 @@ const SKILL_NEEDLE_DIR =
 const DEBUG_NUMBER_OCR_DIR = '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/number-ocr';
 const DEBUG_SKILL_RARITY_SCREENSHOTS_DIR =
   '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-rarity-screenshots';
+const SKILL_TEXT_CATALOG_PATH =
+  '/Users/tomasnesrovnal/g/nesro/auto-clicker/obsidian-knight/skill-text-catalog.txt';
+const DEBUG_SKILL_TEXT_MATCH_LOG_PATH =
+  '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-text-match-observations.jsonl';
+const DEBUG_SKILL_TEXT_NUMBER_MAP_PATH =
+  '/Users/tomasnesrovnal/g/nesro/auto-clicker/debug/skill-text-number-matches.json';
 
 const SCREENSHOT_INTERVAL_MS = 1000;
 const SCREEN_CAPTURE_MAX_ATTEMPTS = 10;
@@ -61,6 +76,7 @@ const GAME_MODE: GameMode = 'default';
 
 const READ_TEXT = false;
 const READ_NUMBER = true;
+const MATCH_SKILL_TEXTS = true;
 const DEBUG_NUMBER_OCR = false;
 const DEBUG_NUMBER_NEEDLE = 'skill_number_rare.png';
 const DEBUG_SKILL_RARITY_SCREENSHOTS = false;
@@ -84,6 +100,20 @@ interface FixedSkillNumberReadAttempt {
   rect: Rect;
   rawNumber: string;
   options: OcrImageOptions;
+}
+
+interface FixedSkillTextRead {
+  attempts: FixedSkillTextReadAttempt[];
+  match?: SkillTextCatalogMatch;
+  rawText: string;
+  rect: Rect;
+}
+
+interface FixedSkillTextReadAttempt {
+  match?: SkillTextCatalogMatch;
+  options: TextOcrOptions;
+  rawText: string;
+  rect: Rect;
 }
 
 interface FixedSkillChoiceCandidate {
@@ -131,6 +161,11 @@ const SKILL_NUMBER_RECTS_IN_SCREENSHOT: Rect[] = [
   { x: 453, y: 80, w: 43, h: 15 },
   { x: 825, y: 80, w: 43, h: 15 },
   { x: 1196, y: 80, w: 43, h: 15 },
+];
+const SKILL_TEXT_RECTS_IN_SCREENSHOT: Rect[] = [
+  { x: 350, y: 390, w: 260, h: 120 },
+  { x: 720, y: 390, w: 260, h: 120 },
+  { x: 1090, y: 390, w: 260, h: 120 },
 ];
 const SKILL_NUMBER_CLICK_Y_OFFSET = 150;
 
@@ -180,6 +215,14 @@ const SKILL_CHOICE_OCR_FALLBACK_OPTIONS: OcrImageOptions[] = [
   { scale: 8, threshold: 120 },
   { scale: 8, threshold: 140 },
   { scale: 8, threshold: 160 },
+];
+const SKILL_TEXT_MATCH_MIN_SCORE = 0.62;
+const SKILL_TEXT_MATCH_MIN_MARGIN = 0.04;
+const SKILL_TEXT_OCR_FALLBACK_OPTIONS: TextOcrOptions[] = [
+  { scale: 3, threshold: false },
+  { scale: 4, threshold: false },
+  { scale: 4, threshold: 160 },
+  { scale: 5, threshold: 170 },
 ];
 
 let debugFrameCounter = 0;
@@ -500,6 +543,14 @@ function skillNumberRectsInScreen(screen: ScreenCapture): Rect[] {
   }));
 }
 
+function skillTextRectsInScreen(screen: ScreenCapture): Rect[] {
+  return SKILL_TEXT_RECTS_IN_SCREENSHOT.map((rect) => ({
+    ...rect,
+    x: screen.x + rect.x,
+    y: screen.y + rect.y,
+  }));
+}
+
 function skillNumberClickPoint(read: FixedSkillNumberRead): { x: number; y: number } {
   return {
     x: read.rect.x + read.rect.w / 2,
@@ -640,6 +691,191 @@ async function readFixedSkillNumbers(
   return reads;
 }
 
+function isReliableSkillTextMatch(
+  match: SkillTextCatalogMatch | undefined,
+): match is SkillTextCatalogMatch {
+  return isReliableSkillTextCatalogMatch(
+    match,
+    SKILL_TEXT_MATCH_MIN_SCORE,
+    SKILL_TEXT_MATCH_MIN_MARGIN,
+  );
+}
+
+async function readFixedSkillText(
+  screen: ScreenCapture,
+  rect: Rect,
+  rarity: SkillRarity | undefined,
+  catalog: readonly SkillTextCatalogEntry[],
+): Promise<FixedSkillTextRead> {
+  const attempts: FixedSkillTextReadAttempt[] = [];
+
+  for (const options of SKILL_TEXT_OCR_FALLBACK_OPTIONS) {
+    const rawText = await readTextInScreen(screen, rect, options);
+    const match = bestSkillTextCatalogMatch(rawText, catalog, { rarity });
+    const attempt: FixedSkillTextReadAttempt = {
+      match,
+      options,
+      rawText,
+      rect,
+    };
+    attempts.push(attempt);
+
+    if (isReliableSkillTextMatch(match)) {
+      return {
+        attempts,
+        match,
+        rawText,
+        rect,
+      };
+    }
+  }
+
+  const [bestAttempt] = [...attempts].sort((a, b) => (b.match?.score ?? 0) - (a.match?.score ?? 0));
+
+  return {
+    attempts,
+    match: bestAttempt?.match,
+    rawText: bestAttempt?.rawText ?? '',
+    rect,
+  };
+}
+
+async function readFixedSkillTexts(
+  screen: ScreenCapture,
+  rarity: SkillRarity | undefined,
+  catalog: readonly SkillTextCatalogEntry[],
+): Promise<FixedSkillTextRead[]> {
+  if (!MATCH_SKILL_TEXTS) {
+    return [];
+  }
+
+  const reads: FixedSkillTextRead[] = [];
+  for (const rect of skillTextRectsInScreen(screen)) {
+    reads.push(await readFixedSkillText(screen, rect, rarity, catalog));
+  }
+
+  return reads;
+}
+
+function formatSkillTextMatch(match: SkillTextCatalogMatch): string {
+  return `${match.entry.rarity} #catalog-${match.entry.index + 1} score=${match.score.toFixed(
+    3,
+  )} margin=${match.margin.toFixed(3)} "${match.entry.text}"`;
+}
+
+function formatSkillTextRead(read: FixedSkillTextRead | undefined): string | undefined {
+  if (!read) {
+    return;
+  }
+
+  if (read.rawText.length === 0) {
+    return '    text OCR=(empty)';
+  }
+
+  if (!read.match) {
+    return `    text OCR=${JSON.stringify(read.rawText)}, no catalog match`;
+  }
+
+  return `    text OCR=${JSON.stringify(read.rawText)}, match=${formatSkillTextMatch(read.match)}`;
+}
+
+interface SkillTextMatchObservation {
+  catalogIndex: number;
+  matchedRarity: string;
+  matchedText: string;
+  observedAt: string;
+  ocrText: string;
+  rarity?: SkillRarity;
+  score: number;
+  skillNumber: number;
+  slot: number;
+}
+
+interface SkillTextNumberMatchFile {
+  generatedAt: string;
+  matches: Record<string, SkillTextMatchObservation>;
+}
+
+function reliableSkillTextMatchObservations(
+  numberReads: readonly FixedSkillNumberRead[],
+  textReads: readonly FixedSkillTextRead[],
+  rarity: SkillRarity | undefined,
+): SkillTextMatchObservation[] {
+  const observedAt = new Date().toISOString();
+
+  return numberReads.flatMap((numberRead, index) => {
+    const textRead = textReads[index];
+    const match = textRead?.match;
+    if (
+      numberRead.number === undefined ||
+      textRead === undefined ||
+      !isReliableSkillTextMatch(match)
+    ) {
+      return [];
+    }
+
+    return [
+      {
+        catalogIndex: match.entry.index,
+        matchedRarity: match.entry.rarity,
+        matchedText: match.entry.text,
+        observedAt,
+        ocrText: textRead.rawText,
+        rarity,
+        score: match.score,
+        skillNumber: numberRead.number,
+        slot: index + 1,
+      },
+    ];
+  });
+}
+
+async function readSkillTextNumberMatchFile(): Promise<SkillTextNumberMatchFile> {
+  try {
+    return JSON.parse(
+      await fs.readFile(DEBUG_SKILL_TEXT_NUMBER_MAP_PATH, 'utf8'),
+    ) as SkillTextNumberMatchFile;
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'ENOENT') {
+      return {
+        generatedAt: new Date().toISOString(),
+        matches: {},
+      };
+    }
+
+    throw error;
+  }
+}
+
+async function recordSkillTextMatches(
+  numberReads: readonly FixedSkillNumberRead[],
+  textReads: readonly FixedSkillTextRead[],
+  rarity: SkillRarity | undefined,
+): Promise<void> {
+  const observations = reliableSkillTextMatchObservations(numberReads, textReads, rarity);
+  if (observations.length === 0) {
+    return;
+  }
+
+  await fs.mkdir(path.dirname(DEBUG_SKILL_TEXT_MATCH_LOG_PATH), { recursive: true });
+  await fs.appendFile(
+    DEBUG_SKILL_TEXT_MATCH_LOG_PATH,
+    observations.map((observation) => JSON.stringify(observation)).join('\n') + '\n',
+  );
+
+  const mapFile = await readSkillTextNumberMatchFile();
+  for (const observation of observations) {
+    const key = String(observation.skillNumber);
+    const existing = mapFile.matches[key];
+    if (!existing || observation.score > existing.score) {
+      mapFile.matches[key] = observation;
+    }
+  }
+
+  mapFile.generatedAt = new Date().toISOString();
+  await fs.writeFile(DEBUG_SKILL_TEXT_NUMBER_MAP_PATH, JSON.stringify(mapFile, null, 2));
+}
+
 function fixedSkillChoiceCandidates(
   rarityMatches: readonly SkillRarityMatch[],
   reads: readonly FixedSkillNumberRead[],
@@ -765,15 +1001,21 @@ function formatSkillDecisionLine(
   read: FixedSkillNumberRead,
   index: number,
   decisions: readonly SkillPickDecision[],
+  textReads: readonly FixedSkillTextRead[],
 ): string {
   const slot = `slot ${index + 1}`;
+  const textLine = formatSkillTextRead(textReads[index]);
   if (read.number === undefined) {
-    return `  ${slot}: unread, raw=${JSON.stringify(read.rawNumber || '')}`;
+    return [`  ${slot}: unread, raw=${JSON.stringify(read.rawNumber || '')}`, textLine]
+      .filter((line): line is string => line !== undefined)
+      .join('\n');
   }
 
   const decision = decisions.find((item) => item.candidate.index === index);
   if (!decision) {
-    return `  ${slot}: #${read.number}, no decision`;
+    return [`  ${slot}: #${read.number}, no decision`, textLine]
+      .filter((line): line is string => line !== undefined)
+      .join('\n');
   }
 
   const matchScore = decision.candidate.rarityMatch?.found.score;
@@ -787,7 +1029,10 @@ function formatSkillDecisionLine(
       decision.context.tuning.rerollThreshold,
     )}, decision=${formatSkillDecisionIntent(decision)}`,
     `    tags=${formatSkillTags(decision.tags)}${matchText}`,
-  ].join('\n');
+    textLine,
+  ]
+    .filter((line): line is string => line !== undefined)
+    .join('\n');
 }
 
 function logSkillChoiceDecision({
@@ -796,12 +1041,14 @@ function logSkillChoiceDecision({
   reason,
   result,
   selectedDecision,
+  textReads = [],
 }: {
   decisions: readonly SkillPickDecision[];
   reads: readonly FixedSkillNumberRead[];
   reason: string;
   result: string;
   selectedDecision?: SkillPickDecision;
+  textReads?: readonly FixedSkillTextRead[];
 }): void {
   const activeSkillCount = decisions[0]?.context.activeSkills.size ?? 0;
   const tuning = decisions[0]?.context.tuning;
@@ -826,7 +1073,7 @@ function logSkillChoiceDecision({
       `active skills: ${activeSkillCount}`,
       tuningText,
       'offered skills:',
-      ...reads.map((read, index) => formatSkillDecisionLine(read, index, decisions)),
+      ...reads.map((read, index) => formatSkillDecisionLine(read, index, decisions, textReads)),
       selectedText,
       `result: ${result}`,
       `reason: ${reason}`,
@@ -1012,6 +1259,7 @@ function createSkillRarityDebugAnnotation(
   screen: ScreenCapture,
   matches: readonly SkillRarityMatch[],
   reads: readonly FixedSkillNumberRead[],
+  textReads: readonly FixedSkillTextRead[],
 ): Canvas {
   const annotated = createCanvas(screen.canvas.width, screen.canvas.height);
   const ctx = annotated.getContext('2d');
@@ -1037,6 +1285,16 @@ function createSkillRarityDebugAnnotation(
     ctx.fillText(label, rect.x, Math.max(18, rect.y - 8));
   }
 
+  for (const [index, rect] of SKILL_TEXT_RECTS_IN_SCREENSHOT.entries()) {
+    const read = textReads[index];
+    const score = read?.match?.score;
+    const label = `text ${index + 1}: ${score === undefined ? '?' : score.toFixed(2)}`;
+    ctx.strokeStyle = '#66ff66';
+    ctx.fillStyle = '#66ff66';
+    ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
+    ctx.fillText(label, rect.x, Math.max(18, rect.y - 8));
+  }
+
   return annotated;
 }
 
@@ -1045,6 +1303,7 @@ async function saveSkillRarityDebugScreenshots(
   matches: readonly SkillRarityMatch[],
   allMatches: readonly SkillRarityMatch[],
   reads: readonly FixedSkillNumberRead[],
+  textReads: readonly FixedSkillTextRead[],
   startedAt: number,
 ): Promise<void> {
   if (
@@ -1062,7 +1321,7 @@ async function saveSkillRarityDebugScreenshots(
   await fs.mkdir(frameDir, { recursive: true });
   await saveCanvasPng(
     path.join(frameDir, `${frameName}_annotated.png`),
-    createSkillRarityDebugAnnotation(screen, matches, reads),
+    createSkillRarityDebugAnnotation(screen, matches, reads, textReads),
   );
 
   const metadata = {
@@ -1087,6 +1346,42 @@ async function saveSkillRarityDebugScreenshots(
           y: attempt.rect.y - screen.y,
         },
         options: attempt.options,
+      })),
+    })),
+    textReads: textReads.map((read, index) => ({
+      index: index + 1,
+      rawText: read.rawText,
+      rect: read.rect,
+      rectInSavedScreenshot: SKILL_TEXT_RECTS_IN_SCREENSHOT[index],
+      match: read.match
+        ? {
+            catalogIndex: read.match.entry.index,
+            margin: read.match.margin,
+            rarity: read.match.entry.rarity,
+            runnerUpScore: read.match.runnerUpScore,
+            score: read.match.score,
+            text: read.match.entry.text,
+          }
+        : undefined,
+      attempts: read.attempts.map((attempt) => ({
+        rawText: attempt.rawText,
+        rect: attempt.rect,
+        rectInSavedScreenshot: {
+          ...attempt.rect,
+          x: attempt.rect.x - screen.x,
+          y: attempt.rect.y - screen.y,
+        },
+        options: attempt.options,
+        match: attempt.match
+          ? {
+              catalogIndex: attempt.match.entry.index,
+              margin: attempt.match.margin,
+              rarity: attempt.match.entry.rarity,
+              runnerUpScore: attempt.match.runnerUpScore,
+              score: attempt.match.score,
+              text: attempt.match.entry.text,
+            }
+          : undefined,
       })),
     })),
     matches: matches.map(({ needle, found }) => ({
@@ -1117,6 +1412,7 @@ async function handleFixedSkillChoice(
   screen: ScreenCapture,
   rarityMatches: readonly SkillRarityMatch[],
   reads: readonly FixedSkillNumberRead[],
+  textReads: readonly FixedSkillTextRead[],
   strategy: SkillStrategy,
   runState: SkillRunState,
   rerollNeedle?: Needle,
@@ -1139,6 +1435,7 @@ async function handleFixedSkillChoice(
       reads,
       result: 'not clicking',
       reason: `${rarity} OCR incomplete`,
+      textReads,
     });
     return true;
   }
@@ -1156,6 +1453,7 @@ async function handleFixedSkillChoice(
       result: `pick ${formatSkillDecisionName(nonRerollDecision)}`,
       reason: `${rarity} highest-weight visible skill marked pick`,
       selectedDecision: nonRerollDecision,
+      textReads,
     });
 
     await clickScreenPoint(skillNumberClickPoint(nonRerollDecision.candidate.read));
@@ -1170,6 +1468,7 @@ async function handleFixedSkillChoice(
       reads,
       result: `reroll, score=${rerollFound.score?.toFixed(3) ?? '(unknown)'}`,
       reason: `${rarity} all visible skills allow reroll and reroll needle is visible`,
+      textReads,
     });
     await clickFound(rerollFound);
     return true;
@@ -1191,6 +1490,7 @@ async function handleFixedSkillChoice(
     result: `pick ${formatSkillDecisionName(decision)}`,
     reason: `${rarity} reroll unavailable, choosing highest-weight visible skill`,
     selectedDecision: decision,
+    textReads,
   });
 
   await clickScreenPoint(skillNumberClickPoint(decision.candidate.read));
@@ -1203,6 +1503,9 @@ async function main(): Promise<void> {
     const needlesByName = await loadNeedlesByNameFromDir(NEEDLE_DIR, NEEDLE_NAME_BY_KEY);
     const needles = ACTIVE_NEEDLES.map((name) => needlesByName[name]);
     const skillRarityNeedles = await loadSkillRarityNeedles();
+    const skillTextCatalog = MATCH_SKILL_TEXTS
+      ? await loadSkillTextCatalog(SKILL_TEXT_CATALOG_PATH)
+      : [];
     const skillRunState = createSkillRunState(GAME_MODE, { ruins: ENABLE_RUINS });
     const rerollNeedle = await loadRerollNeedle();
     const scrcpyActionNeedles = await loadScrcpyActionNeedles();
@@ -1252,11 +1555,17 @@ async function main(): Promise<void> {
           const skillRarity = selectedSkillRarity(skillRarityMatches);
           const skillNumberReads =
             skillRarityMatches.length > 0 ? await readFixedSkillNumbers(screen, skillRarity) : [];
+          const skillTextReads =
+            skillRarityMatches.length > 0
+              ? await readFixedSkillTexts(screen, skillRarity, skillTextCatalog)
+              : [];
+          await recordSkillTextMatches(skillNumberReads, skillTextReads, skillRarity);
           await saveSkillRarityDebugScreenshots(
             screen,
             skillRarityMatches,
             allSkillRarityMatches,
             skillNumberReads,
+            skillTextReads,
             startedAt,
           );
 
@@ -1264,6 +1573,7 @@ async function main(): Promise<void> {
             screen,
             skillRarityMatches,
             skillNumberReads,
+            skillTextReads,
             skillStrategy,
             skillRunState,
             rerollNeedle,
